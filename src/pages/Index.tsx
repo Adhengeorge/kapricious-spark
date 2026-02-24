@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Cpu, Shield, Paintbrush, Bot, Zap, Brain } from "lucide-react";
-import heroGlobe from "@/assets/hero-globe.png";
+import { useState, useEffect } from "react";
+import Globe3D from "@/components/Globe3D";
 import CountdownTimer from "@/components/CountdownTimer";
 
 const fadeUp = {
@@ -21,22 +22,30 @@ const events = [
 const departments = ["CSE", "ECE", "EEE", "ME", "CE"];
 
 const Index = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Grid floor */}
         <div className="absolute inset-0 grid-floor opacity-30" />
-        {/* Globe image */}
+        {/* 3D Globe */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <motion.img
-            src={heroGlobe}
-            alt="Holographic globe"
-            className="w-[600px] md:w-[800px] opacity-50 animate-float"
+          <motion.div
+            className="w-[500px] h-[500px] md:w-[700px] md:h-[700px] opacity-60"
             initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.5 }}
+            animate={{ scale: 1, opacity: 0.6 }}
             transition={{ duration: 1.5 }}
-          />
+          >
+            <Globe3D scrollY={scrollY} />
+          </motion.div>
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">

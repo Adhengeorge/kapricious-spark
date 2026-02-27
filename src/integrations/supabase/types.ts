@@ -82,6 +82,7 @@ export type Database = {
       }
       events: {
         Row: {
+          coordinator_email: string | null
           created_at: string
           department_id: string
           description: string | null
@@ -95,6 +96,7 @@ export type Database = {
           venue: string | null
         }
         Insert: {
+          coordinator_email?: string | null
           created_at?: string
           department_id: string
           description?: string | null
@@ -108,6 +110,7 @@ export type Database = {
           venue?: string | null
         }
         Update: {
+          coordinator_email?: string | null
           created_at?: string
           department_id?: string
           description?: string | null
@@ -139,7 +142,10 @@ export type Database = {
           event_id: string
           id: string
           name: string
+          payment_status: string
           phone: string
+          screenshot_url: string | null
+          transaction_id: string | null
         }
         Insert: {
           college: string
@@ -149,7 +155,10 @@ export type Database = {
           event_id: string
           id?: string
           name: string
+          payment_status?: string
           phone: string
+          screenshot_url?: string | null
+          transaction_id?: string | null
         }
         Update: {
           college?: string
@@ -159,7 +168,10 @@ export type Database = {
           event_id?: string
           id?: string
           name?: string
+          payment_status?: string
           phone?: string
+          screenshot_url?: string | null
+          transaction_id?: string | null
         }
         Relationships: [
           {

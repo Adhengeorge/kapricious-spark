@@ -68,12 +68,11 @@ function GlobeWireframe({ scrollY }: { scrollY: number }) {
     return geo;
   }, []);
 
-  useFrame((_, delta) => {
+  useFrame(() => {
     if (meshRef.current) {
-      // Base rotation + scroll-driven rotation
-      meshRef.current.rotation.y += delta * 0.15;
-      meshRef.current.rotation.y += scrollY * 0.0001;
-      meshRef.current.rotation.x = scrollY * 0.0003;
+      // Pure scroll-driven rotation, no continuous spin
+      meshRef.current.rotation.y = scrollY * 0.002;
+      meshRef.current.rotation.x = scrollY * 0.0008;
     }
     if (glowRef.current) {
       glowRef.current.rotation.y = meshRef.current?.rotation.y || 0;

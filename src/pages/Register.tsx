@@ -23,8 +23,9 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 const Register = () => {
   const [searchParams] = useSearchParams();
   const preselectedEvent = searchParams.get("event") || "";
+  const preselectedDept = searchParams.get("department") || "";
 
-  const [selectedDept, setSelectedDept] = useState("");
+  const [selectedDept, setSelectedDept] = useState(preselectedDept);
   const [selectedEvent, setSelectedEvent] = useState(preselectedEvent);
   const [form, setForm] = useState({ name: "", email: "", phone: "", college: "", transactionId: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { Cpu, Shield, Paintbrush, Bot, Zap, Brain } from "lucide-react";
+import { Cpu, Shield, Paintbrush, Bot, Zap, Brain, Monitor, Flame, CircuitBoard, Cog, HardHat, ShieldCheck, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 import Globe3D from "@/components/Globe3D";
 import CountdownTimer from "@/components/CountdownTimer";
@@ -19,10 +21,23 @@ const events = [
   { icon: Zap, title: "Tech Quiz", desc: "Test your tech knowledge" },
 ];
 
-const departments = ["CSE", "ECE", "EEE", "ME", "CE"];
+const deptIcons: Record<string, any> = {
+  CSE: Monitor, ECE: CircuitBoard, EEE: Zap, CE: HardHat, ME: Cog,
+  SF: Flame, AI: Sparkles, RAE: Bot,
+};
+const deptIconFallback = ShieldCheck;
 
 const Index = () => {
   const [scrollY, setScrollY] = useState(0);
+
+  const { data: departments } = useQuery({
+    queryKey: ["departments"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("departments").select("*").order("name");
+      if (error) throw error;
+      return data;
+    },
+  });
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -135,22 +150,33 @@ const Index = () => {
       <section className="py-24 relative" id="departments">
         <div className="container mx-auto px-4 text-center">
           <motion.h2 variants={fadeUp} custom={0} initial="hidden" whileInView="visible" viewport={{ once: true }} className="font-display text-3xl md:text-4xl font-bold mb-12">
-            Participating <span className="text-accent">Departments</span>
+            Explore <span className="text-accent">Departments</span>
           </motion.h2>
-          <div className="flex flex-wrap justify-center gap-4">
-            {departments.map((dept, i) => (
-              <motion.div
-                key={dept}
-                variants={fadeUp}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="neon-border rounded-lg px-8 py-4 font-display text-lg font-bold text-primary bg-card/30 backdrop-blur"
-              >
-                {dept}
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
+            {departments?.map((dept, i) => {
+              const Icon = deptIcons[dept.code] || deptIconFallback;
+              return (
+                <motion.div
+                  key={dept.id}
+                  variants={fadeUp}
+                  custom={i}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
+                  <Link
+                    to={`/departments/${dept.id}`}
+                    className="group neon-border rounded-xl p-5 md:p-6 bg-card/40 backdrop-blur flex flex-col items-center gap-3 hover:bg-primary/10 hover:border-primary/70 transition-all duration-300 block"
+                  >
+                    <Icon className="w-10 h-10 text-primary group-hover:drop-shadow-[0_0_12px_hsl(168,80%,50%)] transition-all" />
+                    <span className="font-display text-sm md:text-base font-bold text-foreground group-hover:text-primary transition-colors text-center leading-tight">
+                      {dept.name}
+                    </span>
+                    <span className="font-accent text-[10px] tracking-widest uppercase text-muted-foreground">{dept.code}</span>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>

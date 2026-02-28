@@ -5,20 +5,14 @@ import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Copy, Check, Upload } from "lucide-react";
-
-const UPI_ID = "kapricious@upi";
+import { ShieldCheck, CreditCard } from "lucide-react";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
   email: z.string().trim().email("Invalid email").max(255),
   phone: z.string().trim().min(10, "Invalid phone number").max(15),
   college: z.string().trim().min(1, "College is required").max(200),
-  transactionId: z.string().trim().min(1, "Transaction ID is required").max(100),
 });
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
 const Register = () => {
   const [searchParams] = useSearchParams();
@@ -27,11 +21,8 @@ const Register = () => {
 
   const [selectedDept, setSelectedDept] = useState(preselectedDept);
   const [selectedEvent, setSelectedEvent] = useState(preselectedEvent);
-  const [form, setForm] = useState({ name: "", email: "", phone: "", college: "", transactionId: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", college: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [screenshot, setScreenshot] = useState<File | null>(null);
-  const [screenshotError, setScreenshotError] = useState("");
-  const [copied, setCopied] = useState(false);
 
   const { data: departments } = useQuery({
     queryKey: ["departments"],
@@ -57,7 +48,7 @@ const Register = () => {
   });
 
   useQuery({
-    queryKey: ["event-detail", preselectedEvent],
+    queryKey: ["event-detail-reg", preselectedEvent],
     queryFn: async () => {
       if (!preselectedEvent) return null;
       const { data, error } = await supabase.from("events").select("department_id").eq("id", preselectedEvent).single();
@@ -68,40 +59,12 @@ const Register = () => {
       }
       return data;
     },
-    enabled: !!preselectedEvent,
+    enabled: !!preselectedEvent && !preselectedDept,
   });
-
-  const copyUPI = () => {
-    navigator.clipboard.writeText(UPI_ID);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleScreenshotChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setScreenshotError("");
-    if (!file) { setScreenshot(null); return; }
-    if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
-      setScreenshotError("Only JPG, JPEG, PNG files are allowed");
-      setScreenshot(null); return;
-    }
-    if (file.size > MAX_FILE_SIZE) {
-      setScreenshotError("File size must be under 5MB");
-      setScreenshot(null); return;
-    }
-    setScreenshot(file);
-  };
 
   const mutation = useMutation({
     mutationFn: async () => {
       const validated = schema.parse(form);
-      if (!screenshot) throw new Error("Payment screenshot is required");
-
-      // Upload screenshot
-      const path = `${selectedEvent}/${Date.now()}_${screenshot.name}`;
-      const { error: uploadError } = await supabase.storage.from("payment-screenshots").upload(path, screenshot);
-      if (uploadError) throw uploadError;
-      const { data: urlData } = supabase.storage.from("payment-screenshots").getPublicUrl(path);
 
       const { error } = await supabase.from("registrations").insert([{
         name: validated.name,
@@ -110,8 +73,6 @@ const Register = () => {
         college: validated.college,
         event_id: selectedEvent,
         department_id: selectedDept,
-        transaction_id: validated.transactionId,
-        screenshot_url: urlData.publicUrl,
       }]);
       if (error) {
         if (error.code === "23505") throw new Error("You have already registered for this event.");
@@ -120,9 +81,8 @@ const Register = () => {
     },
     onSuccess: () => {
       toast.success("Registration successful! 🎉");
-      setForm({ name: "", email: "", phone: "", college: "", transactionId: "" });
+      setForm({ name: "", email: "", phone: "", college: "" });
       setSelectedEvent("");
-      setScreenshot(null);
     },
     onError: (err: Error) => {
       toast.error(err.message);
@@ -132,7 +92,6 @@ const Register = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    setScreenshotError("");
     const result = schema.safeParse(form);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
@@ -144,10 +103,6 @@ const Register = () => {
     }
     if (!selectedDept || !selectedEvent) {
       toast.error("Please select a department and event.");
-      return;
-    }
-    if (!screenshot) {
-      setScreenshotError("Payment screenshot is required");
       return;
     }
     mutation.mutate();
@@ -222,39 +177,25 @@ const Register = () => {
             {errors.college && <p className="text-xs text-destructive mt-1">{errors.college}</p>}
           </div>
 
-          {/* Payment Section */}
-          <div className="border-t border-border pt-5 space-y-4">
-            <h3 className="font-display text-base font-bold text-foreground">💰 Payment Details</h3>
-
-            {/* UPI ID */}
-            <div className="rounded-lg bg-secondary/30 border border-border p-4">
-              <p className="text-xs text-muted-foreground mb-1 font-accent tracking-widest uppercase">Pay via UPI</p>
-              <div className="flex items-center gap-2">
-                <code className="text-primary font-mono text-sm font-bold">{UPI_ID}</code>
-                <button type="button" onClick={copyUPI} className="text-muted-foreground hover:text-primary transition-colors">
-                  {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                </button>
+          {/* Payment Gateway Placeholder */}
+          <div className="border-t border-border pt-5">
+            <div className="rounded-xl border-2 border-dashed border-primary/30 bg-primary/5 p-6 text-center">
+              <div className="flex justify-center mb-3">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <CreditCard className="w-6 h-6 text-primary" />
+                </div>
               </div>
-            </div>
-
-            {/* Transaction ID */}
-            <div>
-              <label className="block font-accent text-xs tracking-widest uppercase text-muted-foreground mb-2">Transaction ID</label>
-              <input type="text" value={form.transactionId} onChange={(e) => setForm({ ...form, transactionId: e.target.value })} className={inputClass} placeholder="Enter UPI transaction ID" />
-              {errors.transactionId && <p className="text-xs text-destructive mt-1">{errors.transactionId}</p>}
-            </div>
-
-            {/* Screenshot Upload */}
-            <div>
-              <label className="block font-accent text-xs tracking-widest uppercase text-muted-foreground mb-2">Payment Screenshot</label>
-              <label className="flex items-center gap-3 cursor-pointer rounded-lg bg-input border border-border px-4 py-3 hover:border-primary/50 transition-colors">
-                <Upload className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">
-                  {screenshot ? screenshot.name : "Upload screenshot (JPG, PNG, max 5MB)"}
-                </span>
-                <input type="file" accept=".jpg,.jpeg,.png" onChange={handleScreenshotChange} className="hidden" />
-              </label>
-              {screenshotError && <p className="text-xs text-destructive mt-1">{screenshotError}</p>}
+              <h3 className="font-display text-base font-bold text-foreground mb-1">Payment Gateway</h3>
+              <p className="text-sm text-muted-foreground mb-3">Secure Payment Gateway Integration Coming Soon</p>
+              <div className="flex justify-center gap-3">
+                <span className="rounded-full bg-card border border-border px-3 py-1 text-[10px] font-accent tracking-wider text-muted-foreground">Razorpay</span>
+                <span className="rounded-full bg-card border border-border px-3 py-1 text-[10px] font-accent tracking-wider text-muted-foreground">Stripe</span>
+                <span className="rounded-full bg-card border border-border px-3 py-1 text-[10px] font-accent tracking-wider text-muted-foreground">Cashfree</span>
+              </div>
+              <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
+                <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+                <span>256-bit SSL Encrypted</span>
+              </div>
             </div>
           </div>
 

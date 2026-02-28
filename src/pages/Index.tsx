@@ -52,7 +52,7 @@ const Index = () => {
         {/* Grid floor */}
         <div className="absolute inset-0 grid-floor opacity-30" />
         {/* 3D Globe */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0">
           <motion.div
             className="w-[500px] h-[500px] md:w-[700px] md:h-[700px] opacity-60"
             initial={{ scale: 0.8, opacity: 0 }}

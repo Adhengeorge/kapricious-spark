@@ -78,7 +78,7 @@ const Events = () => {
                   </details>
                 )}
                 <Link
-                  to={`/register?event=${event.id}`}
+                  to={`/register?department=${event.department_id}&event=${event.id}`}
                   className="inline-block neon-border rounded-lg px-6 py-2 font-accent text-xs tracking-widest uppercase text-primary hover:bg-primary/10 transition-colors"
                 >
                   Register

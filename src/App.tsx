@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import Certificate from "./pages/Certificate";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import DepartmentEvents from "./pages/DepartmentEvents";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/departments/:deptId" element={<DepartmentEvents />} />
           <Route path="/register" element={<Register />} />
           <Route path="/certificate" element={<Certificate />} />
           <Route path="/admin" element={<AdminLogin />} />

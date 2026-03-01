@@ -66,21 +66,42 @@ const Register = () => {
     mutationFn: async () => {
       const validated = schema.parse(form);
 
-      const { error } = await supabase.from("registrations").insert([{
+      const { data: regData, error } = await supabase.from("registrations").insert([{
         name: validated.name,
         email: validated.email,
         phone: validated.phone,
         college: validated.college,
         event_id: selectedEvent,
         department_id: selectedDept,
-      }]);
+      }]).select("id").single();
       if (error) {
         if (error.code === "23505") throw new Error("You have already registered for this event.");
         throw error;
       }
+
+      // Get event details for the email
+      const { data: eventData } = await supabase
+        .from("events")
+        .select("title, event_date, venue")
+        .eq("id", selectedEvent)
+        .single();
+
+      // Send confirmation email (fire-and-forget, don't block registration)
+      supabase.functions.invoke("send-registration-email", {
+        body: {
+          participantName: validated.name,
+          participantEmail: validated.email,
+          eventName: eventData?.title || "Event",
+          registrationId: regData.id,
+          eventDate: eventData?.event_date,
+          venue: eventData?.venue,
+        },
+      }).catch((err) => console.error("Email send failed:", err));
+
+      return regData;
     },
     onSuccess: () => {
-      toast.success("Registration successful! 🎉");
+      toast.success("Registration successful! Check your email for the event pass 🎫");
       setForm({ name: "", email: "", phone: "", college: "" });
       setSelectedEvent("");
     },

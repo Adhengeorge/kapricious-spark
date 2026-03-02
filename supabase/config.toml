@@ -1,1 +1,13 @@
 project_id = "ufpywadflujnpttrsqsj"
+
+[functions.list-drive-certificates]
+verify_jwt = false
+
+[functions.download-certificate]
+verify_jwt = false
+
+[functions.send-registration-email]
+verify_jwt = false
+
+[functions.export-registrations]
+verify_jwt = false

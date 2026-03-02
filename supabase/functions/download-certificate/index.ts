@@ -20,7 +20,6 @@ async function createServiceAccountJWT(serviceAccount: { client_email: string; p
   const encode = (obj: unknown) => btoa(JSON.stringify(obj)).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
   const unsignedToken = `${encode(header)}.${encode(payload)}`;
 
-  // Import the private key
   const pemBody = serviceAccount.private_key
     .replace(/-----BEGIN PRIVATE KEY-----/, '')
     .replace(/-----END PRIVATE KEY-----/, '')
@@ -47,7 +46,6 @@ async function createServiceAccountJWT(serviceAccount: { client_email: string; p
   return `${unsignedToken}.${sig}`;
 }
 
-/** Exchange JWT for an access token */
 async function getAccessToken(serviceAccount: { client_email: string; private_key: string }): Promise<string> {
   const jwt = await createServiceAccountJWT(serviceAccount);
   const res = await fetch('https://oauth2.googleapis.com/token', {
@@ -71,44 +69,41 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const { fileId, fileName } = await req.json();
+    if (!fileId) throw new Error('fileId is required');
+
     const saJson = Deno.env.get('GOOGLE_SERVICE_ACCOUNT_JSON');
     if (!saJson) throw new Error('GOOGLE_SERVICE_ACCOUNT_JSON not configured');
-
-    const folderId = Deno.env.get('GOOGLE_DRIVE_FOLDER_ID');
-    if (!folderId) throw new Error('GOOGLE_DRIVE_FOLDER_ID not configured');
 
     const serviceAccount = JSON.parse(saJson);
     const accessToken = await getAccessToken(serviceAccount);
 
-    // List all PDF files in the folder
-    const query = encodeURIComponent(`'${folderId}' in parents and mimeType='application/pdf' and trashed=false`);
-    const fields = encodeURIComponent('files(id,name,mimeType)');
-    const apiUrl = `https://www.googleapis.com/drive/v3/files?q=${query}&fields=${fields}&pageSize=1000&orderBy=name`;
-
-    const driveRes = await fetch(apiUrl, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    // Download the file content from Drive
+    const driveRes = await fetch(
+      `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
 
     if (!driveRes.ok) {
       const errText = await driveRes.text();
-      throw new Error(`Drive API error [${driveRes.status}]: ${errText}`);
+      throw new Error(`Drive download error [${driveRes.status}]: ${errText}`);
     }
 
-    const driveData = await driveRes.json();
-    const files = (driveData.files || []).map((f: { id: string; name: string }) => ({
-      id: f.id,
-      name: f.name.replace(/\.pdf$/i, ''),
-    }));
+    const pdfBytes = await driveRes.arrayBuffer();
+    const safeName = (fileName || 'certificate').replace(/[^a-zA-Z0-9._-]/g, '_');
 
-    return new Response(
-      JSON.stringify({ files, count: files.length }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return new Response(pdfBytes, {
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="${safeName}.pdf"`,
+      },
+    });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Unknown error';
-    console.error('Error listing certificates:', message);
+    console.error('Download error:', message);
     return new Response(
-      JSON.stringify({ error: message, files: [] }),
+      JSON.stringify({ error: message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

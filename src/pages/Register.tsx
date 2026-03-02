@@ -86,7 +86,7 @@ const Register = () => {
         .eq("id", selectedEvent)
         .single();
 
-      supabase.functions.invoke("send-registration-email", {
+      const emailRes = await supabase.functions.invoke("send-registration-email", {
         body: {
           participantName: validated.name,
           participantEmail: validated.email,
@@ -95,13 +95,19 @@ const Register = () => {
           eventDate: eventData?.event_date,
           venue: eventData?.venue,
         },
-      }).catch((err) => console.error("Email send failed:", err));
+      }).catch((err) => { console.error("Email send failed:", err); return null; });
 
-      return regData;
+      const emailRateLimited = emailRes?.data?.rateLimited === true;
+
+      return { regData, emailRateLimited };
     },
-    onSuccess: () => {
+    onSuccess: ({ emailRateLimited }) => {
       setRegistered(true);
-      toast.success("Registration successful! Check your email for the event pass 🎫");
+      if (emailRateLimited) {
+        toast.info("Registration successful! However, we couldn't send your event pass right now due to high demand. Please check your email tomorrow or contact the admin for your pass.");
+      } else {
+        toast.success("Registration successful! Check your email for the event pass 🎫");
+      }
       setForm({ name: "", email: "", phone: "", college: "" });
       setSelectedEvent("");
     },

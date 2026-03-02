@@ -165,8 +165,9 @@ Deno.serve(async (req) => {
 
     if (!res.ok) {
       console.error('Resend error:', result);
+      const isRateLimit = res.status === 429;
       return new Response(
-        JSON.stringify({ success: false, error: result }),
+        JSON.stringify({ success: false, rateLimited: isRateLimit, error: result }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }

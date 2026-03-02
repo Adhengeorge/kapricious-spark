@@ -153,7 +153,7 @@ Deno.serve(async (req) => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Kapricious 2026 <onboarding@resend.dev>',
+        from: 'Kapricious 2026 <noreply@kapricious.in>',
         to: [participantEmail],
         subject: `🎫 Your Event Pass — ${eventName} | Kapricious 2026`,
         html,

@@ -7,13 +7,13 @@ import { Download, Search, FileText, Loader2 } from "lucide-react";
 interface DriveFile {
   id: string;
   name: string;
-  downloadUrl: string;
 }
 
 const Certificate = () => {
   const [query, setQuery] = useState("");
   const [allFiles, setAllFiles] = useState<DriveFile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [downloading, setDownloading] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCertificates = async () => {
@@ -29,6 +29,41 @@ const Certificate = () => {
     };
     fetchCertificates();
   }, []);
+
+  const handleDownload = async (file: DriveFile) => {
+    setDownloading(file.id);
+    try {
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      const res = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/download-certificate`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: anonKey,
+          },
+          body: JSON.stringify({ fileId: file.id, fileName: file.name }),
+        }
+      );
+
+      if (!res.ok) throw new Error("Download failed");
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${file.name}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      toast.error("Failed to download certificate.");
+    } finally {
+      setDownloading(null);
+    }
+  };
 
   const filteredFiles = allFiles.filter((f) =>
     f.name.toLowerCase().includes(query.trim().toLowerCase())
@@ -81,7 +116,7 @@ const Certificate = () => {
         ) : (
           <>
             <p className="text-xs text-muted-foreground mb-4">
-              Showing {filteredFiles.length} of {allFiles.length} certificate{allFiles.length !== 1 ? 's' : ''}
+              Showing {filteredFiles.length} of {allFiles.length} certificate{allFiles.length !== 1 ? "s" : ""}
             </p>
             <div className="grid gap-4 sm:grid-cols-2">
               {filteredFiles.map((file, i) => (
@@ -99,14 +134,17 @@ const Certificate = () => {
                     <p className="font-display text-sm font-bold text-foreground truncate">{file.name}</p>
                     <p className="text-xs text-muted-foreground">PDF Certificate</p>
                   </div>
-                  <a
-                    href={file.downloadUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 neon-border rounded-lg px-3 py-2 text-xs font-accent tracking-wider uppercase text-primary hover:bg-primary/10 transition-colors shrink-0"
+                  <button
+                    onClick={() => handleDownload(file)}
+                    disabled={downloading === file.id}
+                    className="flex items-center gap-1.5 neon-border rounded-lg px-3 py-2 text-xs font-accent tracking-wider uppercase text-primary hover:bg-primary/10 transition-colors shrink-0 disabled:opacity-50"
                   >
-                    <Download className="w-3 h-3" />
-                  </a>
+                    {downloading === file.id ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Download className="w-3 h-3" />
+                    )}
+                  </button>
                 </motion.div>
               ))}
             </div>

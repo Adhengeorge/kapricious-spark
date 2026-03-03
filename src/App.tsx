@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import Navbar from "./components/Navbar";
+import CulturalRegister from "./pages/CulturalRegister";
 import TopHeader from "./components/TopHeader";
 import Footer from "./components/Footer";
 import Index from "./pages/Index";
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/events/:eventId" element={<EventDetail />} />
               <Route path="/departments/:deptId" element={<DepartmentEvents />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/cultural-register" element={<CulturalRegister />} />
               <Route path="/certificate" element={<Certificate />} />
               <Route path="/admin" element={<AdminLogin />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />

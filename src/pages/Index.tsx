@@ -9,6 +9,13 @@ const fadeUp = {
 };
 
 const departments = ["CSE", "Civil", "ECE", "EEE", "Fire & Safety", "Mechanical", "AI", "Robotics & Automation"];
+const culturalEvents = [
+  { id: "fashion-show", title: "Fashion Show" },
+  { id: "group-dance", title: "Group Dance" },
+  { id: "step-in-synchro", title: "Step in Synchro" },
+  { id: "spot-photography", title: "Spot Photography" },
+  { id: "star-of-kapricious", title: "Star of Kapricious" },
+];
 
 // Robot image URL from the design
 const robotImageUrl = "https://lh3.googleusercontent.com/aida-public/AB6AXuB5odDv-Fgvs2fNLGWwMw5E52gwKAhD-GSEcuiJ5YBCYvA1N49jm-NP6ILq7_eCZjKdOVLhLYnfHQjjWtnXv3CkPekAdp6to1M8xtQWy4zeh11726V_FT-BUHmrscy5gj_IcDc3gYYM_G-UK6g60fpTGGQA7hbW2LIXx7heQxO5e-sn_g6WqwtvXxEG1RGoVB-TmqHO9jGHp22Kx65mnkZeXx_Ah7Spufd3N5ZrDWfbFMK5JNoGBGmXvgt5zOO8OpRACW70HtrCyhs";
@@ -115,6 +122,24 @@ const Index = () => {
                   </span>
                 ))}
               </div>
+                {/* Cultural Events Section */}
+                <div className="mt-8">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="font-display text-sm tracking-tight">CULTURAL EVENTS</h3>
+                    <span className="text-muted-foreground text-xs">5 events</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {culturalEvents.map((ev) => (
+                      <Link
+                        key={ev.id}
+                        to={`/cultural-register`}
+                        className="px-4 py-2 rounded-full border border-border text-xs font-medium uppercase tracking-wider text-muted-foreground hover:bg-accent hover:text-background transition-colors cursor-pointer"
+                      >
+                        {ev.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
             </div>
 
             <div className="mt-8 border-t border-border pt-6">

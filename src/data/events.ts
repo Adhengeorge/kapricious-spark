@@ -1,3 +1,200 @@
+export const meEvents = [
+  {
+    id: "assemble-x",
+    title: "ASSEMBLE X (VR-based EV Assembly Challenge)",
+    teamSize: 1,
+    registrationFee: "₹100 per team",
+    prizePool: "₹7,500",
+    details: "A VR-based EV assembly challenge testing speed, precision, technical skills, and innovation.",
+    prizes: ["🥇 ₹5,000", "🥈 ₹2,500"],
+    type: "individual"
+  },
+  {
+    id: "rc-trails",
+    title: "RC-TRAILS",
+    teamSize: 1,
+    registrationFee: "₹200 per team",
+    prizePool: "₹4,500",
+    details: "High-speed RC lap time challenge testing precision, control, and fastest track performance.",
+    prizes: ["🥇 ₹3,000", "🥈 ₹1,500"],
+    type: "individual"
+  },
+  {
+    id: "cad-combat",
+    title: "CAD COMBAT",
+    teamSize: 1,
+    registrationFee: "₹100 per participant",
+    prizePool: "₹3,000",
+    details: "CAD design challenge testing precision, creativity, and engineering skills.",
+    prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
+    type: "individual"
+  },
+  {
+    id: "technical-quiz",
+    title: "Technical Quiz",
+    teamSize: 2,
+    registrationFee: "₹50 per participant",
+    prizePool: "₹1,500",
+    details: "Technical mechanical quiz testing core concepts, speed, accuracy, and engineering knowledge.",
+    prizes: ["🥇 ₹1,000", "🥈 ₹500"],
+    type: "team"
+  },
+  {
+    id: "sustainable-innovation-pitching",
+    title: "SUSTAINABLE INNOVATION PITCHING",
+    teamSize: 4,
+    registrationFee: "₹100 per participant",
+    prizePool: "₹3,000",
+    details: "Sustainability innovation pitch showcasing impactful, feasible, eco-friendly engineering solutions.",
+    prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
+    type: "team"
+  },
+  {
+    id: "lathe-master",
+    title: "LATHE MASTER",
+    teamSize: 1,
+    registrationFee: "₹100",
+    prizePool: "₹3,000",
+    details: "Hands-on machining contest where participants shape raw material into a finished mechanical component using a lathe.",
+    prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
+    type: "individual"
+  }
+];
+export const ceEvents = [
+  {
+    id: "bridgit",
+    title: "BRIDGIT (Bridge Modelling Competition)",
+    teamSize: 4,
+    registrationFee: "₹200 per team",
+    prizePool: "₹4,500",
+    details: "A structural model-making competition where teams design and construct a bridge using limited materials. The model will be tested for load carrying capacity and structural efficiency.",
+    prizes: ["🥇 ₹3,000", "🥈 ₹1,500"],
+    type: "team"
+  },
+  {
+    id: "cad-illumina",
+    title: "CAD ILLUMINA",
+    teamSize: 1,
+    registrationFee: "₹100",
+    prizePool: "₹3,750",
+    details: "A software-based drafting competition that evaluates students' technical accuracy, speed, and design understanding within a specified time.",
+    prizes: ["🥇 ₹2,500", "🥈 ₹1,250"],
+    type: "individual"
+  },
+  {
+    id: "movethon",
+    title: "MOVETHON",
+    teamSize: 4,
+    registrationFee: "₹200",
+    prizePool: "₹4,500",
+    details: "A team event where students develop simple and innovative ideas to solve real-world civil engineering problems.",
+    prizes: ["🥇 ₹3,000", "🥈 ₹1,500"],
+    type: "team"
+  },
+  {
+    id: "quizzard",
+    title: "QUIZZARD",
+    teamSize: 2,
+    registrationFee: "₹50 per team",
+    prizePool: "₹4,500",
+    details: "A knowledge-based competition focusing on core civil engineering subjects which is conducted in multi levels.",
+    prizes: ["🥇 ₹3,000", "🥈 ₹1,500"],
+    type: "team"
+  },
+  {
+    id: "infrahunt",
+    title: "INFRAHUNT (Treasure Hunt)",
+    teamSize: 4,
+    registrationFee: "₹200",
+    prizePool: "₹3,000",
+    details: "A fun, team-based event where participants solve engineering and technical-related clues to find the final treasure.",
+    prizes: ["🥇 ₹3,000"],
+    type: "team"
+  },
+  {
+    id: "structra",
+    title: "STRUCTRA",
+    teamSize: 4,
+    registrationFee: "₹200",
+    prizePool: "₹3,000",
+    details: "A fun structural challenge where teams build the tallest free-standing tower using only paper and limited materials within a fixed time, testing creativity, stability, and basic engineering principles.",
+    prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
+    type: "team"
+  }
+];
+export const cseEvents = [
+  {
+    id: "prompt-wars",
+    title: "Prompt Wars",
+    teamSize: 1,
+    registrationFee: "₹50",
+    prizePool: "₹3,000",
+    details: "Participants craft optimized prompts to generate the best AI output under given constraints.",
+    type: "individual"
+  },
+  {
+    id: "bug-bounty",
+    title: "Bug Bounty",
+    teamSize: 1,
+    registrationFee: "₹50",
+    prizePool: "₹3,000",
+    details: "Participants fix buggy code within a time limit.",
+    type: "individual"
+  },
+  {
+    id: "css-royale",
+    title: "CSS Royale",
+    teamSize: 1,
+    registrationFee: "₹50",
+    prizePool: "₹3,000",
+    details: "Design a visually appealing webpage using only HTML & CSS.",
+    type: "individual"
+  },
+  {
+    id: "no-run-ninja",
+    title: "NO-Run Ninja",
+    teamSize: 1,
+    registrationFee: "₹50",
+    prizePool: "₹3,000",
+    details: "Participants write code without compiling or running it.",
+    type: "individual"
+  },
+  {
+    id: "code-catastrophe",
+    title: "Code Catastrophe",
+    teamSize: 1,
+    registrationFee: "₹50",
+    prizePool: "₹3,000",
+    details: "Write the most chaotic but functional code. Creativity in confusion wins.",
+    type: "individual"
+  },
+  {
+    id: "tech-escape-room",
+    title: "TECH ESCAPE ROOM",
+    teamSize: 4,
+    registrationFee: "₹200 per team",
+    prizePool: "₹6,000",
+    details: "A QR-based interactive technical escape challenge where teams solve encryption, debugging, and logic puzzles to regain system control within 60 minutes.",
+    prizes: ["🥇 ₹4,000", "🥈 ₹2,000"],
+    type: "team"
+  },
+  {
+    id: "hackathon",
+    title: "Hackathon",
+    teamSize: 4,
+    registrationFee: "₹200",
+    prizePool: "₹15,000",
+    details: "A team-based innovation challenge where participants build a working prototype within a fixed duration.",
+    type: "team"
+  }
+];
+export const culturalEvents = [
+  { id: "fashion-show", title: "Fashion Show" },
+  { id: "group-dance", title: "Group Dance" },
+  { id: "step-in-synchro", title: "Step in Synchro" },
+  { id: "spot-photography", title: "Spot Photography" },
+  { id: "star-of-kapricious", title: "Star of Kapricious" },
+];
 import { Brain, Bot, Shield, Paintbrush, LucideIcon } from "lucide-react";
 
 export interface FlagshipEvent {
@@ -23,81 +220,6 @@ export interface FlagshipEvent {
 }
 
 export const flagshipEvents: FlagshipEvent[] = [
-  {
-    id: "mega-hackathon-2026",
-    title: "Mega Hackathon 2026",
-    category: "AI/ML",
-    prize: "₹1,00,000",
-    mode: "24 Hour Onsite",
-    description: "A 24-hour AI/ML innovation marathon. Build, train, and deploy machine learning solutions to real-world challenges. Teams of up to 4 members compete for the ultimate prize. This is the flagship event of Kapricious 2026, bringing together the brightest minds in artificial intelligence and machine learning.",
-    icon: Brain,
-    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop",
-    date: "March 27, 2026",
-    time: "9:00 AM - 9:00 AM (Next Day)",
-    venue: "Main Auditorium, KMEA Engineering College",
-    teamSize: "2-4 members",
-    registrationFee: "₹500 per team",
-    highlights: [
-      "24 hours of non-stop coding and innovation",
-      "Mentorship from industry experts",
-      "Access to cloud computing resources",
-      "Networking opportunities with tech leaders",
-      "Swag kits for all participants",
-      "Food and refreshments provided"
-    ],
-    rules: [
-      "Teams must consist of 2-4 members",
-      "All team members must be currently enrolled students",
-      "Pre-built code or templates are not allowed",
-      "Use of AI coding assistants is permitted",
-      "Projects must be original and created during the hackathon",
-      "Final submission must include source code and a working demo",
-      "Judging criteria: Innovation, Technical Complexity, UI/UX, and Presentation",
-      "Decision of judges will be final and binding"
-    ],
-    contact: {
-      name: "Rahul Kumar",
-      phone: "+91 98765 43210"
-    }
-  },
-  {
-    id: "robo-wars",
-    title: "Robo Wars",
-    category: "Robotics",
-    prize: "₹50,000",
-    mode: "Arena Battle",
-    description: "Design and build combat-ready robots to battle it out in the arena. Strategy, engineering, and raw power collide in the most electrifying event of the fest. Witness metal clash against metal as teams put their engineering prowess to the ultimate test.",
-    icon: Bot,
-    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop",
-    date: "March 27, 2026",
-    time: "2:00 PM - 6:00 PM",
-    venue: "Open Ground Arena, KMEA Engineering College",
-    teamSize: "3-5 members",
-    registrationFee: "₹800 per team",
-    highlights: [
-      "Live arena battles with professional commentary",
-      "Multiple weight categories",
-      "Practice sessions before the main event",
-      "Technical inspection by expert judges",
-      "Spare parts station available",
-      "Live streaming of all matches"
-    ],
-    rules: [
-      "Robots must weigh between 5kg to 15kg",
-      "Maximum dimensions: 50cm x 50cm x 50cm",
-      "Wireless control only (2.4GHz recommended)",
-      "No flammable or explosive weapons allowed",
-      "No entanglement devices permitted",
-      "Battery voltage must not exceed 24V",
-      "Teams get 3 minutes per match",
-      "Knockout or judges' decision determines winner",
-      "Safety gear mandatory for pit crew"
-    ],
-    contact: {
-      name: "Arun Menon",
-      phone: "+91 87654 32109"
-    }
-  },
   {
     id: "cyber-shield-ctf",
     title: "Cyber Shield CTF",

@@ -6,9 +6,11 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { z } from "zod";
 import { User, Mail, Phone, GraduationCap, Layers, Calendar, CheckCircle2, CreditCard, ShieldCheck, ArrowRight, Trophy } from "lucide-react";
-import { flagshipEvents, getEventById } from "@/data/events";
+import { flagshipEvents, getEventById, culturalEvents } from "@/data/events";
+import { cseEvents, ceEvents, meEvents } from "@/data/events";
 
 const FLAGSHIP_DEPT_ID = "flagship";
+const CULTURAL_DEPT_ID = "cultural";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -21,12 +23,13 @@ const Register = () => {
   const [searchParams] = useSearchParams();
   const preselectedEvent = searchParams.get("event") || "";
 
-  // Check if preselected event is a flagship event
+  // Check if preselected event is a flagship or cultural event
   const preselectedFlagship = getEventById(preselectedEvent);
-  const initialDept = preselectedFlagship ? FLAGSHIP_DEPT_ID : "";
+  const preselectedCultural = culturalEvents.find(ev => ev.id === preselectedEvent);
+  const initialDept = preselectedFlagship ? FLAGSHIP_DEPT_ID : preselectedCultural ? CULTURAL_DEPT_ID : "";
 
   const [selectedDept, setSelectedDept] = useState(initialDept);
-  const [selectedEvent, setSelectedEvent] = useState(preselectedFlagship ? preselectedEvent : "");
+  const [selectedEvent, setSelectedEvent] = useState(preselectedFlagship || preselectedCultural ? preselectedEvent : "");
   const [form, setForm] = useState({ name: "", email: "", phone: "", college: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [registered, setRegistered] = useState(false);
@@ -64,36 +67,59 @@ const Register = () => {
   });
 
   // Get events list based on selected department
-  const events = selectedDept === FLAGSHIP_DEPT_ID 
-    ? flagshipEvents.map(e => ({ id: e.id, title: e.title }))
-    : dbEvents;
+  let events = [];
+  if (selectedDept === FLAGSHIP_DEPT_ID) {
+    events = flagshipEvents.map(e => ({ id: e.id, title: e.title, type: "flagship" }));
+  } else if (selectedDept === CULTURAL_DEPT_ID) {
+    events = culturalEvents.map(e => ({ id: e.id, title: e.title, type: "cultural" }));
+  } else if (selectedDept && departments) {
+    // Map department code to event array
+    const dept = departments.find(d => d.id === selectedDept);
+    if (dept?.code === "CSE") events = cseEvents;
+    else if (dept?.code === "CE") events = ceEvents;
+    else if (dept?.code === "ME") events = meEvents;
+    else events = dbEvents || [];
+  }
 
   // Get selected event details for display
-  const selectedEventDetails = selectedDept === FLAGSHIP_DEPT_ID
-    ? getEventById(selectedEvent)
-    : dbEvents?.find(e => e.id === selectedEvent);
+  let selectedEventDetails;
+  if (selectedDept === FLAGSHIP_DEPT_ID) {
+    selectedEventDetails = getEventById(selectedEvent);
+  } else if (selectedDept === CULTURAL_DEPT_ID) {
+    selectedEventDetails = culturalEvents.find(ev => ev.id === selectedEvent);
+  } else if (selectedDept && departments) {
+    const dept = departments.find(d => d.id === selectedDept);
+    if (dept?.code === "CSE") selectedEventDetails = cseEvents.find(ev => ev.id === selectedEvent);
+    else if (dept?.code === "CE") selectedEventDetails = ceEvents.find(ev => ev.id === selectedEvent);
+    else if (dept?.code === "ME") selectedEventDetails = meEvents.find(ev => ev.id === selectedEvent);
+    else selectedEventDetails = dbEvents?.find(e => e.id === selectedEvent);
+  }
 
   const mutation = useMutation({
     mutationFn: async () => {
       const validated = schema.parse(form);
       const isFlagship = selectedDept === FLAGSHIP_DEPT_ID;
+      const isCultural = selectedDept === CULTURAL_DEPT_ID;
       const flagshipEvent = isFlagship ? getEventById(selectedEvent) : null;
+      const culturalEvent = isCultural ? culturalEvents.find(ev => ev.id === selectedEvent) : null;
 
-      // For flagship events, store with null event_id/department_id but include event name in a comment or separate field
+      // For flagship/cultural events, store with null event_id/department_id but include event name in a comment or separate field
       const { data: regData, error } = await supabase.from("registrations").insert([{
         name: validated.name,
         email: validated.email,
         phone: validated.phone,
         college: validated.college,
-        event_id: isFlagship ? null : selectedEvent,
-        department_id: isFlagship ? null : selectedDept,
+        event_id: isFlagship || isCultural ? null : selectedEvent,
+        department_id: isFlagship || isCultural ? null : selectedDept,
+        event_name: isFlagship ? flagshipEvent?.title : isCultural ? culturalEvent?.title : undefined,
+        event_type: isFlagship ? "flagship" : isCultural ? "cultural" : "department"
       }]).select("id").single();
       if (error) {
         if (error.code === "23505") throw new Error("You have already registered for this event.");
         throw error;
       }
 
-      // Get event details - from flagship data or database
+      // Get event details - from flagship/cultural data or database
       let eventName = "Event";
       let eventDate = "";
       let venue = "";
@@ -102,6 +128,10 @@ const Register = () => {
         eventName = flagshipEvent.title;
         eventDate = flagshipEvent.date;
         venue = flagshipEvent.venue;
+      } else if (isCultural && culturalEvent) {
+        eventName = culturalEvent.title;
+        eventDate = culturalEvent.date || "";
+        venue = culturalEvent.venue || "";
       } else {
         const { data: eventData } = await supabase
           .from("events")
@@ -244,6 +274,7 @@ const Register = () => {
                         <option key={d.id} value={d.id}>{d.name} ({d.code})</option>
                       ))}
                     </optgroup>
+                    <option value={CULTURAL_DEPT_ID}>🎭 Cultural Events</option>
                   </select>
                 </div>
               </div>
@@ -266,15 +297,15 @@ const Register = () => {
               </div>
             </div>
 
-            {/* Flagship Event Details Banner */}
-            {selectedDept === FLAGSHIP_DEPT_ID && selectedEvent && selectedEventDetails && (
+            {/* Flagship/Cultural Event Details Banner */}
+            {(selectedDept === FLAGSHIP_DEPT_ID || selectedDept === CULTURAL_DEPT_ID) && selectedEvent && selectedEventDetails && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="mt-4 rounded-2xl bg-secondary/50 border border-border p-4"
               >
                 <div className="flex items-start gap-4">
-                  {('image' in selectedEventDetails) && (
+                  {selectedDept === FLAGSHIP_DEPT_ID && ('image' in selectedEventDetails) && (
                     <img 
                       src={selectedEventDetails.image} 
                       alt={selectedEventDetails.title}
@@ -283,15 +314,16 @@ const Register = () => {
                   )}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <Trophy className="w-4 h-4 text-accent" />
-                      <span className="text-[10px] font-bold tracking-wider uppercase text-accent">Flagship Event</span>
+                      <span className="text-[10px] font-bold tracking-wider uppercase text-accent">
+                        {selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : "Cultural Event"}
+                      </span>
                     </div>
                     <h4 className="font-display font-bold text-foreground truncate">{selectedEventDetails.title}</h4>
-                    {('category' in selectedEventDetails) && (
+                    {selectedDept === FLAGSHIP_DEPT_ID && ('category' in selectedEventDetails) && (
                       <p className="text-xs text-muted-foreground">{selectedEventDetails.category}</p>
                     )}
                     <div className="flex flex-wrap gap-3 mt-2">
-                      {('prize' in selectedEventDetails) && (
+                      {selectedDept === FLAGSHIP_DEPT_ID && ('prize' in selectedEventDetails) && (
                         <span className="text-[10px] bg-card rounded-full px-2 py-1 border border-border text-muted-foreground">
                           Prize: <span className="text-foreground font-bold">{selectedEventDetails.prize}</span>
                         </span>
@@ -301,9 +333,14 @@ const Register = () => {
                           {selectedEventDetails.date}
                         </span>
                       )}
-                      {('registrationFee' in selectedEventDetails) && (
+                      {selectedDept === FLAGSHIP_DEPT_ID && ('registrationFee' in selectedEventDetails) && (
                         <span className="text-[10px] bg-card rounded-full px-2 py-1 border border-border text-muted-foreground">
                           Fee: {selectedEventDetails.registrationFee}
+                        </span>
+                      )}
+                      {selectedDept === CULTURAL_DEPT_ID && ('venue' in selectedEventDetails) && (
+                        <span className="text-[10px] bg-card rounded-full px-2 py-1 border border-border text-muted-foreground">
+                          Venue: {selectedEventDetails.venue}
                         </span>
                       )}
                     </div>
@@ -313,12 +350,36 @@ const Register = () => {
             )}
           </div>
 
-          {/* Personal Info */}
+          {/* Personal Info & Team Info */}
           <div className="p-6 md:p-8 space-y-4 border-b border-border">
             <div className="flex items-center gap-2 mb-2">
               <User className="w-4 h-4 text-accent" />
               <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">Personal Details</span>
             </div>
+
+            {/* Team fields for team events */}
+            {selectedEventDetails?.type === "team" && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div className="sm:col-span-2">
+                  <label className={labelClass}>Team Name</label>
+                  <input type="text" className={inputClass} placeholder="Team Name" />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className={labelClass}>Team Leader</label>
+                  <input type="text" className={inputClass} placeholder="Team Leader Name" />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className={labelClass}>Number of Participants</label>
+                  <input type="number" min={1} max={selectedEventDetails.teamSize} className={inputClass} placeholder={`Up to ${selectedEventDetails.teamSize}`} />
+                </div>
+                {[...Array(selectedEventDetails.teamSize)].map((_, idx) => (
+                  <div key={idx} className="sm:col-span-2">
+                    <label className={labelClass}>{`Participant ${idx + 1} Name`}</label>
+                    <input type="text" className={inputClass} placeholder={`Participant ${idx + 1} Name`} />
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">

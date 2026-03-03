@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Events from "./pages/Events";
 import EventDetail from "./pages/EventDetail";
+import FlagshipEventDetail from "./pages/FlagshipEventDetail";
 import Register from "./pages/Register";
 import Certificate from "./pages/Certificate";
 import AdminLogin from "./pages/AdminLogin";
@@ -32,6 +33,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/events" element={<Events />} />
+              <Route path="/event/:eventId" element={<FlagshipEventDetail />} />
               <Route path="/events/:eventId" element={<EventDetail />} />
               <Route path="/departments/:deptId" element={<DepartmentEvents />} />
               <Route path="/register" element={<Register />} />

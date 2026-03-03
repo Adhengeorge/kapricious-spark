@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { z } from "zod";
-import { User, Mail, Phone, GraduationCap, Layers, Calendar, CheckCircle2, CreditCard, ShieldCheck, ArrowRight } from "lucide-react";
+import { User, Mail, Phone, GraduationCap, Layers, Calendar, CheckCircle2, CreditCard, ShieldCheck, ArrowRight, Trophy } from "lucide-react";
+import { flagshipEvents, getEventById } from "@/data/events";
+
+const FLAGSHIP_DEPT_ID = "flagship";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -17,13 +20,24 @@ const schema = z.object({
 const Register = () => {
   const [searchParams] = useSearchParams();
   const preselectedEvent = searchParams.get("event") || "";
-  const preselectedDept = searchParams.get("department") || "";
 
-  const [selectedDept, setSelectedDept] = useState(preselectedDept);
-  const [selectedEvent, setSelectedEvent] = useState(preselectedEvent);
+  // Check if preselected event is a flagship event
+  const preselectedFlagship = getEventById(preselectedEvent);
+  const initialDept = preselectedFlagship ? FLAGSHIP_DEPT_ID : "";
+
+  const [selectedDept, setSelectedDept] = useState(initialDept);
+  const [selectedEvent, setSelectedEvent] = useState(preselectedFlagship ? preselectedEvent : "");
   const [form, setForm] = useState({ name: "", email: "", phone: "", college: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [registered, setRegistered] = useState(false);
+
+  // Set initial values when URL params change
+  useEffect(() => {
+    if (preselectedFlagship) {
+      setSelectedDept(FLAGSHIP_DEPT_ID);
+      setSelectedEvent(preselectedEvent);
+    }
+  }, [preselectedEvent, preselectedFlagship]);
 
   const { data: departments } = useQuery({
     queryKey: ["departments"],
@@ -34,7 +48,8 @@ const Register = () => {
     },
   });
 
-  const { data: events } = useQuery({
+  // Fetch database events only when a non-flagship department is selected
+  const { data: dbEvents } = useQuery({
     queryKey: ["events-by-dept", selectedDept],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -45,55 +60,67 @@ const Register = () => {
       if (error) throw error;
       return data;
     },
-    enabled: !!selectedDept,
+    enabled: !!selectedDept && selectedDept !== FLAGSHIP_DEPT_ID,
   });
 
-  useQuery({
-    queryKey: ["event-detail-reg", preselectedEvent],
-    queryFn: async () => {
-      if (!preselectedEvent) return null;
-      const { data, error } = await supabase.from("events").select("department_id").eq("id", preselectedEvent).single();
-      if (error) throw error;
-      if (data) {
-        setSelectedDept(data.department_id);
-        setSelectedEvent(preselectedEvent);
-      }
-      return data;
-    },
-    enabled: !!preselectedEvent && !preselectedDept,
-  });
+  // Get events list based on selected department
+  const events = selectedDept === FLAGSHIP_DEPT_ID 
+    ? flagshipEvents.map(e => ({ id: e.id, title: e.title }))
+    : dbEvents;
+
+  // Get selected event details for display
+  const selectedEventDetails = selectedDept === FLAGSHIP_DEPT_ID
+    ? getEventById(selectedEvent)
+    : dbEvents?.find(e => e.id === selectedEvent);
 
   const mutation = useMutation({
     mutationFn: async () => {
       const validated = schema.parse(form);
+      const isFlagship = selectedDept === FLAGSHIP_DEPT_ID;
+      const flagshipEvent = isFlagship ? getEventById(selectedEvent) : null;
 
+      // For flagship events, store with null event_id/department_id but include event name in a comment or separate field
       const { data: regData, error } = await supabase.from("registrations").insert([{
         name: validated.name,
         email: validated.email,
         phone: validated.phone,
         college: validated.college,
-        event_id: selectedEvent,
-        department_id: selectedDept,
+        event_id: isFlagship ? null : selectedEvent,
+        department_id: isFlagship ? null : selectedDept,
       }]).select("id").single();
       if (error) {
         if (error.code === "23505") throw new Error("You have already registered for this event.");
         throw error;
       }
 
-      const { data: eventData } = await supabase
-        .from("events")
-        .select("title, event_date, venue")
-        .eq("id", selectedEvent)
-        .single();
+      // Get event details - from flagship data or database
+      let eventName = "Event";
+      let eventDate = "";
+      let venue = "";
+
+      if (isFlagship && flagshipEvent) {
+        eventName = flagshipEvent.title;
+        eventDate = flagshipEvent.date;
+        venue = flagshipEvent.venue;
+      } else {
+        const { data: eventData } = await supabase
+          .from("events")
+          .select("title, event_date, venue")
+          .eq("id", selectedEvent)
+          .single();
+        eventName = eventData?.title || "Event";
+        eventDate = eventData?.event_date || "";
+        venue = eventData?.venue || "";
+      }
 
       const emailRes = await supabase.functions.invoke("send-registration-email", {
         body: {
           participantName: validated.name,
           participantEmail: validated.email,
-          eventName: eventData?.title || "Event",
+          eventName,
           registrationId: regData.id,
-          eventDate: eventData?.event_date,
-          venue: eventData?.venue,
+          eventDate,
+          venue,
         },
       }).catch((err) => { console.error("Email send failed:", err); return null; });
 
@@ -129,7 +156,7 @@ const Register = () => {
       return;
     }
     if (!selectedDept || !selectedEvent) {
-      toast.error("Please select a department and event.");
+      toast.error("Please select a category and event.");
       return;
     }
     mutation.mutate();
@@ -177,7 +204,7 @@ const Register = () => {
             <span className="text-accent">REGISTER</span> NOW
           </h1>
           <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-            Select your department and event, fill in your details, and you're good to go.
+            Choose from flagship events or department events, fill in your details, and you're good to go.
           </p>
         </motion.div>
 
@@ -198,18 +225,25 @@ const Register = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className={labelClass}>Department</label>
+                <label className={labelClass}>Category</label>
                 <div className="relative">
-                  <Layers className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
+                  {selectedDept === FLAGSHIP_DEPT_ID ? (
+                    <Trophy className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-accent" />
+                  ) : (
+                    <Layers className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
+                  )}
                   <select
                     value={selectedDept}
                     onChange={(e) => { setSelectedDept(e.target.value); setSelectedEvent(""); }}
                     className={selectClass}
                   >
                     <option value="">Select</option>
-                    {departments?.map((d) => (
-                      <option key={d.id} value={d.id}>{d.name} ({d.code})</option>
-                    ))}
+                    <option value={FLAGSHIP_DEPT_ID}>⭐ Flagship Events</option>
+                    <optgroup label="Department Events">
+                      {departments?.map((d) => (
+                        <option key={d.id} value={d.id}>{d.name} ({d.code})</option>
+                      ))}
+                    </optgroup>
                   </select>
                 </div>
               </div>
@@ -231,6 +265,52 @@ const Register = () => {
                 </div>
               </div>
             </div>
+
+            {/* Flagship Event Details Banner */}
+            {selectedDept === FLAGSHIP_DEPT_ID && selectedEvent && selectedEventDetails && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 rounded-2xl bg-secondary/50 border border-border p-4"
+              >
+                <div className="flex items-start gap-4">
+                  {('image' in selectedEventDetails) && (
+                    <img 
+                      src={selectedEventDetails.image} 
+                      alt={selectedEventDetails.title}
+                      className="w-20 h-20 rounded-xl object-cover hidden sm:block"
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Trophy className="w-4 h-4 text-accent" />
+                      <span className="text-[10px] font-bold tracking-wider uppercase text-accent">Flagship Event</span>
+                    </div>
+                    <h4 className="font-display font-bold text-foreground truncate">{selectedEventDetails.title}</h4>
+                    {('category' in selectedEventDetails) && (
+                      <p className="text-xs text-muted-foreground">{selectedEventDetails.category}</p>
+                    )}
+                    <div className="flex flex-wrap gap-3 mt-2">
+                      {('prize' in selectedEventDetails) && (
+                        <span className="text-[10px] bg-card rounded-full px-2 py-1 border border-border text-muted-foreground">
+                          Prize: <span className="text-foreground font-bold">{selectedEventDetails.prize}</span>
+                        </span>
+                      )}
+                      {('date' in selectedEventDetails) && (
+                        <span className="text-[10px] bg-card rounded-full px-2 py-1 border border-border text-muted-foreground">
+                          {selectedEventDetails.date}
+                        </span>
+                      )}
+                      {('registrationFee' in selectedEventDetails) && (
+                        <span className="text-[10px] bg-card rounded-full px-2 py-1 border border-border text-muted-foreground">
+                          Fee: {selectedEventDetails.registrationFee}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </div>
 
           {/* Personal Info */}

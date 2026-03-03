@@ -1,52 +1,32 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { ArrowRight, Brain, Bot, Shield, Paintbrush } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { useEffect } from "react";
+import { flagshipEvents } from "@/data/events";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
 };
 
-const staticEvents = [
-  {
-    id: "mega-hackathon-2026",
-    title: "Mega Hackathon 2026",
-    category: "AI/ML",
-    prize: "₹1,00,000",
-    mode: "24 Hour Onsite",
-    description: "A 24-hour AI/ML innovation marathon. Build, train, and deploy machine learning solutions to real-world challenges. Teams of up to 4 members compete for the ultimate prize.",
-    icon: Brain,
-  },
-  {
-    id: "robo-wars",
-    title: "Robo Wars",
-    category: "Robotics",
-    prize: "₹50,000",
-    mode: "Arena Battle",
-    description: "Design and build combat-ready robots to battle it out in the arena. Strategy, engineering, and raw power collide in the most electrifying event of the fest.",
-    icon: Bot,
-  },
-  {
-    id: "cyber-shield-ctf",
-    title: "Cyber Shield CTF",
-    category: "Cybersecurity",
-    prize: "₹40,000",
-    mode: "Capture The Flag",
-    description: "Test your cybersecurity skills in this high-stakes Capture The Flag competition. Crack codes, exploit vulnerabilities, and defend systems against attacks.",
-    icon: Shield,
-  },
-  {
-    id: "ui-ux-design-sprint",
-    title: "UI/UX Design Sprint",
-    category: "Design",
-    prize: "₹25,000",
-    mode: "6 Hour Sprint",
-    description: "A rapid-fire design challenge. Create stunning, user-centric interfaces from a given brief in just 6 hours. Creativity, usability, and aesthetics will be judged.",
-    icon: Paintbrush,
-  },
-];
-
 const Events = () => {
+  const location = useLocation();
+
+  // Scroll to element if hash is present in URL
+  useEffect(() => {
+    if (location.hash) {
+      const elementId = location.hash.replace("#", "");
+      const element = document.getElementById(elementId);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+          element.classList.add("ring-2", "ring-accent");
+          setTimeout(() => element.classList.remove("ring-2", "ring-accent"), 2000);
+        }, 300);
+      }
+    }
+  }, [location.hash]);
+
   return (
     <div className="min-h-screen grid-bg pt-24 pb-16 px-4 md:px-8">
       {/* Header */}
@@ -62,9 +42,12 @@ const Events = () => {
 
       {/* Events Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-5xl mx-auto">
-        {staticEvents.map((event, i) => (
+        {flagshipEvents.map((event, i) => {
+          const EventIcon = event.icon;
+          return (
           <motion.div
             key={event.id}
+            id={event.id}
             variants={fadeUp}
             custom={i}
             initial="hidden"
@@ -74,7 +57,7 @@ const Events = () => {
           >
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-32 h-32 opacity-[0.03]">
-              <event.icon className="w-full h-full" />
+              <EventIcon className="w-full h-full" />
             </div>
 
             <div className="relative z-10">
@@ -89,13 +72,13 @@ const Events = () => {
 
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center shrink-0 group-hover:bg-foreground group-hover:text-background transition-colors">
-                  <event.icon className="w-6 h-6" />
+                  <EventIcon className="w-6 h-6" />
                 </div>
                 <div>
                   <h3 className="font-display text-lg font-bold text-foreground mb-1 group-hover:text-accent transition-colors">
                     {event.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{event.description}</p>
                 </div>
               </div>
             </div>
@@ -106,15 +89,16 @@ const Events = () => {
                 <p className="text-xl font-bold text-foreground">{event.prize}</p>
               </div>
               <Link
-                to="/register"
+                to={`/event/${event.id}`}
                 className="group/btn flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-2xl hover:opacity-90 transition-all text-xs font-bold tracking-wider uppercase"
               >
-                Register
+                View Details
                 <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
             </div>
           </motion.div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Bottom CTA */}

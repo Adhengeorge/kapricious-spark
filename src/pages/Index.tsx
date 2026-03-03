@@ -8,7 +8,7 @@ const fadeUp = {
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
 };
 
-const categories = ["Robotics", "AI/ML", "Cybersecurity", "Design", "FinTech", "BioTech"];
+const departments = ["CSE", "Civil", "ECE", "EEE", "Fire & Safety", "Mechanical", "AI", "Robotics & Automation"];
 
 // Robot image URL from the design
 const robotImageUrl = "https://lh3.googleusercontent.com/aida-public/AB6AXuB5odDv-Fgvs2fNLGWwMw5E52gwKAhD-GSEcuiJ5YBCYvA1N49jm-NP6ILq7_eCZjKdOVLhLYnfHQjjWtnXv3CkPekAdp6to1M8xtQWy4zeh11726V_FT-BUHmrscy5gj_IcDc3gYYM_G-UK6g60fpTGGQA7hbW2LIXx7heQxO5e-sn_g6WqwtvXxEG1RGoVB-TmqHO9jGHp22Kx65mnkZeXx_Ah7Spufd3N5ZrDWfbFMK5JNoGBGmXvgt5zOO8OpRACW70HtrCyhs";
@@ -66,8 +66,8 @@ const Index = () => {
                   KMEA Engineering College Presents
                 </span>
                 <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.9] tracking-tighter text-foreground">
-                  BEYOND<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground to-muted-foreground">LIMITS</span>
+                  KAPRICIOUS<br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground to-muted-foreground">2026</span>
                 </h1>
               </div>
 
@@ -80,19 +80,19 @@ const Index = () => {
                     to="/register"
                     className="group flex items-center gap-3 bg-foreground text-background px-6 py-4 rounded-2xl hover:opacity-90 transition-all"
                   >
-                    <span className="font-bold tracking-tight text-sm">REGISTER NOW</span>
+                    <span className="font-bold tracking-tight text-sm">BE A PART OF THE EVENT </span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
                 <div className="text-right hidden md:block">
                   <div className="text-4xl font-display opacity-10">2026</div>
-                  <div className="text-[10px] tracking-widest text-muted-foreground">EDITION TWO</div>
+                  <div className="text-[10px] tracking-widest text-muted-foreground"></div>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Categories Card */}
+          {/* Departments Card */}
           <motion.div
             variants={fadeUp}
             custom={1}
@@ -102,16 +102,16 @@ const Index = () => {
           >
             <div>
               <div className="flex justify-between items-center mb-6">
-                <h3 className="font-display text-sm tracking-tight">CATEGORIES</h3>
-                <span className="text-muted-foreground text-xs">6 tracks</span>
+                <h3 className="font-display text-sm tracking-tight">DEPARTMENTS</h3>
+                <span className="text-muted-foreground text-xs">8 departments</span>
               </div>
               <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => (
+                {departments.map((dept) => (
                   <span
-                    key={cat}
+                    key={dept}
                     className="px-4 py-2 rounded-full border border-border text-xs font-medium uppercase tracking-wider text-muted-foreground hover:bg-foreground hover:text-background transition-colors cursor-pointer"
                   >
-                    {cat}
+                    {dept}
                   </span>
                 ))}
               </div>

@@ -2,21 +2,12 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { Calendar, MapPin, ArrowLeft, Users, Zap, Star, Trophy, Target } from "lucide-react";
+import { Calendar, MapPin, ArrowLeft, Users, Zap, Star, Trophy, Target, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 
-const comicBurst = {
-  hidden: { scale: 0, rotate: -15 },
-  visible: { scale: 1, rotate: 0, transition: { type: "spring" as const, stiffness: 200, damping: 15 } },
-};
-
-const slideIn = {
-  hidden: { opacity: 0, x: -60 },
-  visible: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: { delay: i * 0.12, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
-  }),
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
 };
 
 const EventDetail = () => {
@@ -39,189 +30,131 @@ const EventDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-24 pb-16 flex items-center justify-center">
-        <div className="neon-border rounded-xl p-12 bg-card/30 animate-pulse w-full max-w-2xl h-96" />
+      <div className="min-h-screen pt-24 pb-16 flex items-center justify-center grid-bg">
+        <div className="bg-card rounded-large border border-border animate-pulse w-full max-w-2xl h-96" />
       </div>
     );
   }
 
   if (!event) {
     return (
-      <div className="min-h-screen pt-24 pb-16 flex items-center justify-center">
+      <div className="min-h-screen pt-24 pb-16 flex items-center justify-center grid-bg">
         <p className="text-muted-foreground">Event not found.</p>
       </div>
     );
   }
 
-  const rules = event.rules
-    ? event.rules.split("\n").filter((r: string) => r.trim())
-    : [];
+  const rules = event.rules ? event.rules.split("\n").filter((r: string) => r.trim()) : [];
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
-      <div className="container mx-auto px-4 max-w-4xl">
+    <div className="min-h-screen pt-24 pb-16 grid-bg px-4 md:px-8">
+      <div className="max-w-4xl mx-auto">
         {/* Breadcrumb */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="flex items-center gap-2 text-sm text-muted-foreground mb-8"
-        >
-          <button onClick={() => navigate("/events")} className="flex items-center gap-1 hover:text-primary transition-colors">
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+          <button onClick={() => navigate("/events")} className="flex items-center gap-1 hover:text-foreground transition-colors">
             <ArrowLeft className="w-4 h-4" /> Events
           </button>
           <span className="text-border">/</span>
-          <span className="text-primary">{event.title}</span>
+          <span className="text-foreground">{event.title}</span>
         </motion.div>
 
-        {/* Comic Hero Banner */}
+        {/* Hero */}
         <motion.div
-          variants={comicBurst}
-          initial="hidden"
-          animate="visible"
-          className="relative rounded-2xl overflow-hidden mb-10"
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-card rounded-large border border-border p-8 md:p-12 mb-6"
         >
-          {/* Halftone comic background */}
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage: "radial-gradient(circle, hsl(var(--primary)) 1px, transparent 1px)",
-              backgroundSize: "8px 8px",
-            }}
-          />
-          <div className="relative neon-border rounded-2xl p-8 md:p-12 bg-card/60 backdrop-blur">
-            {/* Department badge */}
-            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-              <span className="inline-block neon-border rounded-full px-4 py-1 text-xs font-accent tracking-widest uppercase text-primary mb-4">
-                {(event.departments as any)?.code} — {(event.departments as any)?.name}
-              </span>
-            </motion.div>
+          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+            <span className="inline-block rounded-full border border-border px-4 py-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-4">
+              {(event.departments as any)?.code} — {(event.departments as any)?.name}
+            </span>
+          </motion.span>
 
-            {/* Title with comic emphasis */}
-            <h1 className="font-display text-4xl md:text-6xl font-black text-foreground mb-4 leading-tight">
-              {event.title}
-              <span className="text-primary">.</span>
-            </h1>
+          <h1 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4 leading-tight tracking-tighter">
+            {event.title}
+          </h1>
 
-            {/* Meta row */}
-            <div className="flex flex-wrap gap-4 mb-6">
-              {event.event_date && (
-                <div className="flex items-center gap-2 neon-border rounded-lg px-3 py-1.5 bg-card/40">
-                  <Calendar className="w-4 h-4 text-primary" />
-                  <span className="text-sm text-foreground font-accent">
-                    {format(new Date(event.event_date), "EEEE, MMMM d, yyyy • h:mm a")}
-                  </span>
-                </div>
-              )}
-              {event.venue && (
-                <div className="flex items-center gap-2 neon-border rounded-lg px-3 py-1.5 bg-card/40">
-                  <MapPin className="w-4 h-4 text-accent" />
-                  <span className="text-sm text-foreground font-accent">{event.venue}</span>
-                </div>
-              )}
-              {event.max_participants && (
-                <div className="flex items-center gap-2 neon-border rounded-lg px-3 py-1.5 bg-card/40">
-                  <Users className="w-4 h-4 text-primary" />
-                  <span className="text-sm text-foreground font-accent">Max {event.max_participants} participants</span>
-                </div>
-              )}
-            </div>
-
-            {/* Description */}
-            <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-3xl">
-              {event.description}
-            </p>
+          <div className="flex flex-wrap gap-3 mb-6">
+            {event.event_date && (
+              <div className="flex items-center gap-2 rounded-2xl bg-secondary px-4 py-2">
+                <Calendar className="w-4 h-4 text-accent" />
+                <span className="text-xs text-foreground font-medium">
+                  {format(new Date(event.event_date), "EEEE, MMMM d, yyyy • h:mm a")}
+                </span>
+              </div>
+            )}
+            {event.venue && (
+              <div className="flex items-center gap-2 rounded-2xl bg-secondary px-4 py-2">
+                <MapPin className="w-4 h-4 text-accent" />
+                <span className="text-xs text-foreground font-medium">{event.venue}</span>
+              </div>
+            )}
+            {event.max_participants && (
+              <div className="flex items-center gap-2 rounded-2xl bg-secondary px-4 py-2">
+                <Users className="w-4 h-4 text-accent" />
+                <span className="text-xs text-foreground font-medium">Max {event.max_participants} participants</span>
+              </div>
+            )}
           </div>
+
+          <p className="text-muted-foreground text-sm md:text-base leading-relaxed max-w-3xl">
+            {event.description}
+          </p>
         </motion.div>
 
-        {/* Comic panels grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          {/* Rules Panel */}
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
           {rules.length > 0 && (
-            <motion.div
-              variants={slideIn}
-              custom={0}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="md:col-span-2"
-            >
-              <div className="neon-border rounded-2xl p-6 md:p-8 bg-card/40 backdrop-blur relative overflow-hidden">
-                {/* Comic corner decoration */}
-                <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
-                  <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-primary/30 rounded-tr-lg" />
-                </div>
-
+            <motion.div variants={fadeUp} custom={0} initial="hidden" whileInView="visible" viewport={{ once: true }} className="md:col-span-2">
+              <div className="bg-card rounded-large border border-border p-8">
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Target className="w-5 h-5 text-primary" />
+                  <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
+                    <Target className="w-5 h-5 text-accent" />
                   </div>
-                  <h2 className="font-display text-2xl font-bold text-foreground">
-                    Rules <span className="text-primary">&</span> Guidelines
-                  </h2>
+                  <h2 className="font-display text-sm font-bold tracking-tight">RULES & GUIDELINES</h2>
                 </div>
-
                 <div className="space-y-3">
                   {rules.map((rule: string, i: number) => (
-                    <motion.div
-                      key={i}
-                      variants={slideIn}
-                      custom={i + 1}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                      className="flex items-start gap-3 group"
-                    >
-                      <span className="flex-shrink-0 w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-xs font-display font-bold text-primary group-hover:bg-primary/20 transition-colors">
+                    <div key={i} className="flex items-start gap-3 group">
+                      <span className="flex-shrink-0 w-7 h-7 rounded-lg bg-secondary flex items-center justify-center text-xs font-bold text-muted-foreground group-hover:bg-foreground group-hover:text-background transition-colors">
                         {i + 1}
                       </span>
                       <p className="text-sm text-muted-foreground leading-relaxed pt-1">{rule}</p>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               </div>
             </motion.div>
           )}
 
-          {/* Theme Panel */}
-          <motion.div
-            variants={slideIn}
-            custom={1}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <div className="neon-border rounded-2xl p-6 bg-card/40 backdrop-blur h-full">
+          <motion.div variants={fadeUp} custom={1} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            <div className="bg-card rounded-large border border-border p-8 h-full">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
                   <Star className="w-5 h-5 text-accent" />
                 </div>
-                <h2 className="font-display text-xl font-bold text-foreground">Event Theme</h2>
+                <h2 className="font-display text-sm font-bold tracking-tight">EVENT THEME</h2>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                {event.description || "Innovation meets creativity in this exciting challenge. Push your limits and showcase your talent."}
+                {event.description || "Innovation meets creativity in this exciting challenge."}
               </p>
               <div className="mt-4 flex gap-2 flex-wrap">
-                <span className="rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-xs font-accent text-primary">Innovation</span>
-                <span className="rounded-full bg-accent/10 border border-accent/20 px-3 py-1 text-xs font-accent text-accent">Competition</span>
-                <span className="rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-xs font-accent text-primary">Creativity</span>
+                {["Innovation", "Competition", "Creativity"].map((tag) => (
+                  <span key={tag} className="rounded-full bg-secondary border border-border px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
           </motion.div>
 
-          {/* Highlights Panel */}
-          <motion.div
-            variants={slideIn}
-            custom={2}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <div className="neon-border rounded-2xl p-6 bg-card/40 backdrop-blur h-full">
+          <motion.div variants={fadeUp} custom={2} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            <div className="bg-card rounded-large border border-border p-8 h-full">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Trophy className="w-5 h-5 text-primary" />
+                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
+                  <Trophy className="w-5 h-5 text-accent" />
                 </div>
-                <h2 className="font-display text-xl font-bold text-foreground">Why Participate?</h2>
+                <h2 className="font-display text-sm font-bold tracking-tight">WHY PARTICIPATE?</h2>
               </div>
               <div className="space-y-3">
                 {[
@@ -231,7 +164,7 @@ const EventDetail = () => {
                   { icon: Star, text: "Boost your portfolio & skills" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <item.icon className="w-4 h-4 text-primary flex-shrink-0" />
+                    <item.icon className="w-4 h-4 text-accent flex-shrink-0" />
                     <span className="text-sm text-muted-foreground">{item.text}</span>
                   </div>
                 ))}
@@ -240,51 +173,26 @@ const EventDetail = () => {
           </motion.div>
         </div>
 
-        {/* Event image if available */}
-        {event.image_url && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="mb-10"
-          >
-            <div className="neon-border rounded-2xl overflow-hidden">
-              <img
-                src={event.image_url}
-                alt={event.title}
-                className="w-full h-auto object-cover max-h-96"
-                loading="lazy"
-              />
+        {/* CTA */}
+        <motion.div variants={fadeUp} custom={3} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          <div className="bg-foreground text-background rounded-large p-10 md:p-14 text-center relative overflow-hidden">
+            <div className="absolute inset-0 opacity-5">
+              <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="0.5" />
+                <circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" strokeWidth="0.5" />
+              </svg>
             </div>
-          </motion.div>
-        )}
-
-        {/* Register CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <div className="neon-border rounded-2xl p-8 md:p-12 bg-card/40 backdrop-blur relative overflow-hidden">
-            {/* Comic action lines */}
-            <div className="absolute inset-0 opacity-[0.03]"
-              style={{
-                backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 20px, hsl(var(--primary)) 20px, hsl(var(--primary)) 21px)`,
-              }}
-            />
-            <div className="relative">
-              <h2 className="font-display text-3xl md:text-4xl font-black text-foreground mb-3">
-                Ready to <span className="text-primary">Compete</span>?
-              </h2>
-              <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+            <div className="relative z-10">
+              <h2 className="font-display text-xl md:text-2xl font-bold mb-3 tracking-tight">READY TO COMPETE?</h2>
+              <p className="text-sm opacity-60 mb-8 max-w-md mx-auto">
                 Secure your spot in {event.title}. Limited seats available!
               </p>
               <Link
                 to={`/register?department=${event.department_id}&event=${event.id}`}
-                className="inline-block rounded-xl bg-primary px-10 py-4 font-accent text-sm tracking-widest uppercase text-primary-foreground font-bold hover:opacity-90 transition-all hover:scale-105 transform"
+                className="group inline-flex items-center gap-3 bg-background text-foreground px-8 py-4 rounded-2xl font-bold text-sm hover:opacity-90 transition-all"
               >
-                Register Now
+                REGISTER NOW
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>

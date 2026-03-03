@@ -22,88 +22,91 @@ function buildCouponEmail(data: {
   eventDate: string;
   venue: string;
 }): string {
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.entryCode)}&bgcolor=0a0a0a&color=14b8a6`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.entryCode)}&bgcolor=0a0a0a&color=ffffff`;
 
   return `
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background-color:#050505;font-family:Arial,Helvetica,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#050505;padding:20px 0;">
+<body style="margin:0;padding:0;background-color:#050505;font-family:'Helvetica Neue',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#050505;padding:32px 0;">
 <tr><td align="center">
-<table width="480" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#0a0f1a 0%,#0d1117 100%);border:1px solid #1e293b;border-radius:16px;overflow:hidden;">
+<table width="480" cellpadding="0" cellspacing="0" style="background-color:#0a0a0a;border:1px solid #1a1a1a;border-radius:32px;overflow:hidden;">
 
 <!-- Header -->
-<tr><td style="background:linear-gradient(135deg,#0f172a,#064e3b);padding:28px 32px;text-align:center;border-bottom:2px solid #14b8a6;">
-  <p style="margin:0 0 4px;font-size:11px;letter-spacing:4px;color:#5eead4;text-transform:uppercase;">Kapricious 2026</p>
-  <h1 style="margin:0;font-size:26px;color:#f0fdfa;font-weight:800;">EVENT PASS</h1>
+<tr><td style="padding:32px 40px 24px;text-align:center;">
+  <div style="width:48px;height:48px;border-radius:50%;background:#ffffff;margin:0 auto 16px;line-height:48px;text-align:center;">
+    <span style="font-size:16px;font-weight:900;color:#0a0a0a;font-family:monospace;">K</span>
+  </div>
+  <p style="margin:0 0 4px;font-size:10px;letter-spacing:5px;color:#666;text-transform:uppercase;font-weight:700;">Kapricious 2026</p>
+  <h1 style="margin:0;font-size:24px;color:#ffffff;font-weight:700;letter-spacing:-0.5px;">EVENT PASS</h1>
 </td></tr>
 
 <!-- ADMIT ONE -->
-<tr><td style="padding:0;">
+<tr><td style="padding:0 40px;">
   <table width="100%" cellpadding="0" cellspacing="0">
-  <tr>
-    <td style="background:#14b8a6;padding:6px 0;text-align:center;">
-      <span style="font-size:10px;letter-spacing:6px;color:#022c22;font-weight:700;text-transform:uppercase;">★ ADMIT ONE ★</span>
-    </td>
-  </tr>
+  <tr><td style="background:#ffffff;padding:8px 0;text-align:center;border-radius:12px;">
+    <span style="font-size:10px;letter-spacing:6px;color:#0a0a0a;font-weight:700;text-transform:uppercase;">★ ADMIT ONE ★</span>
+  </td></tr>
   </table>
 </td></tr>
 
 <!-- Event Info -->
-<tr><td style="padding:24px 32px 16px;">
-  <p style="margin:0 0 4px;font-size:10px;letter-spacing:3px;color:#5eead4;text-transform:uppercase;">Event</p>
-  <h2 style="margin:0 0 16px;font-size:20px;color:#f0fdfa;font-weight:700;">${data.eventName}</h2>
+<tr><td style="padding:24px 40px 16px;">
+  <p style="margin:0 0 4px;font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;font-weight:600;">Event</p>
+  <h2 style="margin:0 0 20px;font-size:20px;color:#ffffff;font-weight:700;letter-spacing:-0.3px;">${data.eventName}</h2>
   
-  <table width="100%" cellpadding="0" cellspacing="0">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#111;border:1px solid #1a1a1a;border-radius:16px;overflow:hidden;">
   <tr>
-    <td width="50%" style="padding:8px 0;">
-      <p style="margin:0;font-size:10px;letter-spacing:2px;color:#5eead4;text-transform:uppercase;">Participant</p>
-      <p style="margin:4px 0 0;font-size:14px;color:#e2e8f0;font-weight:600;">${data.participantName}</p>
+    <td width="50%" style="padding:16px 20px;border-right:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a;">
+      <p style="margin:0;font-size:9px;letter-spacing:3px;color:#555;text-transform:uppercase;font-weight:600;">Participant</p>
+      <p style="margin:6px 0 0;font-size:14px;color:#fff;font-weight:600;">${data.participantName}</p>
     </td>
-    <td width="50%" style="padding:8px 0;">
-      <p style="margin:0;font-size:10px;letter-spacing:2px;color:#5eead4;text-transform:uppercase;">Date</p>
-      <p style="margin:4px 0 0;font-size:14px;color:#e2e8f0;font-weight:600;">${data.eventDate}</p>
+    <td width="50%" style="padding:16px 20px;border-bottom:1px solid #1a1a1a;">
+      <p style="margin:0;font-size:9px;letter-spacing:3px;color:#555;text-transform:uppercase;font-weight:600;">Date</p>
+      <p style="margin:6px 0 0;font-size:14px;color:#fff;font-weight:600;">${data.eventDate}</p>
     </td>
   </tr>
   <tr>
-    <td width="50%" style="padding:8px 0;">
-      <p style="margin:0;font-size:10px;letter-spacing:2px;color:#5eead4;text-transform:uppercase;">Venue</p>
-      <p style="margin:4px 0 0;font-size:14px;color:#e2e8f0;font-weight:600;">${data.venue}</p>
+    <td width="50%" style="padding:16px 20px;border-right:1px solid #1a1a1a;">
+      <p style="margin:0;font-size:9px;letter-spacing:3px;color:#555;text-transform:uppercase;font-weight:600;">Venue</p>
+      <p style="margin:6px 0 0;font-size:14px;color:#fff;font-weight:600;">${data.venue}</p>
     </td>
-    <td width="50%" style="padding:8px 0;">
-      <p style="margin:0;font-size:10px;letter-spacing:2px;color:#5eead4;text-transform:uppercase;">Registration ID</p>
-      <p style="margin:4px 0 0;font-size:13px;color:#e2e8f0;font-family:monospace;font-weight:600;">${data.registrationId.substring(0, 8).toUpperCase()}</p>
+    <td width="50%" style="padding:16px 20px;">
+      <p style="margin:0;font-size:9px;letter-spacing:3px;color:#555;text-transform:uppercase;font-weight:600;">Registration ID</p>
+      <p style="margin:6px 0 0;font-size:13px;color:#fff;font-family:monospace;font-weight:600;">${data.registrationId.substring(0, 8).toUpperCase()}</p>
     </td>
   </tr>
   </table>
 </td></tr>
 
-<!-- Dashed divider -->
-<tr><td style="padding:0 32px;">
-  <div style="border-top:2px dashed #1e293b;"></div>
+<!-- Divider -->
+<tr><td style="padding:8px 40px;">
+  <div style="border-top:1px dashed #222;"></div>
 </td></tr>
 
 <!-- QR + Entry Code -->
-<tr><td style="padding:20px 32px 24px;text-align:center;">
+<tr><td style="padding:16px 40px 28px;text-align:center;">
   <table width="100%" cellpadding="0" cellspacing="0">
   <tr>
-    <td width="50%" style="text-align:center;vertical-align:middle;">
-      <img src="${qrUrl}" width="120" height="120" alt="QR Code" style="border-radius:8px;border:2px solid #1e293b;" />
+    <td width="45%" style="text-align:center;vertical-align:middle;">
+      <div style="background:#111;border:1px solid #1a1a1a;border-radius:16px;padding:16px;display:inline-block;">
+        <img src="${qrUrl}" width="110" height="110" alt="QR Code" style="border-radius:8px;display:block;" />
+      </div>
     </td>
-    <td width="50%" style="text-align:center;vertical-align:middle;">
-      <p style="margin:0 0 6px;font-size:10px;letter-spacing:3px;color:#5eead4;text-transform:uppercase;">Entry Code</p>
-      <p style="margin:0;font-size:24px;font-weight:800;color:#14b8a6;font-family:monospace;letter-spacing:3px;">${data.entryCode}</p>
-      <p style="margin:8px 0 0;font-size:11px;color:#64748b;">Show this at entry</p>
+    <td width="55%" style="text-align:center;vertical-align:middle;">
+      <p style="margin:0 0 8px;font-size:9px;letter-spacing:4px;color:#555;text-transform:uppercase;font-weight:600;">Entry Code</p>
+      <p style="margin:0;font-size:28px;font-weight:800;color:#ffffff;font-family:monospace;letter-spacing:4px;">${data.entryCode}</p>
+      <p style="margin:12px 0 0;font-size:10px;color:#444;">Show this at entry gate</p>
     </td>
   </tr>
   </table>
 </td></tr>
 
 <!-- Footer -->
-<tr><td style="background:#0f172a;padding:16px 32px;text-align:center;border-top:1px solid #1e293b;">
-  <p style="margin:0;font-size:11px;color:#64748b;">This is your official event pass. Please present it at the venue.</p>
-  <p style="margin:6px 0 0;font-size:10px;color:#475569;">© 2026 Kapricious TechFest. All rights reserved.</p>
+<tr><td style="padding:20px 40px;text-align:center;border-top:1px solid #1a1a1a;">
+  <p style="margin:0;font-size:11px;color:#444;">This is your official event pass. Present at venue.</p>
+  <p style="margin:8px 0 0;font-size:9px;color:#333;letter-spacing:2px;text-transform:uppercase;">© 2026 Kapricious · KMEA Engineering College</p>
 </td></tr>
 
 </table>

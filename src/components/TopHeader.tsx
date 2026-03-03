@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { flagshipEvents } from "@/data/events";
+import { allDepartmentEvents } from "@/data/events/index";
 
 const TopHeader = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,10 +11,11 @@ const TopHeader = () => {
 
   // Filter events based on search query
   const filteredEvents = searchQuery.trim()
-    ? flagshipEvents.filter(
+    ? allDepartmentEvents.filter(
         (event) =>
           event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          event.category.toLowerCase().includes(searchQuery.toLowerCase())
+          event.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          event.departmentName.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : [];
 
@@ -30,7 +31,7 @@ const TopHeader = () => {
   }, []);
 
   const handleEventClick = (eventId: string) => {
-    navigate(`/event/${eventId}`);
+    navigate(`/events/${eventId}`);
     setSearchQuery("");
     setIsOpen(false);
   };
@@ -85,10 +86,10 @@ const TopHeader = () => {
                   >
                     <div>
                       <p className="text-sm font-medium text-foreground">{event.title}</p>
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{event.category}</p>
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{event.department} — {event.departmentName}</p>
                     </div>
                     <span className="text-[9px] px-2 py-1 rounded-full bg-secondary text-muted-foreground uppercase tracking-wider">
-                      {event.prize}
+                      {event.prizePool}
                     </span>
                   </button>
                 ))}

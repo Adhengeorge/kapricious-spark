@@ -6,8 +6,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { z } from "zod";
 import { User, Mail, Phone, GraduationCap, Layers, Calendar, CheckCircle2, CreditCard, ShieldCheck, ArrowRight, Trophy } from "lucide-react";
-import { flagshipEvents, getEventById, culturalEvents } from "@/data/events";
-import { cseEvents, ceEvents, meEvents } from "@/data/events";
+import { flagshipEvents, getEventById, culturalEvents, cseEvents, ceEvents, meEvents, eeeEvents, raEvents, sfEvents, eceEvents } from "@/data/events/index";
 
 const FLAGSHIP_DEPT_ID = "flagship";
 const CULTURAL_DEPT_ID = "cultural";
@@ -78,6 +77,10 @@ const Register = () => {
     if (dept?.code === "CSE") events = cseEvents;
     else if (dept?.code === "CE") events = ceEvents;
     else if (dept?.code === "ME") events = meEvents;
+    else if (dept?.code === "EEE") events = eeeEvents;
+    else if (dept?.code === "RAE") events = raEvents;
+    else if (dept?.code === "SF") events = sfEvents;
+    else if (dept?.code === "ECE") events = eceEvents;
     else events = dbEvents || [];
   }
 
@@ -92,6 +95,10 @@ const Register = () => {
     if (dept?.code === "CSE") selectedEventDetails = cseEvents.find(ev => ev.id === selectedEvent);
     else if (dept?.code === "CE") selectedEventDetails = ceEvents.find(ev => ev.id === selectedEvent);
     else if (dept?.code === "ME") selectedEventDetails = meEvents.find(ev => ev.id === selectedEvent);
+    else if (dept?.code === "EEE") selectedEventDetails = eeeEvents.find(ev => ev.id === selectedEvent);
+    else if (dept?.code === "RAE") selectedEventDetails = raEvents.find(ev => ev.id === selectedEvent);
+    else if (dept?.code === "SF") selectedEventDetails = sfEvents.find(ev => ev.id === selectedEvent);
+    else if (dept?.code === "ECE") selectedEventDetails = eceEvents.find(ev => ev.id === selectedEvent);
     else selectedEventDetails = dbEvents?.find(e => e.id === selectedEvent);
   }
 

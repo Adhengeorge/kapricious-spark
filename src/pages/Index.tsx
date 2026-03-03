@@ -1,7 +1,21 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
+import { allDepartmentEvents } from "@/data/events";
+
+// Helper to parse prize pool string to number (e.g., "₹10,000" → 10000)
+const parsePrizePool = (prizePool: string): number => {
+  return parseInt(prizePool.replace(/[₹,]/g, ""), 10) || 0;
+};
+
+// Get top 3 events by prize pool
+const getTop3Events = () => {
+  return [...allDepartmentEvents]
+    .sort((a, b) => parsePrizePool(b.prizePool) - parsePrizePool(a.prizePool))
+    .slice(0, 3);
+};
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -23,6 +37,19 @@ const robotImageUrl = "https://lh3.googleusercontent.com/aida-public/AB6AXuB5odD
 const backgroundImageUrl = "https://lh3.googleusercontent.com/aida-public/AB6AXuB3GLb6Dg6WLWyzbK5JJgUAryWdiX4Ei0b4_NzeFMzoqgJCBJiJ8Vpna_X2sU_rZOeSt81qJc1zdtyUIxJClxohi0T7mF2xlkbK9Cg9QgGy8QVKIlRHP3LxMC_SC4CApzkvpCOrI2U6se4o0kabiJbFaREIElMBVE9ZYNUz11Vk_IYgIvNpEyNxlFubu8Wiq0Q91qoe-7IMwVXZIBzfZ0wWTGsnSufx2Psz_aWjCqLfP62IBPu0sMMix5Aif87U7Yrn9VyvM6Dh_-4";
 
 const Index = () => {
+  const featuredEvents = getTop3Events();
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Auto-scroll every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % featuredEvents.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [featuredEvents.length]);
+
+  const currentEvent = featuredEvents[currentIndex];
+
   return (
     <div className="min-h-screen grid-bg">
       {/* Main Bento Grid */}
@@ -160,7 +187,7 @@ const Index = () => {
             </div>
           </motion.div>
 
-          {/* Featured Event Card */}
+          {/* Featured Event Card - Auto-scrolling Carousel */}
           <motion.div
             variants={fadeUp}
             custom={2}
@@ -168,6 +195,28 @@ const Index = () => {
             animate="visible"
             className="col-span-12 md:col-span-6 lg:col-span-4 bg-foreground text-background rounded-large p-8 md:p-10 flex flex-col justify-between relative overflow-hidden min-h-[250px]"
           >
+            {/* Background with event image */}
+            <div className="absolute inset-0 z-0">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentEvent.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.15 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0"
+                >
+                  <img
+                    src={currentEvent.image}
+                    alt={currentEvent.title}
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
+              </AnimatePresence>
+              <div className="absolute inset-0 bg-foreground/80" />
+            </div>
+            
+            {/* Decorative circles */}
             <div className="absolute inset-0 z-0 opacity-10">
               <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="0.5" />
@@ -175,17 +224,51 @@ const Index = () => {
                 <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" strokeWidth="0.5" />
               </svg>
             </div>
+
+            {/* Content */}
             <div className="relative z-10">
-              <h3 className="font-display text-lg mb-1">FEATURED</h3>
-              <p className="text-sm opacity-60">Mega Hackathon '26</p>
-            </div>
-            <div className="relative z-10 flex items-center justify-between mt-auto pt-6">
-              <div>
-                <div className="text-3xl font-bold">₹1L</div>
-                <div className="text-[10px] uppercase tracking-widest opacity-50">Prize Pool</div>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-display text-lg">FEATURED</h3>
+                {/* Carousel indicators */}
+                <div className="flex gap-1.5">
+                  {featuredEvents.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentIndex(idx)}
+                      className={`w-2 h-2 rounded-full transition-all ${idx === currentIndex ? 'bg-background w-4' : 'bg-background/40'}`}
+                    />
+                  ))}
+                </div>
               </div>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={currentEvent.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-sm opacity-60"
+                >
+                  {currentEvent.title}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+
+            <div className="relative z-10 flex items-center justify-between mt-auto pt-6">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentEvent.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="text-3xl font-bold">{currentEvent.prizePool}</div>
+                  <div className="text-[10px] uppercase tracking-widest opacity-50">Prize Pool</div>
+                </motion.div>
+              </AnimatePresence>
               <Link
-                to="/events"
+                to={`/events/${currentEvent.id}`}
                 className="w-12 h-12 rounded-full border border-background/20 flex items-center justify-center hover:bg-background/10 transition-colors"
               >
                 <ArrowRight className="w-5 h-5" />

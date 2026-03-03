@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Calendar, MapPin, ArrowLeft, Users, Trophy, Phone, Clock, CreditCard, Star, ArrowRight, CheckCircle2 } from "lucide-react";
-import { getEventById } from "@/data/events";
+import { getEventById } from "@/data/events/index";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },

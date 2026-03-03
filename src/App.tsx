@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import Navbar from "./components/Navbar";
+import ScrollToTop from "./components/ScrollToTop";
 import CulturalRegister from "./pages/CulturalRegister";
 import TopHeader from "./components/TopHeader";
 import Footer from "./components/Footer";
@@ -28,6 +29,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <Navbar />
           <main className="lg:pl-24">
             <TopHeader />

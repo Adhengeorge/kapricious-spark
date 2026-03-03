@@ -2,7 +2,18 @@ import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useEffect } from "react";
-import { flagshipEvents } from "@/data/events";
+import { cseEvents, ceEvents, meEvents, eeeEvents, raEvents, sfEvents, eceEvents, culturalEvents } from "@/data/events/index";
+
+const departmentEvents = [
+  { code: "CULTURAL", name: "Cultural Events", events: culturalEvents },
+  { code: "CSE", name: "Computer Science & Engineering", events: cseEvents },
+  { code: "CE", name: "Civil Engineering", events: ceEvents },
+  { code: "ME", name: "Mechanical Engineering", events: meEvents },
+  { code: "EEE", name: "Electrical & Electronics Engineering", events: eeeEvents },
+  { code: "ECE", name: "Electronics & Communication Engineering", events: eceEvents },
+  { code: "RAE", name: "Robotics & Automation Engineering", events: raEvents },
+  { code: "SF", name: "Fire & Safety", events: sfEvents },
+];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -36,82 +47,71 @@ const Events = () => {
           OUR <span className="text-accent">EVENTS</span>
         </h1>
         <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-          Four flagship events. Thousands in prizes. Choose your challenge and make your mark at Kapricious 2026.
+          Explore events across all departments. Thousands in prizes. Choose your challenge and make your mark at Kapricious 2026.
         </p>
       </motion.div>
 
-      {/* Events Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-5xl mx-auto">
-        {flagshipEvents.map((event, i) => {
-          const EventIcon = event.icon;
-          return (
+      {/* Department Events */}
+      {departmentEvents.map((dept, deptIndex) => (
+        <div key={dept.code} className="max-w-5xl mx-auto mb-16">
           <motion.div
-            key={event.id}
-            id={event.id}
-            variants={fadeUp}
-            custom={i}
-            initial="hidden"
-            whileInView="visible"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="group bg-card rounded-large border border-border p-8 md:p-10 flex flex-col justify-between hover:border-muted-foreground/30 transition-all duration-300 relative overflow-hidden"
+            className="mb-8"
           >
-            {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-32 h-32 opacity-[0.03]">
-              <EventIcon className="w-full h-full" />
-            </div>
-
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-6">
-                <span className="px-3 py-1 rounded-full border border-border text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                  {event.category}
-                </span>
-                <span className="px-3 py-1 rounded-full bg-secondary text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                  {event.mode}
-                </span>
-              </div>
-
-              <div className="flex items-start gap-4 mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center shrink-0 group-hover:bg-foreground group-hover:text-background transition-colors">
-                  <EventIcon className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-display text-lg font-bold text-foreground mb-1 group-hover:text-accent transition-colors">
-                    {event.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{event.description}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative z-10 flex items-center justify-between mt-6 pt-6 border-t border-border">
-              <div>
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">Prize Pool</p>
-                <p className="text-xl font-bold text-foreground">{event.prize}</p>
-              </div>
-              <Link
-                to={`/event/${event.id}`}
-                className="group/btn flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-2xl hover:opacity-90 transition-all text-xs font-bold tracking-wider uppercase"
-              >
-                View Details
-                <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
-              </Link>
-            </div>
+            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-muted-foreground mb-2 block">{dept.name}</span>
+            <h2 className="font-display text-2xl md:text-3xl font-bold">
+              <span className="text-accent">{dept.code}</span> EVENTS
+            </h2>
           </motion.div>
-          );
-        })}
-      </div>
 
-      {/* Bottom CTA */}
-      <motion.div
-        variants={fadeUp}
-        custom={5}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="text-center mt-12"
-      >
-        <p className="text-xs text-muted-foreground mb-4">More events coming soon. Stay tuned.</p>
-      </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {dept.events.map((event, i) => (
+              <motion.div
+                key={event.id}
+                id={event.id}
+                variants={fadeUp}
+                custom={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="group bg-card rounded-large border border-border p-6 hover:border-muted-foreground/30 transition-all duration-300"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="px-3 py-1 rounded-full border border-border text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    {event.type === "team" ? `Team (${event.teamSize} max)` : "Individual"}
+                  </span>
+                </div>
+
+                <h3 className="font-display text-lg font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
+                  {event.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4">{event.details}</p>
+
+                <div className="flex items-center justify-between pt-4 border-t border-border">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">Prize Pool</p>
+                    <p className="text-lg font-bold text-foreground">{event.prizePool}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">Entry Fee</p>
+                    <p className="text-sm font-medium text-foreground">{event.registrationFee}</p>
+                  </div>
+                </div>
+
+                <Link
+                  to={`/events/${event.id}`}
+                  className="mt-4 group/btn flex items-center justify-center gap-2 w-full bg-foreground text-background px-5 py-3 rounded-2xl hover:opacity-90 transition-all text-xs font-bold tracking-wider uppercase"
+                >
+                  View Details
+                  <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

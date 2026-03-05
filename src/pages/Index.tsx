@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 import { allDepartmentEvents } from "@/data/events";
+import robotImage from "@/assets/unnamed-removebg-preview.png";
 
 // Helper to parse prize pool string to number (e.g., "₹10,000" → 10000)
 const parsePrizePool = (prizePool: string): number => {
@@ -31,14 +32,22 @@ const culturalEvents = [
   { id: "star-of-kapricious", title: "Star of Kapricious" },
 ];
 
-// Robot image URL from the design
-const robotImageUrl = "https://lh3.googleusercontent.com/aida-public/AB6AXuB5odDv-Fgvs2fNLGWwMw5E52gwKAhD-GSEcuiJ5YBCYvA1N49jm-NP6ILq7_eCZjKdOVLhLYnfHQjjWtnXv3CkPekAdp6to1M8xtQWy4zeh11726V_FT-BUHmrscy5gj_IcDc3gYYM_G-UK6g60fpTGGQA7hbW2LIXx7heQxO5e-sn_g6WqwtvXxEG1RGoVB-TmqHO9jGHp22Kx65mnkZeXx_Ah7Spufd3N5ZrDWfbFMK5JNoGBGmXvgt5zOO8OpRACW70HtrCyhs";
-
 const backgroundImageUrl = "https://lh3.googleusercontent.com/aida-public/AB6AXuB3GLb6Dg6WLWyzbK5JJgUAryWdiX4Ei0b4_NzeFMzoqgJCBJiJ8Vpna_X2sU_rZOeSt81qJc1zdtyUIxJClxohi0T7mF2xlkbK9Cg9QgGy8QVKIlRHP3LxMC_SC4CApzkvpCOrI2U6se4o0kabiJbFaREIElMBVE9ZYNUz11Vk_IYgIvNpEyNxlFubu8Wiq0Q91qoe-7IMwVXZIBzfZ0wWTGsnSufx2Psz_aWjCqLfP62IBPu0sMMix5Aif87U7Yrn9VyvM6Dh_-4";
 
 const Index = () => {
   const featuredEvents = getTop3Events();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const heroRef = useRef<HTMLDivElement>(null);
+  
+  // Scroll-based animation for robot
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const robotY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const robotScale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.05, 1.1]);
+  const robotRotate = useTransform(scrollYProgress, [0, 1], [0, -5]);
 
   // Auto-scroll every 4 seconds
   useEffect(() => {
@@ -58,6 +67,7 @@ const Index = () => {
 
           {/* Hero Card - Large */}
           <motion.div
+            ref={heroRef}
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
@@ -73,14 +83,21 @@ const Index = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
             </div>
 
-            {/* Floating Robot */}
-            <div className="absolute right-0 bottom-0 w-2/3 h-full z-10 floating pointer-events-none hidden md:block">
+            {/* Interactive Robot */}
+            <motion.div 
+              className="absolute right-0 bottom-0 w-1/2 md:w-2/3 h-3/4 md:h-full z-10 pointer-events-none"
+              style={{
+                y: robotY,
+                scale: robotScale,
+                rotate: robotRotate,
+              }}
+            >
               <img
-                src={robotImageUrl}
+                src={robotImage}
                 alt="Futuristic Robot"
-                className="w-full h-full object-contain object-bottom mix-blend-lighten dark:mix-blend-lighten"
+                className="w-full h-full object-contain object-bottom opacity-80 md:opacity-100"
               />
-            </div>
+            </motion.div>
 
             {/* Decorative circles */}
             <div className="absolute inset-0 z-0 opacity-[0.03]">

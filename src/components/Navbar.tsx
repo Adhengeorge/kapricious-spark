@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Home, Calendar, ClipboardList, Award, Sun, Moon, Sparkles } from "lucide-react";
+import { Menu, X, Home, Calendar, ClipboardList, Award, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/hooks/use-theme";
 
@@ -21,8 +21,8 @@ const Navbar = () => {
       {/* Desktop Vertical Left Navbar */}
       <nav className="fixed left-6 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-center gap-8 py-10 px-4 bg-card/80 neo-bento border border-border rounded-full">
         {/* Logo */}
-        <div className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center mb-4">
-          <Sparkles className="w-5 h-5 text-background" />
+        <div className="w-10 h-10 rounded-full overflow-hidden mb-4">
+          <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-cover" />
         </div>
 
         {/* Nav Links */}
@@ -63,8 +63,8 @@ const Navbar = () => {
         <div className="mx-4 mt-4">
           <div className="bg-card/90 neo-bento border border-border rounded-full px-6 py-3 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-background" />
+              <div className="w-8 h-8 rounded-full overflow-hidden">
+                <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-cover" />
               </div>
               <span className="font-display font-bold tracking-tighter text-sm text-foreground">KAPRICIOUS'26</span>
             </Link>

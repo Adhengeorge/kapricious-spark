@@ -172,18 +172,19 @@ const Index = () => {
             <div className="mt-8 border-t border-border pt-6">
               <div className="flex items-center gap-4 mb-3">
                 <div className="flex -space-x-3">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-secondary border-2 border-card flex items-center justify-center text-[10px] font-bold text-muted-foreground">
-                      {String.fromCharCode(64 + i)}
+                  {["🏆", "🎯", "🚀"].map((emoji, i) => (
+                    <div key={i} className="w-8 h-8 rounded-full bg-secondary border-2 border-card flex items-center justify-center text-sm">
+                      {emoji}
                     </div>
                   ))}
                 </div>
-                <span className="text-sm"><span className="font-bold text-foreground">2.4k+</span> <span className="text-muted-foreground">Registrations</span></span>
+                <span className="text-sm"><span className="font-bold text-foreground">₹2L+</span> <span className="text-muted-foreground">in Total Prizes</span></span>
               </div>
-              <div className="h-1 w-full bg-secondary rounded-full overflow-hidden">
-                <div className="h-full bg-foreground w-[65%] rounded-full" />
+              <div className="flex flex-wrap gap-2 mt-3">
+                <span className="px-3 py-1 rounded-full border border-border text-[10px] font-bold uppercase tracking-wider text-muted-foreground">40+ Events</span>
+                <span className="px-3 py-1 rounded-full border border-border text-[10px] font-bold uppercase tracking-wider text-muted-foreground">2 Days</span>
+                <span className="px-3 py-1 rounded-full border border-accent/30 bg-accent/5 text-[10px] font-bold uppercase tracking-wider text-accent">Open for All</span>
               </div>
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-2">65% of slots filled</p>
             </div>
           </motion.div>
 

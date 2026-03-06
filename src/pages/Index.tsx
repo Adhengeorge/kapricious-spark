@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, type MouseEvent, type TouchEvent } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 import { allDepartmentEvents } from "@/data/events";
@@ -38,6 +38,11 @@ const Index = () => {
   const featuredEvents = getTop3Events();
   const [currentIndex, setCurrentIndex] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
+  const swipeStartX = useRef<number | null>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 80, damping: 14, mass: 0.4 });
+  const springY = useSpring(mouseY, { stiffness: 80, damping: 14, mass: 0.4 });
   
   // Scroll-based animation for robot
   const { scrollYProgress } = useScroll({
@@ -48,6 +53,8 @@ const Index = () => {
   const robotY = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const robotScale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.05, 1.1]);
   const robotRotate = useTransform(scrollYProgress, [0, 1], [0, -5]);
+  const robotMouseRotate = useTransform(springX, [-60, 60], [-4, 4]);
+  const robotMouseLift = useTransform(springY, [-40, 40], [-10, 10]);
 
   // Auto-scroll every 4 seconds
   useEffect(() => {
@@ -58,6 +65,54 @@ const Index = () => {
   }, [featuredEvents.length]);
 
   const currentEvent = featuredEvents[currentIndex];
+
+  const goToNextEvent = () => {
+    setCurrentIndex((prev) => (prev + 1) % featuredEvents.length);
+  };
+
+  const goToPreviousEvent = () => {
+    setCurrentIndex((prev) => (prev - 1 + featuredEvents.length) % featuredEvents.length);
+  };
+
+  const handleHeroMouseMove = (event: MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    mouseX.set((x - rect.width / 2) * 0.12);
+    mouseY.set((y - rect.height / 2) * 0.1);
+  };
+
+  const handleHeroMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  const handleFeaturedTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    swipeStartX.current = event.touches[0]?.clientX ?? null;
+  };
+
+  const handleFeaturedTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    if (swipeStartX.current === null) return;
+
+    const endX = event.changedTouches[0]?.clientX;
+    if (typeof endX !== "number") {
+      swipeStartX.current = null;
+      return;
+    }
+
+    const swipeDistance = endX - swipeStartX.current;
+    const swipeThreshold = 45;
+
+    if (Math.abs(swipeDistance) > swipeThreshold) {
+      if (swipeDistance < 0) {
+        goToNextEvent();
+      } else {
+        goToPreviousEvent();
+      }
+    }
+
+    swipeStartX.current = null;
+  };
 
   return (
     <div className="min-h-screen grid-bg">
@@ -71,6 +126,8 @@ const Index = () => {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
+            onMouseMove={handleHeroMouseMove}
+            onMouseLeave={handleHeroMouseLeave}
             className="col-span-12 lg:col-span-8 bg-card rounded-large border border-border relative overflow-hidden min-h-[500px] md:min-h-[600px] flex flex-col justify-between group"
           >
             {/* Background Image */}
@@ -84,19 +141,36 @@ const Index = () => {
             </div>
 
             {/* Interactive Robot */}
-            <motion.div 
+            <motion.div
               className="absolute right-0 bottom-0 w-1/2 md:w-2/3 h-3/4 md:h-full z-10 pointer-events-none"
               style={{
                 y: robotY,
                 scale: robotScale,
                 rotate: robotRotate,
               }}
+              animate={{
+                y: [0, -10, 0, 8, 0],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
-              <img
-                src={robotImage}
-                alt="Futuristic Robot"
-                className="w-full h-full object-contain object-bottom opacity-80 md:opacity-100"
-              />
+              <motion.div
+                style={{
+                  x: springX,
+                  y: robotMouseLift,
+                  rotate: robotMouseRotate,
+                }}
+                className="w-full h-full origin-bottom"
+              >
+                <img
+                  src={robotImage}
+                  alt="Futuristic Robot"
+                  className="w-full h-full object-contain object-bottom opacity-80 md:opacity-100 transition-[filter] duration-300 group-hover:drop-shadow-[0_0_25px_rgba(0,255,255,0.35)]"
+                />
+              </motion.div>
             </motion.div>
 
             {/* Decorative circles */}
@@ -211,7 +285,9 @@ const Index = () => {
             custom={2}
             initial="hidden"
             animate="visible"
-            className="col-span-12 md:col-span-6 lg:col-span-4 bg-foreground text-background rounded-large p-8 md:p-10 flex flex-col justify-between relative overflow-hidden min-h-[250px]"
+            onTouchStart={handleFeaturedTouchStart}
+            onTouchEnd={handleFeaturedTouchEnd}
+            className="col-span-12 md:col-span-6 lg:col-span-4 bg-foreground text-background rounded-large p-8 md:p-10 flex flex-col justify-between relative overflow-hidden min-h-[250px] touch-pan-y"
           >
             {/* Background with event image */}
             <div className="absolute inset-0 z-0">

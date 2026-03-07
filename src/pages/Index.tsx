@@ -37,7 +37,12 @@ const backgroundImageUrl = "https://lh3.googleusercontent.com/aida-public/AB6AXu
 const Index = () => {
   const featuredEvents = getTop3Events();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [robotVideoFailed, setRobotVideoFailed] = useState(false);
+  const [isRobotVideoActive, setIsRobotVideoActive] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
+  const robotVideoRef = useRef<HTMLVideoElement>(null);
+  const robotCanvasRef = useRef<HTMLCanvasElement>(null);
+  const robotRafRef = useRef<number | null>(null);
   const swipeStartX = useRef<number | null>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -64,6 +69,94 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [featuredEvents.length]);
 
+  useEffect(() => {
+    if (!isRobotVideoActive) return;
+
+    const video = robotVideoRef.current;
+    const canvas = robotCanvasRef.current;
+    if (!video || !canvas) return;
+
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) {
+      setRobotVideoFailed(true);
+      return;
+    }
+
+    let active = true;
+
+    const render = () => {
+      if (!active) return;
+
+      if (video.readyState >= 2 && video.videoWidth > 0 && video.videoHeight > 0) {
+        const maxProcessWidth = 720;
+        const scale = Math.min(1, maxProcessWidth / video.videoWidth);
+        const targetWidth = Math.max(1, Math.floor(video.videoWidth * scale));
+        const targetHeight = Math.max(1, Math.floor(video.videoHeight * scale));
+
+        if (canvas.width !== targetWidth || canvas.height !== targetHeight) {
+          canvas.width = targetWidth;
+          canvas.height = targetHeight;
+        }
+
+        ctx.drawImage(video, 0, 0, targetWidth, targetHeight);
+        const frame = ctx.getImageData(0, 0, targetWidth, targetHeight);
+        const data = frame.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+
+          // Remove near-black background and keep subject edges soft.
+          const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+          const maxChannel = Math.max(r, g, b);
+
+          if (luma < 60 && maxChannel < 100) {
+            data[i + 3] = 0;
+          } else if (luma < 95 && maxChannel < 135) {
+            const alpha = (luma - 60) / 35;
+            data[i + 3] = Math.max(0, Math.min(255, Math.round(data[i + 3] * alpha)));
+          }
+        }
+
+        ctx.putImageData(frame, 0, 0);
+      }
+
+      robotRafRef.current = requestAnimationFrame(render);
+    };
+
+    const handleCanPlay = () => {
+      video.play().catch(() => {
+        setRobotVideoFailed(true);
+        setIsRobotVideoActive(false);
+      });
+
+      if (robotRafRef.current !== null) {
+        cancelAnimationFrame(robotRafRef.current);
+      }
+      robotRafRef.current = requestAnimationFrame(render);
+    };
+
+    const handleError = () => {
+      setRobotVideoFailed(true);
+    };
+
+    video.addEventListener("canplay", handleCanPlay);
+    video.addEventListener("error", handleError);
+    video.load();
+
+    return () => {
+      active = false;
+      video.pause();
+      video.removeEventListener("canplay", handleCanPlay);
+      video.removeEventListener("error", handleError);
+      if (robotRafRef.current !== null) {
+        cancelAnimationFrame(robotRafRef.current);
+      }
+      robotRafRef.current = null;
+    };
+  }, [isRobotVideoActive]);
+
   const currentEvent = featuredEvents[currentIndex];
 
   const goToNextEvent = () => {
@@ -80,11 +173,22 @@ const Index = () => {
     const y = event.clientY - rect.top;
     mouseX.set((x - rect.width / 2) * 0.12);
     mouseY.set((y - rect.height / 2) * 0.1);
+
+    const robotCenterX = rect.width * 0.78;
+    const robotCenterY = rect.height * 0.72;
+    const dx = x - robotCenterX;
+    const dy = y - robotCenterY;
+    const distance = Math.hypot(dx, dy);
+    const activationRadius = Math.min(rect.width, rect.height) * 0.32;
+    const shouldActivate = distance <= activationRadius;
+
+    setIsRobotVideoActive((prev) => (prev === shouldActivate ? prev : shouldActivate));
   };
 
   const handleHeroMouseLeave = () => {
     mouseX.set(0);
     mouseY.set(0);
+    setIsRobotVideoActive(false);
   };
 
   const handleFeaturedTouchStart = (event: TouchEvent<HTMLDivElement>) => {
@@ -165,11 +269,31 @@ const Index = () => {
                 }}
                 className="w-full h-full origin-bottom"
               >
-                <img
-                  src={robotImage}
-                  alt="Futuristic Robot"
-                  className="w-full h-full object-contain object-bottom opacity-80 md:opacity-100 transition-[filter] duration-300 group-hover:drop-shadow-[0_0_25px_rgba(0,255,255,0.35)]"
-                />
+                {isRobotVideoActive && !robotVideoFailed ? (
+                  <>
+                    <canvas
+                      ref={robotCanvasRef}
+                      className="w-full h-full object-contain object-bottom opacity-90 transition-[filter] duration-300 group-hover:drop-shadow-[0_0_25px_rgba(0,255,255,0.35)]"
+                      aria-label="Futuristic Robot Animation"
+                    />
+                    <video
+                      ref={robotVideoRef}
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      className="absolute w-px h-px opacity-0 pointer-events-none"
+                    >
+                      <source src="/robot-video.mp4" type="video/mp4" />
+                    </video>
+                  </>
+                ) : (
+                  <img
+                    src={robotImage}
+                    alt="Futuristic Robot"
+                    className="w-full h-full object-contain object-bottom opacity-80 md:opacity-100 transition-[filter] duration-300 group-hover:drop-shadow-[0_0_25px_rgba(0,255,255,0.35)]"
+                  />
+                )}
               </motion.div>
             </motion.div>
 

@@ -152,12 +152,12 @@
 
 .main-inner-canvas {
   position: absolute;
-  top: 6px;
-  bottom: 6px;
+  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
   background: radial-gradient(circle at center, #0a1030 0%, #01040f 100%);
-  border-radius: 28px;
+  border-radius: 0;
   overflow: hidden;
   z-index: 1;
 }

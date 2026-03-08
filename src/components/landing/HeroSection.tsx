@@ -66,7 +66,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="cutout-tl"
+              className="cutout-tl hidden md:block"
             >
               <div className="brand-pill-inner">
                 <h1 className="text-base md:text-lg font-bold tracking-wide text-white font-display">

@@ -6,8 +6,8 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center">
-              <span className="text-background font-display text-[10px] font-bold">K</span>
+            <div className="w-8 h-8">
+              <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain dark:invert-0 invert" />
             </div>
             <span className="font-display font-bold tracking-tighter text-sm">KAPRICIOUS'26</span>
           </div>
@@ -34,7 +34,7 @@ const Footer = () => (
           <div className="space-y-1 text-sm text-foreground/60">
             <p>KMEA Engineering College</p>
             <p>Aluva, Ernakulam, Kerala</p>
-            <p className="mt-2">kapricious@kmea.edu.in</p>
+            <p className="mt-2">kapricious@kmeacollege.ac.in</p>
           </div>
         </div>
       </div>

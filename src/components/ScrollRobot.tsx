@@ -46,8 +46,9 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-      canvas.width = firstImg.naturalWidth || 800;
-      canvas.height = firstImg.naturalHeight || 800;
+      const container = canvas.parentElement;
+      canvas.width = container?.clientWidth || window.innerWidth;
+      canvas.height = container?.clientHeight || window.innerHeight;
       ctx.drawImage(firstImg, 0, 0, canvas.width, canvas.height);
       setLoaded(true);
     };
@@ -60,6 +61,15 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
+      
+      // Resize canvas to fill container
+      const container = canvas.parentElement;
+      const w = container?.clientWidth || window.innerWidth;
+      const h = container?.clientHeight || window.innerHeight;
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+      }
 
       const track = document.querySelector(".hero-scroll-track");
       const stickyDistance = track
@@ -104,8 +114,8 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
   return (
     <canvas
       ref={canvasRef}
-      className={`w-full h-full object-contain ${className}`}
-      style={{ maxWidth: "100%", maxHeight: "100%" }}
+      className={className}
+      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
     />
   );
 };

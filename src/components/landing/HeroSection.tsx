@@ -158,28 +158,39 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="cutout-br hidden md:block"
             >
-              <div className="w-[520px]">
+              <div className="w-[420px]">
                 <h3 className="text-xs font-semibold text-accent uppercase tracking-widest mb-3">Featured Events</h3>
-                <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-1">
-                  {topEvents.map((event) => (
-                    <Link
-                      key={event.id}
-                      to={event.link}
-                      className="featured-event-card min-w-[220px] max-w-[220px] rounded-2xl p-4 border block group transition-all duration-300 hover:scale-[1.02]"
-                    >
-                      <h4 className="text-sm font-bold text-foreground font-display tracking-tight group-hover:text-accent transition-colors">
-                        {event.title}
-                      </h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed mt-1 line-clamp-2">
-                        {event.description}
-                      </p>
-                      <div className="flex items-center gap-2 mt-3">
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-accent text-accent-foreground font-bold">
-                          {event.prize}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground">{event.date}</span>
-                      </div>
-                    </Link>
+                <div className="overflow-hidden" ref={desktopRef}>
+                  <div className="flex gap-3">
+                    {topEvents.map((event) => (
+                      <Link
+                        key={event.id}
+                        to={event.link}
+                        className="featured-event-card min-w-0 flex-[0_0_85%] rounded-2xl p-4 border block group transition-all duration-300 hover:scale-[1.02]"
+                      >
+                        <h4 className="text-sm font-bold text-foreground font-display tracking-tight group-hover:text-accent transition-colors">
+                          {event.title}
+                        </h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed mt-1 line-clamp-2">
+                          {event.description}
+                        </p>
+                        <div className="flex items-center gap-2 mt-3">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-accent text-accent-foreground font-bold">
+                            {event.prize}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground">{event.date}</span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex gap-1.5 mt-3">
+                  {topEvents.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => desktopApi?.scrollTo(i)}
+                      className={`w-1.5 h-1.5 rounded-full transition-colors ${i === desktopSelected ? 'bg-accent' : 'bg-muted-foreground/30'}`}
+                    />
                   ))}
                 </div>
               </div>

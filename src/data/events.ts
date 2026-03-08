@@ -1280,7 +1280,7 @@ export const culturalEvents: DepartmentEvent[] = [
     type: "team",
     department: "CULTURAL",
     departmentName: "Cultural Events",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
     time: "6:00 PM - 8:00 PM",
     venue: "Main Auditorium, KMEA Engineering College",

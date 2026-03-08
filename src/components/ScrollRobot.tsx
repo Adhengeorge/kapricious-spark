@@ -55,7 +55,18 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
           canvas.style.width = `${w}px`;
           canvas.style.height = `${h}px`;
           ctx.scale(dpr, dpr);
-          ctx.drawImage(img, 0, 0, w, h);
+          // Use same aspect-ratio-preserving draw
+          const imgR = img.naturalWidth / img.naturalHeight;
+          const cR = w / h;
+          let dW: number, dH: number, dX: number, dY: number;
+          if (isMobile()) {
+            if (cR > imgR) { dH = h; dW = h * imgR; } else { dW = w; dH = w / imgR; }
+          } else {
+            if (cR > imgR) { dW = w * 0.85; dH = dW / imgR; } else { dH = h * 0.85; dW = dH * imgR; }
+          }
+          dX = (w - dW) / 2;
+          dY = (h - dH) / 2;
+          ctx.drawImage(img, dX, dY, dW, dH);
         }
       };
       img.onerror = () => {
@@ -98,7 +109,37 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
     const img = imagesRef.current[frameIndex];
     if (img && img.complete && img.naturalWidth > 0) {
       ctx.clearRect(0, 0, w, h);
-      ctx.drawImage(img, 0, 0, w, h);
+      
+      // Draw with aspect ratio preserved (cover on desktop, contain on mobile)
+      const imgRatio = img.naturalWidth / img.naturalHeight;
+      const canvasRatio = w / h;
+      let drawW: number, drawH: number, drawX: number, drawY: number;
+
+      if (isMobile()) {
+        // Contain: fit entire image within canvas
+        if (canvasRatio > imgRatio) {
+          drawH = h;
+          drawW = h * imgRatio;
+        } else {
+          drawW = w;
+          drawH = w / imgRatio;
+        }
+        drawX = (w - drawW) / 2;
+        drawY = (h - drawH) / 2;
+      } else {
+        // Cover but less aggressive: scale to 85% cover
+        if (canvasRatio > imgRatio) {
+          drawW = w * 0.85;
+          drawH = drawW / imgRatio;
+        } else {
+          drawH = h * 0.85;
+          drawW = drawH * imgRatio;
+        }
+        drawX = (w - drawW) / 2;
+        drawY = (h - drawH) / 2;
+      }
+
+      ctx.drawImage(img, drawX, drawY, drawW, drawH);
     }
   }, []);
 

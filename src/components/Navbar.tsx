@@ -86,17 +86,17 @@ const Navbar = () => {
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => { setIsSearchOpen(!isSearchOpen); setOpen(false); }}
-                className="p-2 rounded-full bg-secondary hover:bg-secondary/80 active:bg-secondary/60 transition-colors"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition-colors"
               >
-                <Search className="w-3.5 h-3.5" />
+                <Search className="w-3.5 h-3.5 text-white" />
               </button>
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-full bg-secondary hover:bg-secondary/80 active:bg-secondary/60 transition-colors"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition-colors"
               >
-                {theme === "dark" ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+                {theme === "dark" ? <Sun className="w-3.5 h-3.5 text-white" /> : <Moon className="w-3.5 h-3.5 text-white" />}
               </button>
-              <button onClick={() => { setOpen(!open); setIsSearchOpen(false); }} className="text-foreground p-1">
+              <button onClick={() => { setOpen(!open); setIsSearchOpen(false); }} className="text-white p-1">
                 {open ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 interface ScrollRobotProps {
   className?: string;
@@ -28,12 +28,16 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
   useEffect(() => {
     const frameIndices = getFrameIndices();
     const images: HTMLImageElement[] = [];
+    let loadedCount = 0;
+    const total = frameIndices.length;
 
     frameIndices.forEach((frameIdx, i) => {
       const img = new Image();
       img.decoding = "async";
       img.src = currentFrame(frameIdx);
       img.onload = () => {
+        loadedCount++;
+        // Set canvas to natural image dimensions on first load (like original)
         if (i === 0 && canvasRef.current) {
           const canvas = canvasRef.current;
           canvas.width = img.naturalWidth || 800;
@@ -65,6 +69,7 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
 
     const img = imagesRef.current[frameIndex];
     if (img && img.complete && img.naturalWidth > 0) {
+      // Keep canvas at natural image dimensions
       if (canvas.width !== img.naturalWidth || canvas.height !== img.naturalHeight) {
         canvas.width = img.naturalWidth;
         canvas.height = img.naturalHeight;
@@ -93,26 +98,20 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
         const scrollTop = document.documentElement.scrollTop || window.scrollY;
 
         if (isMobile()) {
+          // Mobile: first half of frames during sticky hero, second half continues after
           const halfFrames = Math.floor(totalFrames / 2);
-          // 60% for first half frames, 20% pause on frame 40, 20% remaining frames
-          const phase1End = stickyDistance * 0.6;
-          const pauseEnd = stickyDistance * 0.8;
-
-          if (scrollTop <= phase1End) {
-            // Animate first half of frames
-            const progress = scrollTop / phase1End;
+          if (scrollTop <= stickyDistance) {
+            // Sticky phase: map scroll to first half of frames
+            const progress = scrollTop / stickyDistance;
             const frameIndex = Math.min(halfFrames - 1, Math.floor(progress * (halfFrames - 1)));
             drawFrame(frameIndex);
-          } else if (scrollTop <= pauseEnd) {
-            // Pause on frame 40 (last of first half) so viewer can see it
-            drawFrame(halfFrames - 1);
-          } else if (scrollTop <= stickyDistance) {
-            // Animate remaining frames
-            const progress = (scrollTop - pauseEnd) / (stickyDistance - pauseEnd);
+          } else {
+            // Post-sticky phase: map additional scroll to remaining frames
+            const extraScroll = scrollTop - stickyDistance;
+            const extraDistance = window.innerHeight; // one viewport height for remaining frames
+            const progress = Math.min(1, extraScroll / extraDistance);
             const frameIndex = halfFrames + Math.min(halfFrames - 1, Math.floor(progress * (halfFrames - 1)));
             drawFrame(Math.min(totalFrames - 1, frameIndex));
-          } else {
-            drawFrame(totalFrames - 1);
           }
         } else {
           // Desktop: all frames during sticky hero

@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSp
 import { ArrowRight } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 import { allDepartmentEvents } from "@/data/events";
-import robotImage from "@/assets/unnamed-removebg-preview.png";
+import InteractiveRobot from "@/components/InteractiveRobot";
 
 // Helper to parse prize pool string to number (e.g., "₹10,000" → 10000)
 const parsePrizePool = (prizePool: string): number => {

@@ -43,7 +43,7 @@ const Navbar = () => {
   return (
     <>
       {/* Desktop Vertical Left Navbar */}
-      <nav className="fixed left-6 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-center gap-8 py-10 px-4 bg-card/80 neo-bento border border-border rounded-full">
+      <nav className="fixed left-12 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-center gap-8 py-10 px-4 bg-card/80 neo-bento border border-border rounded-full">
         <div className="w-10 h-10 mb-4">
           <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain dark:invert-0 invert" />
         </div>

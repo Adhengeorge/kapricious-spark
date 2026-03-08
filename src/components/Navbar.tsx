@@ -78,9 +78,9 @@ const Navbar = () => {
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-2.5 flex items-center justify-between shadow-[0_0_20px_rgba(0,0,0,0.3)]">
             <Link to="/" className="flex items-center gap-2.5">
               <div className="w-7 h-7">
-                <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain dark:invert-0 invert" />
+                <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain invert-0" />
               </div>
-              <span className="font-display font-bold tracking-tighter text-xs text-foreground">KAPRICIOUS'26</span>
+              <span className="font-display font-bold tracking-tighter text-xs text-white">KAPRICIOUS'26</span>
             </Link>
 
             <div className="flex items-center gap-1.5">

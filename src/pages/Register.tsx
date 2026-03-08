@@ -264,6 +264,26 @@ const Register = () => {
         throw new Error("Event not found in database. Please try again later.");
       }
 
+      // Check registration count vs max_participants
+      const { count: regCount, error: countError } = await supabase
+        .from("registrations")
+        .select("*", { count: "exact", head: true })
+        .eq("event_id", dbEventId);
+
+      if (countError) throw countError;
+
+      const { data: eventInfo } = await supabase
+        .from("events")
+        .select("max_participants")
+        .eq("id", dbEventId)
+        .single();
+
+      const maxParticipants = eventInfo?.max_participants ?? 10;
+
+      if (regCount !== null && regCount >= maxParticipants) {
+        throw new Error(`Registrations for this event are full (${maxParticipants}/${maxParticipants}). Please try another event.`);
+      }
+
       const { data: regData, error } = await supabase.from("registrations").insert([{
         name: validated.name,
         email: validated.email,

@@ -161,7 +161,7 @@ const HeroSection = () => {
           >
             <div className="w-[280px]">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Top Prize Events</h3>
+                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Featured Events</h3>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setFeaturedIndex((prev) => (prev - 1 + topEvents.length) % topEvents.length)}

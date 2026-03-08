@@ -113,32 +113,15 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
         const totalFrames = imagesRef.current.length;
         if (totalFrames === 0) return;
 
-        const track = document.querySelector(".hero-scroll-track");
-        const stickyDistance = track
-          ? track.clientHeight - window.innerHeight
-          : 0;
-
         const maxScrollTop =
           document.documentElement.scrollHeight - window.innerHeight;
         const scrollTop =
           document.documentElement.scrollTop || window.scrollY;
 
-        let frameIndex = 0;
+        // Map entire page scroll to all frames
+        const progress = maxScrollTop > 0 ? Math.max(0, Math.min(1, scrollTop / maxScrollTop)) : 0;
+        const frameIndex = Math.min(totalFrames - 1, Math.max(0, Math.floor(progress * (totalFrames - 1))));
 
-        if (scrollTop <= stickyDistance && stickyDistance > 0) {
-          const progress = Math.max(0, scrollTop / stickyDistance);
-          frameIndex = Math.floor(progress * (totalFrames / 2));
-        } else {
-          const remainingScroll = maxScrollTop - stickyDistance;
-          const scrollPastSticky = scrollTop - stickyDistance;
-          const progress =
-            remainingScroll > 0
-              ? Math.max(0, Math.min(1, scrollPastSticky / remainingScroll))
-              : 1;
-          frameIndex = Math.floor(totalFrames / 2) + Math.floor(progress * (totalFrames / 2 - 1));
-        }
-
-        frameIndex = Math.min(totalFrames - 1, Math.max(0, frameIndex));
         drawFrame(frameIndex);
       });
     };

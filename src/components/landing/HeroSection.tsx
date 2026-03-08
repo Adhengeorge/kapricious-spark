@@ -21,13 +21,30 @@ const topEvents = [...allDepartmentEvents]
   }));
 
 const HeroSection = () => {
-  
   const heroRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
+
+  // Embla carousels
+  const [mobileRef, mobileApi] = useEmblaCarousel({ loop: true, align: "start", dragFree: false });
+  const [desktopRef, desktopApi] = useEmblaCarousel({ loop: true, align: "start", dragFree: false });
+  const [mobileSelected, setMobileSelected] = useState(0);
+  const [desktopSelected, setDesktopSelected] = useState(0);
+
+  const onMobileSelect = useCallback(() => {
+    if (mobileApi) setMobileSelected(mobileApi.selectedScrollSnap());
+  }, [mobileApi]);
+  const onDesktopSelect = useCallback(() => {
+    if (desktopApi) setDesktopSelected(desktopApi.selectedScrollSnap());
+  }, [desktopApi]);
+
+  useEffect(() => {
+    if (mobileApi) { mobileApi.on("select", onMobileSelect); onMobileSelect(); }
+    if (desktopApi) { desktopApi.on("select", onDesktopSelect); onDesktopSelect(); }
+  }, [mobileApi, desktopApi, onMobileSelect, onDesktopSelect]);
 
   const filteredEvents = searchQuery.trim()
     ? allDepartmentEvents.filter(

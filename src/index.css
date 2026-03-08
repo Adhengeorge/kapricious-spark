@@ -152,7 +152,10 @@
 
 .main-inner-canvas {
   position: absolute;
-  inset: 6px;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  right: 0;
   background: radial-gradient(circle at center, #0a1030 0%, #01040f 100%);
   border-radius: 28px;
   overflow: hidden;
@@ -161,7 +164,10 @@
 
 @media (min-width: 768px) {
   .main-inner-canvas {
-    inset: 10px;
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
     border-radius: 40px;
   }
 }

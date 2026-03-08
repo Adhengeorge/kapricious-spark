@@ -336,16 +336,10 @@
 /* Mobile cutout adjustments */
 @media (max-width: 768px) {
   .cutout-tl {
-    right: 10px;
-    border-bottom-right-radius: 0;
-    padding: 1rem;
+    display: none;
   }
   .cutout-tl-right {
-    top: auto;
-    bottom: -30px;
-    right: 0;
-    left: auto;
-    background: radial-gradient(circle at bottom left, transparent 29.5px, hsl(var(--background)) 30px);
+    display: none;
   }
   .cutout-tr {
     background: transparent;

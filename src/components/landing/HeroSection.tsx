@@ -1,8 +1,9 @@
 import { useRef, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import ScrollRobot from "@/components/ScrollRobot";
+import { allDepartmentEvents } from "@/data/events/index";
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);

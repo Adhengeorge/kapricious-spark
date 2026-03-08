@@ -114,8 +114,8 @@ const HeroSection = () => {
 
             {/* Robot in center */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-              <div className="w-[60%] h-[80%]">
-                <InteractiveRobot containerRef={canvasRef} />
+              <div className="w-[60%] h-[80%] flex items-center justify-center">
+                <ScrollRobot />
               </div>
             </div>
 

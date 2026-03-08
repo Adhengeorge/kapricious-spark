@@ -59,7 +59,7 @@ const HeroSection = () => {
     <>
     <div className="hero-scroll-track relative w-full" style={{ height: "300vh" }}>
       <div ref={heroRef} className="sticky top-0 w-full h-screen">
-        <div className="absolute inset-0 bg-background">
+        <div className="absolute inset-0 bg-background md:bg-background bg-[#01040f] md:bg-none">
           <div className="app-frame-wrapper">
             {/* TOP-LEFT CUTOUT - Brand */}
             <motion.div

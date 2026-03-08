@@ -20,7 +20,7 @@ const topEvents = [...allDepartmentEvents]
   }));
 
 const HeroSection = () => {
-  const [featuredIndex, setFeaturedIndex] = useState(0);
+  
   const heroRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);

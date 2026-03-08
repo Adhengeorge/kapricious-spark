@@ -58,7 +58,6 @@ const HeroSection = () => {
   return (
     <div className="hero-scroll-track relative w-full" style={{ height: "300vh" }}>
       <div ref={heroRef} className="sticky top-0 w-full h-screen">
-        {/* White frame with dark inner canvas */}
         <div className="absolute inset-0 bg-background">
           <div className="app-frame-wrapper">
             {/* TOP-LEFT CUTOUT - Brand */}
@@ -77,15 +76,15 @@ const HeroSection = () => {
               <div className="cutout-corner cutout-tl-bottom" />
             </motion.div>
 
-            {/* TOP-RIGHT CUTOUT - Search */}
+            {/* TOP-RIGHT CUTOUT - Search (desktop only) */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="cutout-tr"
+              className="cutout-tr hidden md:block"
             >
               <div ref={searchRef} className="relative">
-                <div className="bg-card/90 neo-bento px-3 md:px-4 py-2.5 md:py-3 rounded-full border border-border flex items-center gap-2">
+                <div className="bg-card/90 neo-bento px-4 py-3 rounded-full border border-border flex items-center gap-2">
                   <Search className="w-4 h-4 text-muted-foreground shrink-0" />
                   <input
                     type="text"
@@ -96,7 +95,7 @@ const HeroSection = () => {
                       setIsSearchOpen(true);
                     }}
                     onFocus={() => setIsSearchOpen(true)}
-                    className="bg-transparent border-none focus:ring-0 focus:outline-none text-sm w-24 sm:w-32 md:w-48 placeholder:text-muted-foreground/50 text-foreground"
+                    className="bg-transparent border-none focus:ring-0 focus:outline-none text-sm w-48 placeholder:text-muted-foreground/50 text-foreground"
                   />
                   {searchQuery && (
                     <button
@@ -109,13 +108,13 @@ const HeroSection = () => {
                 </div>
 
                 {isSearchOpen && filteredEvents.length > 0 && (
-                  <div className="absolute top-full mt-2 right-0 left-0 md:left-auto bg-card border border-border rounded-2xl shadow-lg overflow-hidden z-50 min-w-[260px] md:min-w-[280px]">
+                  <div className="absolute top-full mt-2 right-0 bg-card border border-border rounded-2xl shadow-lg overflow-hidden z-50 min-w-[280px]">
                     <div className="max-h-60 overflow-y-auto overscroll-contain">
                       {filteredEvents.slice(0, 6).map((event) => (
                         <button
                           key={event.id}
                           onClick={() => { navigate(`/events/${event.id}`); setSearchQuery(""); setIsSearchOpen(false); }}
-                          className="w-full px-3 md:px-4 py-3 text-left hover:bg-secondary active:bg-secondary/80 transition-colors flex items-center justify-between gap-2"
+                          className="w-full px-4 py-3 text-left hover:bg-secondary active:bg-secondary/80 transition-colors flex items-center justify-between gap-2"
                         >
                           <div className="min-w-0">
                             <p className="text-sm font-medium text-foreground truncate">{event.title}</p>
@@ -131,10 +130,8 @@ const HeroSection = () => {
                 )}
 
                 {isSearchOpen && searchQuery.trim() && filteredEvents.length === 0 && (
-                  <div className="absolute top-full mt-2 right-0 left-0 md:left-auto bg-card border border-border rounded-2xl shadow-lg overflow-hidden z-50 min-w-[260px]">
-                    <div className="px-4 py-3 text-sm text-muted-foreground text-center">
-                      No events found
-                    </div>
+                  <div className="absolute top-full mt-2 right-0 bg-card border border-border rounded-2xl shadow-lg overflow-hidden z-50 min-w-[260px]">
+                    <div className="px-4 py-3 text-sm text-muted-foreground text-center">No events found</div>
                   </div>
                 )}
               </div>
@@ -193,23 +190,23 @@ const HeroSection = () => {
               <div className="cutout-corner cutout-br-top" />
             </motion.div>
 
-            {/* MOBILE - Featured Events horizontal scroll */}
+            {/* MOBILE - Featured Events at bottom, no overlap */}
             <div className="md:hidden absolute bottom-0 left-0 right-0 z-10 safe-bottom">
               <div
-                className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 pb-4"
+                className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-3 pb-3"
                 style={{ touchAction: "pan-x", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
               >
                 {topEvents.map((event) => (
                   <Link
                     key={event.id}
                     to={event.link}
-                    className="snap-center shrink-0 w-[70vw] bg-card/70 border border-border rounded-2xl p-3.5 active:scale-[0.98] transition-transform"
+                    className="snap-center shrink-0 w-[60vw] bg-card/80 border border-border rounded-2xl p-3 active:scale-[0.98] transition-transform"
                   >
-                    <h4 className="text-sm font-bold text-foreground font-display tracking-tight">{event.title}</h4>
-                    <p className="text-xs text-muted-foreground mt-1 line-clamp-2 leading-relaxed">{event.description}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">{event.prize}</span>
-                      <span className="text-[10px] text-muted-foreground">{event.department}</span>
+                    <h4 className="text-xs font-bold text-foreground font-display tracking-tight">{event.title}</h4>
+                    <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2 leading-relaxed">{event.description}</p>
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-secondary text-muted-foreground">{event.prize}</span>
+                      <span className="text-[9px] text-muted-foreground">{event.department}</span>
                     </div>
                   </Link>
                 ))}
@@ -218,12 +215,9 @@ const HeroSection = () => {
 
             {/* DARK INNER CANVAS */}
             <div ref={canvasRef} className="main-inner-canvas">
-              {/* Robot in center */}
               <div className="absolute inset-0 pointer-events-none z-0">
                 <ScrollRobot className="w-full h-full" />
               </div>
-
-              {/* Bottom-left headline */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}

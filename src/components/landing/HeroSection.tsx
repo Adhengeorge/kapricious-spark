@@ -56,6 +56,7 @@ const HeroSection = () => {
   }, []);
 
   return (
+    <>
     <div className="hero-scroll-track relative w-full" style={{ height: "300vh" }}>
       <div ref={heroRef} className="sticky top-0 w-full h-screen">
         <div className="absolute inset-0 bg-background">
@@ -190,29 +191,6 @@ const HeroSection = () => {
               <div className="cutout-corner cutout-br-top" />
             </motion.div>
 
-            {/* MOBILE - Featured Events at bottom, no overlap */}
-            <div className="md:hidden absolute bottom-0 left-0 right-0 z-10 safe-bottom">
-              <div
-                className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-3 pb-3"
-                style={{ touchAction: "pan-x", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
-              >
-                {topEvents.map((event) => (
-                  <Link
-                    key={event.id}
-                    to={event.link}
-                    className="snap-center shrink-0 w-[60vw] bg-card/80 border border-border rounded-2xl p-3 active:scale-[0.98] transition-transform"
-                  >
-                    <h4 className="text-xs font-bold text-foreground font-display tracking-tight">{event.title}</h4>
-                    <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2 leading-relaxed">{event.description}</p>
-                    <div className="flex items-center gap-2 mt-1.5">
-                      <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-secondary text-muted-foreground">{event.prize}</span>
-                      <span className="text-[9px] text-muted-foreground">{event.department}</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-
             {/* DARK INNER CANVAS */}
             <div ref={canvasRef} className="main-inner-canvas">
               <div className="absolute inset-0 pointer-events-none z-0">
@@ -233,6 +211,31 @@ const HeroSection = () => {
         </div>
       </div>
     </div>
+
+      {/* Mobile Featured Events - appears after hero scroll completes */}
+      <div className="md:hidden relative z-10 -mt-4 px-3 pb-6">
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3 px-1">Featured Events</h3>
+        <div
+          className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+          style={{ touchAction: "pan-x", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+        >
+          {topEvents.map((event) => (
+            <Link
+              key={event.id}
+              to={event.link}
+              className="snap-center shrink-0 w-[70vw] bg-card border border-border rounded-2xl p-3.5 active:scale-[0.98] transition-transform"
+            >
+              <h4 className="text-sm font-bold text-foreground font-display tracking-tight">{event.title}</h4>
+              <p className="text-xs text-muted-foreground mt-1 line-clamp-2 leading-relaxed">{event.description}</p>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">{event.prize}</span>
+                <span className="text-[10px] text-muted-foreground">{event.department}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 

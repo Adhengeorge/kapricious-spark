@@ -43,9 +43,9 @@ const Navbar = () => {
   return (
     <>
       {/* Desktop Vertical Left Navbar */}
-      <nav className="fixed left-6 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-center gap-8 py-10 px-4 bg-card/80 neo-bento border border-border rounded-full">
+      <nav className="fixed left-[22px] top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-center gap-8 py-10 px-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.3)]">
         <div className="w-10 h-10 mb-4">
-          <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain dark:invert-0 invert" />
+          <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain invert-0" />
         </div>
         {navLinks.map((link) => {
           const Icon = link.icon;
@@ -55,48 +55,48 @@ const Navbar = () => {
               key={link.path}
               to={link.path}
               className={`group relative flex items-center justify-center p-2 rounded-full transition-colors ${
-                isActive ? "bg-secondary" : "hover:bg-secondary"
+                isActive ? "bg-white/15" : "hover:bg-white/10"
               }`}
             >
-              <Icon className={`w-5 h-5 ${isActive ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`} />
-              <span className="absolute left-16 bg-foreground text-background px-3 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+              <Icon className={`w-5 h-5 text-white ${isActive ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`} />
+              <span className="absolute left-16 bg-white text-black px-3 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                 {link.label}
               </span>
             </Link>
           );
         })}
         <div className="mt-auto">
-          <button onClick={toggleTheme} className="p-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors">
-            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          <button onClick={toggleTheme} className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+            {theme === "dark" ? <Sun className="w-4 h-4 text-white" /> : <Moon className="w-4 h-4 text-white" />}
           </button>
         </div>
       </nav>
 
       {/* Mobile Top Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 lg:hidden" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
-        <div className="mx-3 mt-3">
-          <div className="bg-card/90 neo-bento border border-border rounded-full px-4 py-2.5 flex items-center justify-between">
+        <div className="mx-1 mt-[10px]">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-2.5 flex items-center justify-between shadow-[0_0_20px_rgba(0,0,0,0.3)]">
             <Link to="/" className="flex items-center gap-2.5">
               <div className="w-7 h-7">
-                <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain dark:invert-0 invert" />
+                <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain invert-0" />
               </div>
-              <span className="font-display font-bold tracking-tighter text-xs text-foreground">KAPRICIOUS'26</span>
+              <span className="font-display font-bold tracking-tighter text-xs text-white">KAPRICIOUS'26</span>
             </Link>
 
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => { setIsSearchOpen(!isSearchOpen); setOpen(false); }}
-                className="p-2 rounded-full bg-secondary hover:bg-secondary/80 active:bg-secondary/60 transition-colors"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition-colors"
               >
-                <Search className="w-3.5 h-3.5" />
+                <Search className="w-3.5 h-3.5 text-white" />
               </button>
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-full bg-secondary hover:bg-secondary/80 active:bg-secondary/60 transition-colors"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition-colors"
               >
-                {theme === "dark" ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+                {theme === "dark" ? <Sun className="w-3.5 h-3.5 text-white" /> : <Moon className="w-3.5 h-3.5 text-white" />}
               </button>
-              <button onClick={() => { setOpen(!open); setIsSearchOpen(false); }} className="text-foreground p-1">
+              <button onClick={() => { setOpen(!open); setIsSearchOpen(false); }} className="text-white p-1">
                 {open ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>

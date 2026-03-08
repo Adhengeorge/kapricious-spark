@@ -7,8 +7,11 @@ interface ScrollRobotProps {
 const FRAME_COUNT = 80;
 const isMobile = () => window.innerWidth < 768;
 
-// On mobile, load every other frame to reduce memory & loading time
+// On mobile, load every other frame (40 frames) for performance
 const getFrameIndices = () => {
+  if (isMobile()) {
+    return Array.from({ length: 40 }, (_, i) => i * 2);
+  }
   return Array.from({ length: FRAME_COUNT }, (_, i) => i);
 };
 

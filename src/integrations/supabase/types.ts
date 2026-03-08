@@ -145,6 +145,8 @@ export type Database = {
           payment_status: string
           phone: string
           screenshot_url: string | null
+          team_members: Json | null
+          team_size: number | null
           transaction_id: string | null
         }
         Insert: {
@@ -158,6 +160,8 @@ export type Database = {
           payment_status?: string
           phone: string
           screenshot_url?: string | null
+          team_members?: Json | null
+          team_size?: number | null
           transaction_id?: string | null
         }
         Update: {
@@ -171,6 +175,8 @@ export type Database = {
           payment_status?: string
           phone?: string
           screenshot_url?: string | null
+          team_members?: Json | null
+          team_size?: number | null
           transaction_id?: string | null
         }
         Relationships: [

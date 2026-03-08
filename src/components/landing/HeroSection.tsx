@@ -158,40 +158,40 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="cutout-br hidden md:block"
             >
-              <div className="w-[420px]">
-                <h3 className="text-xs font-semibold text-accent uppercase tracking-widest mb-3">Featured Events</h3>
+              <div className="w-[280px]">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Featured Events</h3>
+                  <div className="flex gap-1.5">
+                    {topEvents.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => desktopApi?.scrollTo(i)}
+                        className={`w-1.5 h-1.5 rounded-full transition-colors ${i === desktopSelected ? 'bg-foreground' : 'bg-muted-foreground/30'}`}
+                      />
+                    ))}
+                  </div>
+                </div>
                 <div className="overflow-hidden" ref={desktopRef}>
-                  <div className="flex gap-3">
+                  <div className="flex">
                     {topEvents.map((event) => (
                       <Link
                         key={event.id}
                         to={event.link}
-                        className="featured-event-card min-w-0 flex-[0_0_85%] rounded-2xl p-4 border block group transition-all duration-300 hover:scale-[1.02]"
+                        className="min-w-0 flex-[0_0_100%] block group"
                       >
-                        <h4 className="text-sm font-bold text-foreground font-display tracking-tight group-hover:text-accent transition-colors">
+                        <h4 className="text-base font-bold text-foreground font-display tracking-tight group-hover:text-primary transition-colors">
                           {event.title}
                         </h4>
-                        <p className="text-xs text-muted-foreground leading-relaxed mt-1 line-clamp-2">
+                        <p className="text-sm text-muted-foreground leading-relaxed mt-1 line-clamp-2">
                           {event.description}
                         </p>
-                        <div className="flex items-center gap-2 mt-3">
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-accent text-accent-foreground font-bold">
-                            {event.prize}
-                          </span>
-                          <span className="text-[10px] text-muted-foreground">{event.date}</span>
+                        <div className="flex items-center gap-3 mt-3">
+                          <span className="text-xs px-2 py-1 rounded-full bg-secondary text-muted-foreground">{event.prize}</span>
+                          <span className="text-xs text-muted-foreground">{event.date}</span>
                         </div>
                       </Link>
                     ))}
                   </div>
-                </div>
-                <div className="flex gap-1.5 mt-3">
-                  {topEvents.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => desktopApi?.scrollTo(i)}
-                      className={`w-1.5 h-1.5 rounded-full transition-colors ${i === desktopSelected ? 'bg-accent' : 'bg-muted-foreground/30'}`}
-                    />
-                  ))}
                 </div>
               </div>
               <div className="cutout-corner cutout-br-left" />

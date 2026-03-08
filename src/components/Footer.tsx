@@ -34,7 +34,7 @@ const Footer = () => (
           <div className="space-y-1 text-sm text-foreground/60">
             <p>KMEA Engineering College</p>
             <p>Aluva, Ernakulam, Kerala</p>
-            <p className="mt-2">kapricious@kmea.edu.in</p>
+            <p className="mt-2">kapricious@kmeacollege.ac.in</p>
           </div>
         </div>
       </div>

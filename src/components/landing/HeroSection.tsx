@@ -1,13 +1,37 @@
 import { useRef, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import ScrollRobot from "@/components/ScrollRobot";
+import { allDepartmentEvents } from "@/data/events/index";
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const filteredEvents = searchQuery.trim()
+    ? allDepartmentEvents.filter(
+        (event) =>
+          event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          event.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          event.departmentName.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSearchOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -44,12 +68,59 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="cutout-tr"
           >
-            <div className="flex gap-3">
-              <button className="w-11 h-11 rounded-full bg-[#020513] text-white flex items-center justify-center hover:bg-accent transition-colors">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" />
-                </svg>
-              </button>
+            <div ref={searchRef} className="relative">
+              <div className="bg-card/90 neo-bento px-4 py-3 rounded-full border border-border flex items-center gap-2">
+                <Search className="w-4 h-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search events..."
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setIsSearchOpen(true);
+                  }}
+                  onFocus={() => setIsSearchOpen(true)}
+                  className="bg-transparent border-none focus:ring-0 focus:outline-none text-sm w-32 md:w-48 placeholder:text-muted-foreground/50 text-foreground"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => { setSearchQuery(""); setIsSearchOpen(false); }}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+
+              {isSearchOpen && filteredEvents.length > 0 && (
+                <div className="absolute top-full mt-2 right-0 bg-card border border-border rounded-2xl shadow-lg overflow-hidden z-50 min-w-[280px]">
+                  <div className="max-h-64 overflow-y-auto">
+                    {filteredEvents.slice(0, 8).map((event) => (
+                      <button
+                        key={event.id}
+                        onClick={() => { navigate(`/events/${event.id}`); setSearchQuery(""); setIsSearchOpen(false); }}
+                        className="w-full px-4 py-3 text-left hover:bg-secondary transition-colors flex items-center justify-between gap-2"
+                      >
+                        <div>
+                          <p className="text-sm font-medium text-foreground">{event.title}</p>
+                          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{event.department} — {event.departmentName}</p>
+                        </div>
+                        <span className="text-[9px] px-2 py-1 rounded-full bg-secondary text-muted-foreground uppercase tracking-wider">
+                          {event.prizePool}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {isSearchOpen && searchQuery.trim() && filteredEvents.length === 0 && (
+                <div className="absolute top-full mt-2 right-0 bg-card border border-border rounded-2xl shadow-lg overflow-hidden z-50 min-w-[280px]">
+                  <div className="px-4 py-3 text-sm text-muted-foreground text-center">
+                    No events found for "{searchQuery}"
+                  </div>
+                </div>
+              )}
             </div>
             {/* Inverse corners */}
             <div className="cutout-corner cutout-tr-left" />

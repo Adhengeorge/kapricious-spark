@@ -335,6 +335,7 @@ const Index = () => {
                   <span
                     key={dept}
                     className="px-4 py-2 rounded-full border border-border text-xs font-medium uppercase tracking-wider text-muted-foreground hover:bg-foreground hover:text-background transition-colors cursor-pointer"
+                    data-robot-interact
                   >
                     {dept}
                   </span>

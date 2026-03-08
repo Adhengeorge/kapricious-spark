@@ -63,8 +63,8 @@ const Navbar = () => {
         <div className="mx-4 mt-4">
           <div className="bg-card/90 neo-bento border border-border rounded-full px-6 py-3 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full overflow-hidden">
-                <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-cover" />
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-foreground p-1">
+                <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain" />
               </div>
               <span className="font-display font-bold tracking-tighter text-sm text-foreground">KAPRICIOUS'26</span>
             </Link>

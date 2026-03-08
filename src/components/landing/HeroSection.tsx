@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
-import InteractiveRobot from "@/components/InteractiveRobot";
+import ScrollRobot from "@/components/ScrollRobot";
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);

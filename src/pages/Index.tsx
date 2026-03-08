@@ -38,7 +38,6 @@ const Index = () => {
   const featuredEvents = getTop3Events();
   const [currentIndex, setCurrentIndex] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
-  const swipeStartX2 = useRef<number | null>(null);
   const swipeStartX = useRef<number | null>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);

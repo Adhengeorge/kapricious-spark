@@ -46,8 +46,9 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-      canvas.width = firstImg.naturalWidth || 800;
-      canvas.height = firstImg.naturalHeight || 800;
+      const container = canvas.parentElement;
+      canvas.width = container?.clientWidth || window.innerWidth;
+      canvas.height = container?.clientHeight || window.innerHeight;
       ctx.drawImage(firstImg, 0, 0, canvas.width, canvas.height);
       setLoaded(true);
     };

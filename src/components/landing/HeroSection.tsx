@@ -4,12 +4,32 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import ScrollRobot from "@/components/ScrollRobot";
 import { allDepartmentEvents } from "@/data/events/index";
-
 import { flagshipEvents } from "@/data/events/flagship";
+
+// Parse prize string like "₹40,000" to number
+const parsePrize = (prize: string): number => {
+  return parseInt(prize.replace(/[₹,]/g, ''), 10) || 0;
+};
+
+// Combine all events into a unified format sorted by prize
+const getTopEvents = () => {
+  const deptMapped = allDepartmentEvents.map(e => ({
+    id: e.id, title: e.title, prize: e.prizePool, description: e.details,
+    date: e.date, link: `/events/${e.id}`, department: e.departmentName,
+  }));
+  const flagMapped = flagshipEvents.map(e => ({
+    id: e.id, title: e.title, prize: e.prize, description: e.description,
+    date: e.date, link: `/event/${e.id}`, department: e.category,
+  }));
+  return [...deptMapped, ...flagMapped]
+    .sort((a, b) => parsePrize(b.prize) - parsePrize(a.prize))
+    .slice(0, 3);
+};
+
+const topEvents = getTopEvents();
 
 const HeroSection = () => {
   const [featuredIndex, setFeaturedIndex] = useState(0);
-  const featured = flagshipEvents.slice(0, 3);
   const heroRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -26,6 +46,14 @@ const HeroSection = () => {
           event.departmentName.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : [];
+
+  // Auto-rotate featured events
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFeaturedIndex((prev) => (prev + 1) % topEvents.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -131,7 +159,7 @@ const HeroSection = () => {
             <div className="cutout-corner cutout-tr-bottom" />
           </motion.div>
 
-          {/* BOTTOM-RIGHT CUTOUT - Info card */}
+          {/* BOTTOM-RIGHT CUTOUT - Featured Events (desktop) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -140,39 +168,69 @@ const HeroSection = () => {
           >
             <div className="w-[280px]">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Featured Events</h3>
+                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Top Prize Events</h3>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => setFeaturedIndex((prev) => (prev - 1 + featured.length) % featured.length)}
+                    onClick={() => setFeaturedIndex((prev) => (prev - 1 + topEvents.length) % topEvents.length)}
                     className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => setFeaturedIndex((prev) => (prev + 1) % featured.length)}
+                    onClick={() => setFeaturedIndex((prev) => (prev + 1) % topEvents.length)}
                     className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-              <Link to={`/event/${featured[featuredIndex].id}`} className="block group">
+              <Link to={topEvents[featuredIndex].link} className="block group">
                 <h4 className="text-base font-bold text-foreground font-display tracking-tight group-hover:text-primary transition-colors">
-                  {featured[featuredIndex].title}
+                  {topEvents[featuredIndex].title}
                 </h4>
                 <p className="text-sm text-muted-foreground leading-relaxed mt-1 line-clamp-2">
-                  {featured[featuredIndex].description}
+                  {topEvents[featuredIndex].description}
                 </p>
                 <div className="flex items-center gap-3 mt-3">
-                  <span className="text-xs px-2 py-1 rounded-full bg-secondary text-muted-foreground">{featured[featuredIndex].prize}</span>
-                  <span className="text-xs text-muted-foreground">{featured[featuredIndex].date}</span>
+                  <span className="text-xs px-2 py-1 rounded-full bg-secondary text-muted-foreground">{topEvents[featuredIndex].prize}</span>
+                  <span className="text-xs text-muted-foreground">{topEvents[featuredIndex].date}</span>
                 </div>
               </Link>
+              {/* Dots indicator */}
+              <div className="flex gap-1.5 mt-3">
+                {topEvents.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setFeaturedIndex(i)}
+                    className={`w-1.5 h-1.5 rounded-full transition-colors ${i === featuredIndex ? 'bg-foreground' : 'bg-muted-foreground/30'}`}
+                  />
+                ))}
+              </div>
             </div>
             {/* Inverse corners */}
             <div className="cutout-corner cutout-br-left" />
             <div className="cutout-corner cutout-br-top" />
           </motion.div>
+
+          {/* MOBILE - Featured Events horizontal scroll */}
+          <div className="md:hidden absolute bottom-0 left-0 right-0 z-10 px-4 pb-4">
+            <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2">
+              {topEvents.map((event, i) => (
+                <Link
+                  key={event.id}
+                  to={event.link}
+                  className="snap-start shrink-0 w-[75vw] bg-card/80 backdrop-blur-md border border-border rounded-2xl p-4"
+                >
+                  <h4 className="text-sm font-bold text-foreground font-display tracking-tight">{event.title}</h4>
+                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{event.description}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">{event.prize}</span>
+                    <span className="text-[10px] text-muted-foreground">{event.department}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
 
           {/* DARK INNER CANVAS */}
           <div ref={canvasRef} className="main-inner-canvas">

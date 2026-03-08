@@ -5,7 +5,11 @@ import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import ScrollRobot from "@/components/ScrollRobot";
 import { allDepartmentEvents } from "@/data/events/index";
 
+import { flagshipEvents } from "@/data/events/flagship";
+
 const HeroSection = () => {
+  const [featuredIndex, setFeaturedIndex] = useState(0);
+  const featured = flagshipEvents.slice(0, 3);
   const heroRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -135,20 +139,35 @@ const HeroSection = () => {
             className="cutout-br hidden md:block"
           >
             <div className="w-[280px]">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-semibold text-foreground">Artificial intelligence</h3>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Featured Events</h3>
                 <div className="flex gap-2">
-                  <button className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-foreground hover:text-background transition-colors">
+                  <button
+                    onClick={() => setFeaturedIndex((prev) => (prev - 1 + featured.length) % featured.length)}
+                    className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
+                  >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <button className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-foreground hover:text-background transition-colors">
+                  <button
+                    onClick={() => setFeaturedIndex((prev) => (prev + 1) % featured.length)}
+                    className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
+                  >
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                is your reliable assistant in task automation, data analysis, and decision-making.
-              </p>
+              <Link to={`/event/${featured[featuredIndex].id}`} className="block group">
+                <h4 className="text-base font-bold text-foreground font-display tracking-tight group-hover:text-primary transition-colors">
+                  {featured[featuredIndex].title}
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed mt-1 line-clamp-2">
+                  {featured[featuredIndex].description}
+                </p>
+                <div className="flex items-center gap-3 mt-3">
+                  <span className="text-xs px-2 py-1 rounded-full bg-secondary text-muted-foreground">{featured[featuredIndex].prize}</span>
+                  <span className="text-xs text-muted-foreground">{featured[featuredIndex].date}</span>
+                </div>
+              </Link>
             </div>
             {/* Inverse corners */}
             <div className="cutout-corner cutout-br-left" />

@@ -21,8 +21,8 @@ const Navbar = () => {
       {/* Desktop Vertical Left Navbar */}
       <nav className="fixed left-6 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-center gap-8 py-10 px-4 bg-card/80 neo-bento border border-border rounded-full">
         {/* Logo */}
-        <div className="w-10 h-10 rounded-full overflow-hidden mb-4 bg-foreground p-1.5">
-          <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain" />
+        <div className="w-10 h-10 rounded-full overflow-hidden mb-4 bg-black dark:bg-white p-1.5">
+          <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain dark:invert" />
         </div>
 
         {/* Nav Links */}

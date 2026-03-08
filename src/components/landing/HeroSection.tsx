@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
-import InteractiveRobot from "@/components/InteractiveRobot";
+import ScrollRobot from "@/components/ScrollRobot";
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -15,7 +15,8 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <div ref={heroRef} className="relative w-full h-screen">
+    <div className="hero-scroll-track relative w-full" style={{ height: "200vh" }}>
+      <div ref={heroRef} className="sticky top-0 w-full h-screen">
       {/* White frame with dark inner canvas */}
       <div className="absolute inset-0 bg-background">
         <div className="app-frame-wrapper">
@@ -114,8 +115,8 @@ const HeroSection = () => {
 
             {/* Robot in center */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-              <div className="w-[60%] h-[80%]">
-                <InteractiveRobot containerRef={canvasRef} />
+              <div className="w-[60%] h-[80%] flex items-center justify-center">
+                <ScrollRobot />
               </div>
             </div>
 
@@ -175,6 +176,7 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

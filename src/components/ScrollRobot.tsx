@@ -114,8 +114,8 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
   return (
     <canvas
       ref={canvasRef}
-      className={`w-full h-full object-contain ${className}`}
-      style={{ maxWidth: "100%", maxHeight: "100%" }}
+      className={className}
+      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
     />
   );
 };

@@ -118,47 +118,6 @@ const HeroSection = () => {
               <ScrollRobot className="w-full h-full" />
             </div>
 
-            {/* Floating pointer labels - desktop only */}
-            <div className="hidden lg:block">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-                className="pointer-label-left"
-                style={{ top: "25%", left: "8%" }}
-              >
-                <span className="pointer-text">Improve accuracy<br />and reduce errors</span>
-                <div className="pointer-line">
-                  <div className="pointer-dot" />
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 1 }}
-                className="pointer-label-left"
-                style={{ top: "55%", left: "6%" }}
-              >
-                <span className="pointer-text">Personalizing the<br />customer experience</span>
-                <div className="pointer-line">
-                  <div className="pointer-dot" />
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.9 }}
-                className="pointer-label-right"
-                style={{ top: "45%", right: "5%" }}
-              >
-                <div className="pointer-line-right">
-                  <div className="pointer-dot-left" />
-                </div>
-                <span className="pointer-text">Automating<br />routine tasks</span>
-              </motion.div>
-            </div>
 
             {/* Bottom-left headline */}
             <motion.div

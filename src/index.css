@@ -122,6 +122,13 @@
   .floating {
     animation: float 6s ease-in-out infinite;
   }
+
+  /* Robot element interaction glow */
+  .robot-element-glow {
+    box-shadow: 0 0 15px hsl(168 80% 45% / 0.3), 0 0 30px hsl(168 80% 45% / 0.15) !important;
+    border-color: hsl(168 80% 45% / 0.5) !important;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+  }
 }
 
 @keyframes float {

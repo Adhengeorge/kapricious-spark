@@ -352,7 +352,8 @@ const Index = () => {
                       <Link
                         key={ev.id}
                         to={`/cultural-register`}
-                        className="px-4 py-2 rounded-full border border-border text-xs font-medium uppercase tracking-wider text-muted-foreground hover:bg-accent hover:text-background transition-colors cursor-pointer"
+                      className="px-4 py-2 rounded-full border border-border text-xs font-medium uppercase tracking-wider text-muted-foreground hover:bg-accent hover:text-background transition-colors cursor-pointer"
+                      data-robot-interact
                       >
                         {ev.title}
                       </Link>

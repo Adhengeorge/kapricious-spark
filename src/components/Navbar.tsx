@@ -90,7 +90,7 @@ const Navbar = () => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="mx-4 mt-2"
+              className="mx-3 mt-2"
             >
               <div className="bg-card/95 neo-bento border border-border rounded-3xl p-4 flex flex-col gap-1">
                 {navLinks.map((link) => {

@@ -113,13 +113,14 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
         const totalFrames = imagesRef.current.length;
         if (totalFrames === 0) return;
 
-        const maxScrollTop =
-          document.documentElement.scrollHeight - window.innerHeight;
-        const scrollTop =
-          document.documentElement.scrollTop || window.scrollY;
+        // Map frames to the hero sticky scroll distance only
+        const track = document.querySelector(".hero-scroll-track");
+        if (!track) return;
+        const stickyDistance = track.clientHeight - window.innerHeight;
+        if (stickyDistance <= 0) return;
 
-        // Map entire page scroll to all frames
-        const progress = maxScrollTop > 0 ? Math.max(0, Math.min(1, scrollTop / maxScrollTop)) : 0;
+        const scrollTop = document.documentElement.scrollTop || window.scrollY;
+        const progress = Math.max(0, Math.min(1, scrollTop / stickyDistance));
         const frameIndex = Math.min(totalFrames - 1, Math.max(0, Math.floor(progress * (totalFrames - 1))));
 
         drawFrame(frameIndex);

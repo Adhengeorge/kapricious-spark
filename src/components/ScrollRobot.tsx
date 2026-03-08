@@ -94,27 +94,18 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
 
         const scrollTop = document.documentElement.scrollTop || window.scrollY;
 
-        if (isMobile()) {
-          // Mobile: first half of frames during sticky hero, second half continues after
-          const halfFrames = Math.floor(totalFrames / 2);
-          if (scrollTop <= stickyDistance) {
-            // Sticky phase: map scroll to first half of frames
-            const progress = scrollTop / stickyDistance;
-            const frameIndex = Math.min(halfFrames - 1, Math.floor(progress * (halfFrames - 1)));
-            drawFrame(frameIndex);
-          } else {
-            // Post-sticky phase: map additional scroll to remaining frames
-            const extraScroll = scrollTop - stickyDistance;
-            const extraDistance = window.innerHeight; // one viewport height for remaining frames
-            const progress = Math.min(1, extraScroll / extraDistance);
-            const frameIndex = halfFrames + Math.min(halfFrames - 1, Math.floor(progress * (halfFrames - 1)));
-            drawFrame(Math.min(totalFrames - 1, frameIndex));
-          }
-        } else {
-          // Desktop: all frames during sticky hero
-          const progress = Math.max(0, Math.min(1, scrollTop / stickyDistance));
-          const frameIndex = Math.min(totalFrames - 1, Math.max(0, Math.floor(progress * (totalFrames - 1))));
+        // Both mobile & desktop: first half during sticky, second half post-sticky
+        const halfFrames = Math.floor(totalFrames / 2);
+        if (scrollTop <= stickyDistance) {
+          const progress = scrollTop / stickyDistance;
+          const frameIndex = Math.min(halfFrames - 1, Math.floor(progress * (halfFrames - 1)));
           drawFrame(frameIndex);
+        } else {
+          const extraScroll = scrollTop - stickyDistance;
+          const extraDistance = window.innerHeight;
+          const progress = Math.min(1, extraScroll / extraDistance);
+          const frameIndex = halfFrames + Math.min(halfFrames - 1, Math.floor(progress * (halfFrames - 1)));
+          drawFrame(Math.min(totalFrames - 1, frameIndex));
         }
       });
     };

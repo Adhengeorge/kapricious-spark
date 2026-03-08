@@ -269,31 +269,7 @@ const Index = () => {
                 }}
                 className="w-full h-full origin-bottom"
               >
-                {isRobotVideoActive && !robotVideoFailed ? (
-                  <>
-                    <canvas
-                      ref={robotCanvasRef}
-                      className="w-full h-full object-contain object-bottom opacity-90 transition-[filter] duration-300 group-hover:drop-shadow-[0_0_25px_rgba(0,255,255,0.35)]"
-                      aria-label="Futuristic Robot Animation"
-                    />
-                    <video
-                      ref={robotVideoRef}
-                      loop
-                      muted
-                      playsInline
-                      preload="auto"
-                      className="absolute w-px h-px opacity-0 pointer-events-none"
-                    >
-                      <source src="/robot-video.mp4" type="video/mp4" />
-                    </video>
-                  </>
-                ) : (
-                  <img
-                    src={robotImage}
-                    alt="Futuristic Robot"
-                    className="w-full h-full object-contain object-bottom opacity-80 md:opacity-100 transition-[filter] duration-300 group-hover:drop-shadow-[0_0_25px_rgba(0,255,255,0.35)]"
-                  />
-                )}
+                <InteractiveRobot containerRef={heroRef} />
               </motion.div>
             </motion.div>
 

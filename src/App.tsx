@@ -32,7 +32,7 @@ const App = () => (
           <ScrollToTop />
           <Navbar />
           <main className="lg:pl-24">
-            <TopHeader />
+            
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/events" element={<Events />} />

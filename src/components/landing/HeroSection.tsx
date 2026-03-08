@@ -46,23 +46,10 @@ const HeroSection = () => {
           >
             <div className="flex gap-3">
               <button className="w-11 h-11 rounded-full bg-[#020513] text-white flex items-center justify-center hover:bg-accent transition-colors">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M16 8V6C16 3.79086 14.2091 2 12 2C9.79086 2 8 3.79086 8 6V8" />
-                  <path d="M5 8H19L20 21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21L5 8Z" />
-                </svg>
-              </button>
-              <button className="w-11 h-11 rounded-full bg-[#020513] text-white flex items-center justify-center hover:bg-accent transition-colors">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" />
                 </svg>
               </button>
-              <Link
-                to="/events"
-                className="h-11 rounded-full bg-[#020513] text-white flex items-center justify-center gap-2 px-5 hover:bg-accent transition-colors font-medium text-sm"
-              >
-                <Play className="w-4 h-4" />
-                <span>Start</span>
-              </Link>
             </div>
             {/* Inverse corners */}
             <div className="cutout-corner cutout-tr-left" />

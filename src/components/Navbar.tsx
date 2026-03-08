@@ -100,10 +100,10 @@ const Navbar = () => {
                       key={link.path}
                       to={link.path}
                       onClick={() => setOpen(false)}
-                      className={`px-4 py-3 rounded-2xl text-sm font-medium uppercase tracking-wider transition-colors flex items-center gap-3 ${
+                      className={`px-4 py-3 rounded-2xl text-sm font-medium uppercase tracking-wider transition-colors flex items-center gap-3 active:scale-[0.98] ${
                         location.pathname === link.path
                           ? "bg-foreground text-background"
-                          : "text-muted-foreground hover:bg-secondary"
+                          : "text-muted-foreground active:bg-secondary"
                       }`}
                     >
                       <Icon className="w-4 h-4" />

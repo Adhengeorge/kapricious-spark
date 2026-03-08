@@ -81,22 +81,11 @@ const Index = () => {
     const y = event.clientY - rect.top;
     mouseX.set((x - rect.width / 2) * 0.12);
     mouseY.set((y - rect.height / 2) * 0.1);
-
-    const robotCenterX = rect.width * 0.78;
-    const robotCenterY = rect.height * 0.72;
-    const dx = x - robotCenterX;
-    const dy = y - robotCenterY;
-    const distance = Math.hypot(dx, dy);
-    const activationRadius = Math.min(rect.width, rect.height) * 0.32;
-    const shouldActivate = distance <= activationRadius;
-
-    setIsRobotVideoActive((prev) => (prev === shouldActivate ? prev : shouldActivate));
   };
 
   const handleHeroMouseLeave = () => {
     mouseX.set(0);
     mouseY.set(0);
-    setIsRobotVideoActive(false);
   };
 
   const handleFeaturedTouchStart = (event: TouchEvent<HTMLDivElement>) => {

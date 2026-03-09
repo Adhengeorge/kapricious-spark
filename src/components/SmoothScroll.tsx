@@ -24,6 +24,9 @@ const SmoothScroll = () => {
       lenis.raf(time);
       rafId = window.requestAnimationFrame(raf);
     };
+    lenis.on("scroll", () => {
+      window.dispatchEvent(new Event("lenis:scroll"));
+    });
     rafId = window.requestAnimationFrame(raf);
 
     return () => {

@@ -68,7 +68,7 @@ const HeroSection = () => {
 
   return (
     <>
-    <div className="hero-scroll-track relative w-full" style={{ height: "300vh" }}>
+    <div className="hero-scroll-track relative w-full h-[220vh] md:h-[300vh]">
       <div ref={heroRef} className="sticky top-0 w-full h-screen">
         <div className="absolute inset-0 bg-[#01040f] md:bg-background">
           <div className="app-frame-wrapper">

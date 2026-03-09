@@ -7,6 +7,7 @@ interface ScrollRobotProps {
 const FRAME_COUNT = 80;
 const FRAME_INDICES = Array.from({ length: FRAME_COUNT }, (_, i) => i);
 const MOBILE_BREAKPOINT = 768;
+const MOBILE_SCROLL_SPEED_MULTIPLIER = 1.35;
 
 const currentFrame = (index: number) =>
   `/robo/Robot_face_transition_delpmaspu__${index.toString().padStart(3, "0")}.jpg`;
@@ -128,7 +129,9 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
   const computeFrameFloat = useCallback(() => {
     const scrollY = window.scrollY || document.documentElement.scrollTop;
     const relativeY = scrollY - trackStartRef.current;
-    const progress = clamp(relativeY / totalDistanceRef.current, 0, 1);
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    const speed = isMobile ? MOBILE_SCROLL_SPEED_MULTIPLIER : 1;
+    const progress = clamp((relativeY / totalDistanceRef.current) * speed, 0, 1);
     return progress * (FRAME_COUNT - 1);
   }, []);
 

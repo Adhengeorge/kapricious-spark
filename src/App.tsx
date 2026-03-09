@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import Navbar from "./components/Navbar";
-import ScrollToTop from "./components/ScrollToTop";
+import SmoothScroll from "./components/SmoothScroll";
 import Index from "./pages/Index";
 
 // Lazy load non-critical routes
@@ -36,7 +36,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <ScrollToTop />
+          <SmoothScroll />
           <Navbar />
           <main className="lg:pl-24">
             <Suspense fallback={<PageLoader />}>

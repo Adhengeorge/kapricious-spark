@@ -390,3 +390,17 @@ html {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Lenis smooth scrolling integration */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}

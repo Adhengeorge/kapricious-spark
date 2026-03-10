@@ -6,6 +6,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import ScrollRobot from "@/components/ScrollRobot";
 import { allDepartmentEvents } from "@/data/events/index";
 
+const FEATURED_EVENTS_AUTOPLAY_MS = 4000;
+
 // Parse prize string like "₹40,000" to number
 const parsePrize = (prize: string): number => {
   return parseInt(prize.replace(/[₹,]/g, ''), 10) || 0;
@@ -45,6 +47,76 @@ const HeroSection = () => {
     if (mobileApi) { mobileApi.on("select", onMobileSelect); onMobileSelect(); }
     if (desktopApi) { desktopApi.on("select", onDesktopSelect); onDesktopSelect(); }
   }, [mobileApi, desktopApi, onMobileSelect, onDesktopSelect]);
+
+  useEffect(() => {
+    if (!mobileApi && !desktopApi) return;
+
+    let mobileTimer: ReturnType<typeof window.setTimeout> | undefined;
+    let desktopTimer: ReturnType<typeof window.setTimeout> | undefined;
+
+    const clearMobileTimer = () => {
+      if (!mobileTimer) return;
+      window.clearTimeout(mobileTimer);
+      mobileTimer = undefined;
+    };
+
+    const clearDesktopTimer = () => {
+      if (!desktopTimer) return;
+      window.clearTimeout(desktopTimer);
+      desktopTimer = undefined;
+    };
+
+    const scheduleMobileAutoplay = () => {
+      clearMobileTimer();
+      if (!mobileApi || document.hidden) return;
+      mobileTimer = window.setTimeout(() => {
+        mobileApi.scrollNext();
+      }, FEATURED_EVENTS_AUTOPLAY_MS);
+    };
+
+    const scheduleDesktopAutoplay = () => {
+      clearDesktopTimer();
+      if (!desktopApi || document.hidden) return;
+      desktopTimer = window.setTimeout(() => {
+        desktopApi.scrollNext();
+      }, FEATURED_EVENTS_AUTOPLAY_MS);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        clearMobileTimer();
+        clearDesktopTimer();
+        return;
+      }
+
+      scheduleMobileAutoplay();
+      scheduleDesktopAutoplay();
+    };
+
+    mobileApi?.on("select", scheduleMobileAutoplay);
+    mobileApi?.on("pointerDown", clearMobileTimer);
+    mobileApi?.on("settle", scheduleMobileAutoplay);
+
+    desktopApi?.on("select", scheduleDesktopAutoplay);
+    desktopApi?.on("pointerDown", clearDesktopTimer);
+    desktopApi?.on("settle", scheduleDesktopAutoplay);
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    scheduleMobileAutoplay();
+    scheduleDesktopAutoplay();
+
+    return () => {
+      clearMobileTimer();
+      clearDesktopTimer();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      mobileApi?.off("select", scheduleMobileAutoplay);
+      mobileApi?.off("pointerDown", clearMobileTimer);
+      mobileApi?.off("settle", scheduleMobileAutoplay);
+      desktopApi?.off("select", scheduleDesktopAutoplay);
+      desktopApi?.off("pointerDown", clearDesktopTimer);
+      desktopApi?.off("settle", scheduleDesktopAutoplay);
+    };
+  }, [mobileApi, desktopApi]);
 
   const filteredEvents = searchQuery.trim()
     ? allDepartmentEvents.filter(

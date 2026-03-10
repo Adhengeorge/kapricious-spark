@@ -8,6 +8,7 @@ const FRAME_COUNT = 80;
 const FRAME_INDICES = Array.from({ length: FRAME_COUNT }, (_, i) => i);
 const MOBILE_BREAKPOINT = 768;
 const MOBILE_SCROLL_SPEED_MULTIPLIER = 1.35;
+const MOBILE_IMAGE_SCALE = 0.9;
 
 const currentFrame = (index: number) =>
   `/robo/Robot_face_transition_delpmaspu__${index.toString().padStart(3, "0")}.jpg`;
@@ -46,7 +47,7 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
 
     const rect = canvas.getBoundingClientRect();
     const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-    const dprCap = isMobile ? 1.5 : 2;
+    const dprCap = isMobile ? 2 : 2;
     const dpr = Math.min(window.devicePixelRatio || 1, dprCap);
     const width = Math.max(1, Math.round(rect.width * dpr));
     const height = Math.max(1, Math.round(rect.height * dpr));
@@ -77,6 +78,8 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
 
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    const imageScale = isMobile ? MOBILE_IMAGE_SCALE : 1;
     const imageAspect = img.naturalWidth / img.naturalHeight;
     const canvasAspect = canvasWidth / canvasHeight;
 
@@ -93,6 +96,15 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
       dx = (canvasWidth - drawWidth) * 0.5;
     }
 
+    if (imageScale !== 1) {
+      const scaledWidth = drawWidth * imageScale;
+      const scaledHeight = drawHeight * imageScale;
+      dx += (drawWidth - scaledWidth) * 0.5;
+      dy += (drawHeight - scaledHeight) * 0.5;
+      drawWidth = scaledWidth;
+      drawHeight = scaledHeight;
+    }
+
     if (alpha < 1) {
       ctx.globalAlpha = alpha;
     }
@@ -107,9 +119,10 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
       const ctx = ctxRef.current;
       if (!ctx) return;
 
+      const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
       const baseIndex = Math.floor(frameFloat);
       const nextIndex = Math.min(FRAME_COUNT - 1, baseIndex + 1);
-      const mix = frameFloat - baseIndex;
+      const mix = isMobile ? 0 : frameFloat - baseIndex;
 
       const baseImage = imagesRef.current[baseIndex];
       if (!baseImage || !baseImage.complete || baseImage.naturalWidth === 0) return;

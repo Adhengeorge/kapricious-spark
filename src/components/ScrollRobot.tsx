@@ -8,7 +8,6 @@ const FRAME_COUNT = 80;
 const FRAME_INDICES = Array.from({ length: FRAME_COUNT }, (_, i) => i);
 const MOBILE_BREAKPOINT = 768;
 const MOBILE_SCROLL_SPEED_MULTIPLIER = 1.35;
-const MOBILE_IMAGE_SCALE = 0.9;
 
 const currentFrame = (index: number) =>
   `/robo/Robot_face_transition_delpmaspu__${index.toString().padStart(3, "0")}.jpg`;
@@ -78,8 +77,6 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
 
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
-    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-    const imageScale = isMobile ? MOBILE_IMAGE_SCALE : 1;
     const imageAspect = img.naturalWidth / img.naturalHeight;
     const canvasAspect = canvasWidth / canvasHeight;
 
@@ -95,16 +92,6 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
       drawWidth = canvasHeight * imageAspect;
       dx = (canvasWidth - drawWidth) * 0.5;
     }
-
-    if (imageScale !== 1) {
-      const scaledWidth = drawWidth * imageScale;
-      const scaledHeight = drawHeight * imageScale;
-      dx += (drawWidth - scaledWidth) * 0.5;
-      dy += (drawHeight - scaledHeight) * 0.5;
-      drawWidth = scaledWidth;
-      drawHeight = scaledHeight;
-    }
-
     if (alpha < 1) {
       ctx.globalAlpha = alpha;
     }

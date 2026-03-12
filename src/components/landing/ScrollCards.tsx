@@ -101,27 +101,6 @@ const ScrollCards = () => {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="px-4 md:px-8 pb-12 md:pb-20">
-        <motion.div
-          variants={fadeUp} custom={0} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}
-          className="bg-card rounded-[20px] border border-border p-8 md:p-12 lg:p-16 text-center max-w-[1200px] mx-auto"
-        >
-          <h2 className="font-display text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-4">READY TO BEGIN?</h2>
-          <p className="text-muted-foreground mb-6 md:mb-8 max-w-md mx-auto text-sm md:text-base">
-            Join thousands of innovators. Register now and be part of the future.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-            <Link to="/register" className="group flex items-center justify-center gap-3 bg-foreground text-background px-6 md:px-8 py-3.5 md:py-4 rounded-2xl hover:opacity-90 active:opacity-80 transition-all">
-              <span className="font-bold tracking-tight text-sm">REGISTER NOW</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link to="/events" className="flex items-center justify-center gap-3 border border-border px-6 md:px-8 py-3.5 md:py-4 rounded-2xl text-muted-foreground hover:bg-secondary hover:text-foreground active:bg-secondary/80 transition-all">
-              <span className="font-bold tracking-tight text-sm">EXPLORE EVENTS</span>
-            </Link>
-          </div>
-        </motion.div>
-      </section>
     </div>
   );
 };

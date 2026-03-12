@@ -49,7 +49,7 @@ const Navbar = () => {
             <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain dark:invert-0 invert" />
           </div>
           <span className="font-display font-bold tracking-tighter text-xs text-foreground whitespace-nowrap opacity-0 group-hover/nav:opacity-100 transition-opacity duration-300">
-            KAPRICIOUS
+            KAPRICIOUS'26
           </span>
         </div>
         {navLinks.map((link) => {

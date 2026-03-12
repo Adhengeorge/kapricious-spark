@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, X } from "lucide-react";
+import { Search, X, ArrowRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import ScrollRobot from "@/components/ScrollRobot";
 import { allDepartmentEvents } from "@/data/events/index";
@@ -281,6 +281,13 @@ const HeroSection = () => {
                 transition={{ duration: 0.6, delay: 0.5 }}
                 className="absolute bottom-6 left-0 right-0 md:bottom-10 md:left-10 md:right-auto z-10 text-center md:text-left"
               >
+                <Link
+                  to="/register"
+                  className="inline-flex items-center gap-2 bg-foreground text-background px-5 py-2.5 md:px-6 md:py-3 rounded-full font-bold text-xs md:text-sm tracking-tight hover:opacity-90 active:scale-95 transition-all mb-3 md:mb-4 border border-border/20 shadow-lg"
+                >
+                  REGISTER NOW
+                  <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                </Link>
                 <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold font-display leading-[1.1] hero-gradient-text">
                   KAPRICIOUS'26
                 </h2>

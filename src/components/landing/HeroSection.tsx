@@ -51,8 +51,8 @@ const HeroSection = () => {
   useEffect(() => {
     if (!mobileApi && !desktopApi) return;
 
-    let mobileTimer: ReturnType<typeof window.setTimeout> | undefined;
-    let desktopTimer: ReturnType<typeof window.setTimeout> | undefined;
+    let mobileTimer: number | undefined;
+    let desktopTimer: number | undefined;
 
     const clearMobileTimer = () => {
       if (!mobileTimer) return;

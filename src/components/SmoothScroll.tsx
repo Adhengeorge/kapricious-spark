@@ -12,7 +12,7 @@ const SmoothScroll = () => {
     const lenis = new Lenis({
       duration: 0.95,
       smoothWheel: true,
-      smoothTouch: true,
+      // smoothTouch removed (not in LenisOptions)
       syncTouch: true,
       touchMultiplier: 1.05,
       wheelMultiplier: 1,

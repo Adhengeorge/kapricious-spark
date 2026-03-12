@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, X } from "lucide-react";
+import { Search, X, ArrowRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import ScrollRobot from "@/components/ScrollRobot";
 import { allDepartmentEvents } from "@/data/events/index";

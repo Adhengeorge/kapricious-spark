@@ -42,10 +42,15 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Desktop Vertical Left Navbar */}
-      <nav className="fixed left-6 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-center gap-8 py-10 px-4 bg-card/80 neo-bento border border-border rounded-full">
-        <div className="w-10 h-10 mb-4">
-          <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain dark:invert-0 invert" />
+      {/* Desktop Vertical Left Navbar - expands on hover */}
+      <nav className="fixed left-4 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-start gap-6 py-8 px-3 bg-card/80 neo-bento border border-border rounded-3xl group/nav w-[60px] hover:w-[200px] transition-all duration-300 overflow-hidden">
+        <div className="flex items-center gap-3 px-1 mb-2 min-w-0">
+          <div className="w-8 h-8 shrink-0">
+            <img src="/logo.png" alt="Kapricious Logo" className="w-full h-full object-contain dark:invert-0 invert" />
+          </div>
+          <span className="font-display font-bold tracking-tighter text-xs text-foreground whitespace-nowrap opacity-0 group-hover/nav:opacity-100 transition-opacity duration-300">
+            KAPRICIOUS
+          </span>
         </div>
         {navLinks.map((link) => {
           const Icon = link.icon;
@@ -54,20 +59,23 @@ const Navbar = () => {
             <Link
               key={link.path}
               to={link.path}
-              className={`group relative flex items-center justify-center p-2 rounded-full transition-colors ${
+              className={`flex items-center gap-3 px-2 py-2 rounded-xl transition-colors w-full min-w-0 ${
                 isActive ? "bg-secondary" : "hover:bg-secondary"
               }`}
             >
-              <Icon className={`w-5 h-5 ${isActive ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`} />
-              <span className="absolute left-16 bg-foreground text-background px-3 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+              <Icon className={`w-5 h-5 shrink-0 ${isActive ? "opacity-100" : "opacity-60 group-hover/nav:opacity-100"}`} />
+              <span className={`text-sm font-medium whitespace-nowrap opacity-0 group-hover/nav:opacity-100 transition-opacity duration-300 ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
                 {link.label}
               </span>
             </Link>
           );
         })}
-        <div className="mt-auto">
-          <button onClick={toggleTheme} className="p-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors">
-            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        <div className="mt-auto w-full">
+          <button onClick={toggleTheme} className="flex items-center gap-3 px-2 py-2 rounded-xl bg-secondary hover:bg-secondary/80 transition-colors w-full">
+            {theme === "dark" ? <Sun className="w-4 h-4 shrink-0" /> : <Moon className="w-4 h-4 shrink-0" />}
+            <span className="text-sm font-medium whitespace-nowrap opacity-0 group-hover/nav:opacity-100 transition-opacity duration-300">
+              {theme === "dark" ? "Light" : "Dark"}
+            </span>
           </button>
         </div>
       </nav>

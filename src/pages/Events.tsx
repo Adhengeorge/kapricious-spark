@@ -154,6 +154,11 @@ const Events = () => {
   const location = useLocation();
   const { scrollYProgress } = useScroll();
   const headerY = useTransform(scrollYProgress, [0, 0.1], [0, -30]);
+  const [activeFilter, setActiveFilter] = useState<string>("ALL");
+
+  const filteredDepartments = activeFilter === "ALL"
+    ? departmentEvents
+    : departmentEvents.filter(dept => dept.code === activeFilter);
 
   useEffect(() => {
     if (location.hash) {
@@ -177,7 +182,7 @@ const Events = () => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="text-center mb-20"
+        className="text-center mb-10"
       >
         <motion.div
           initial={{ scale: 0 }}
@@ -209,8 +214,42 @@ const Events = () => {
         />
       </motion.div>
 
+      {/* Department Filter Bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        className="max-w-6xl mx-auto mb-14"
+      >
+        <div className="flex flex-wrap justify-center gap-2 md:gap-2.5">
+          <button
+            onClick={() => setActiveFilter("ALL")}
+            className={`px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest border transition-all duration-300 ${
+              activeFilter === "ALL"
+                ? "bg-foreground text-background border-foreground"
+                : "bg-card border-border text-muted-foreground hover:bg-secondary hover:text-foreground"
+            }`}
+          >
+            All
+          </button>
+          {departmentEvents.map((dept) => (
+            <button
+              key={dept.code}
+              onClick={() => setActiveFilter(dept.code)}
+              className={`px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest border transition-all duration-300 ${
+                activeFilter === dept.code
+                  ? "bg-foreground text-background border-foreground"
+                  : "bg-card border-border text-muted-foreground hover:bg-secondary hover:text-foreground"
+              }`}
+            >
+              {dept.code}
+            </button>
+          ))}
+        </div>
+      </motion.div>
+
       {/* Department Events */}
-      {departmentEvents.map((dept, deptIndex) => (
+      {filteredDepartments.map((dept, deptIndex) => (
         <DepartmentSection key={dept.code} dept={dept} deptIndex={deptIndex} />
       ))}
     </div>

@@ -1,10 +1,10 @@
+import { memo, useRef, useEffect, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, Play, Sparkles } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import { cseEvents, ceEvents, meEvents, eeeEvents, raEvents, sfEvents, eceEvents, culturalEvents } from "@/data/events/index";
 
-// Video backgrounds for specific events (only videos, images use event.image from data files)
+// Video backgrounds for specific events
 const eventMedia: Record<string, { type: "video"; src: string }> = {
   "hackathon": { type: "video", src: "https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" },
   "zap-free-zone": { type: "video", src: "https://videos.pexels.com/video-files/3141208/3141208-uhd_2560_1440_25fps.mp4" },
@@ -21,26 +21,22 @@ const departmentEvents = [
   { code: "SF", name: "Fire & Safety", events: sfEvents },
 ];
 
-const EventCard = ({ event, index }: { event: any; index: number }) => {
+const EventCard = memo(({ event, index }: { event: any; index: number }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const media = eventMedia[event.id];
   const [videoError, setVideoError] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
-  // Fallback image
   const fallbackImage = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=500&fit=crop";
-  
-  // Always use event.image for consistency across cards, detail pages, and registration
   const eventImage = event.image || fallbackImage;
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 60, rotateX: 10 }}
-      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-      transition={{ delay: index * 0.08, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ delay: index * 0.05, duration: 0.4, ease: "easeOut" }}
       id={event.id}
       className="group relative bg-card rounded-large border border-border overflow-hidden hover:border-accent/40 transition-all duration-500 hover:shadow-[0_0_40px_-10px_hsl(var(--accent)/0.2)]"
     >
@@ -52,7 +48,6 @@ const EventCard = ({ event, index }: { event: any; index: number }) => {
               <div className="absolute inset-0 w-full h-full bg-muted animate-pulse" />
             )}
             <video
-              ref={videoRef}
               autoPlay
               loop
               muted
@@ -77,7 +72,6 @@ const EventCard = ({ event, index }: { event: any; index: number }) => {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
         
-        {/* Badge overlay */}
         <div className="absolute top-3 left-3 z-10">
           <span className="px-3 py-1 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 text-[10px] font-bold uppercase tracking-widest text-foreground">
             {event.type === "team" ? `Team (${event.teamSize} max)` : "Individual"}
@@ -113,9 +107,11 @@ const EventCard = ({ event, index }: { event: any; index: number }) => {
       </div>
     </motion.div>
   );
-};
+});
 
-const DepartmentSection = ({ dept, deptIndex }: { dept: typeof departmentEvents[0]; deptIndex: number }) => {
+EventCard.displayName = "EventCard";
+
+const DepartmentSection = memo(({ dept, deptIndex }: { dept: typeof departmentEvents[0]; deptIndex: number }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -123,7 +119,7 @@ const DepartmentSection = ({ dept, deptIndex }: { dept: typeof departmentEvents[
     <div key={dept.code} className="max-w-6xl mx-auto mb-20" ref={ref}>
       <motion.div
         initial={{ opacity: 0, x: -40 }}
-        animate={isInView ? { opacity: 1, x: 0 } : {}}
+        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="mb-10 flex items-end justify-between"
       >
@@ -135,7 +131,7 @@ const DepartmentSection = ({ dept, deptIndex }: { dept: typeof departmentEvents[
         </div>
         <motion.div
           initial={{ scaleX: 0 }}
-          animate={isInView ? { scaleX: 1 } : {}}
+          animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           className="hidden md:block h-px bg-gradient-to-r from-accent/50 to-transparent flex-1 ml-8 origin-left"
         />
@@ -148,7 +144,9 @@ const DepartmentSection = ({ dept, deptIndex }: { dept: typeof departmentEvents[
       </div>
     </div>
   );
-};
+});
+
+DepartmentSection.displayName = "DepartmentSection";
 
 const Events = () => {
   const location = useLocation();
@@ -205,7 +203,6 @@ const Events = () => {
           Explore events across all departments. Thousands in prizes. Choose your challenge and make your mark at Kapricious 2026.
         </motion.p>
 
-        {/* Animated line */}
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}

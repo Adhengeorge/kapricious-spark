@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface ScrollRobotProps {
   className?: string;
@@ -25,6 +25,9 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
   const totalDistanceRef = useRef<number>(1);
   const lastFrameFloatRef = useRef<number>(-1);
   const canvasSizeRef = useRef({ width: 0, height: 0, dpr: 1 });
+  const [imagesReady, setImagesReady] = useState(false);
+  const loadedCountRef = useRef(0);
+  const initialDrawDoneRef = useRef(false);
 
   const updateTrackMetrics = useCallback(() => {
     const track = document.querySelector(".hero-scroll-track") as HTMLElement | null;
@@ -46,7 +49,7 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
 
     const rect = canvas.getBoundingClientRect();
     const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-    const dprCap = isMobile ? 2 : 2;
+    const dprCap = 2;
     const dpr = Math.min(window.devicePixelRatio || 1, dprCap);
     const width = Math.max(1, Math.round(rect.width * dpr));
     const height = Math.max(1, Math.round(rect.height * dpr));
@@ -152,8 +155,11 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
     rafRef.current = window.requestAnimationFrame(renderIfNeeded);
   }, [renderIfNeeded]);
 
+  // Load images and track readiness
   useEffect(() => {
     const images: HTMLImageElement[] = [];
+    loadedCountRef.current = 0;
+    initialDrawDoneRef.current = false;
 
     FRAME_INDICES.forEach((frameIdx, i) => {
       const img = new Image();
@@ -161,6 +167,24 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
       if ("fetchPriority" in img) {
         (img as HTMLImageElement & { fetchPriority?: string }).fetchPriority = i < 12 ? "high" : "auto";
       }
+      img.onload = () => {
+        loadedCountRef.current++;
+        // Draw the first frame as soon as it's ready
+        if (i === 0 && !initialDrawDoneRef.current) {
+          initialDrawDoneRef.current = true;
+          resizeCanvas();
+          updateTrackMetrics();
+          const ctx = ctxRef.current;
+          if (ctx && img.naturalWidth > 0) {
+            drawImageCover(ctx, img, 1);
+          }
+          setImagesReady(true);
+        }
+        // When enough frames loaded, do a full render
+        if (loadedCountRef.current >= 12) {
+          scheduleRender();
+        }
+      };
       img.src = currentFrame(frameIdx);
       images.push(img);
     });
@@ -168,12 +192,11 @@ const ScrollRobot = ({ className = "" }: ScrollRobotProps) => {
     imagesRef.current = images;
     updateTrackMetrics();
     resizeCanvas();
-    scheduleRender();
 
     return () => {
       window.cancelAnimationFrame(rafRef.current);
     };
-  }, [resizeCanvas, scheduleRender, updateTrackMetrics]);
+  }, [resizeCanvas, scheduleRender, updateTrackMetrics, drawImageCover]);
 
   useEffect(() => {
     const handleResize = () => {

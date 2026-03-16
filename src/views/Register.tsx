@@ -8,10 +8,36 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { toast } from "sonner";
 import { z } from "zod";
 import { User, Mail, Phone, GraduationCap, Layers, Calendar, CheckCircle2, CreditCard, ShieldCheck, ArrowRight, Trophy, Sparkles, Zap, Users, AlertTriangle, Loader2 } from "lucide-react";
-import { flagshipEvents, getEventById, culturalEvents, cseEvents, ceEvents, meEvents, eeeEvents, raEvents, sfEvents, eceEvents } from "@/data/events/index";
+import { flagshipEvents, getEventById, mainEvents, cseEvents, ceEvents, meEvents, eeeEvents, raEvents, sfEvents, eceEvents } from "@/data/events/index";
 
 const FLAGSHIP_DEPT_ID = "flagship";
-const CULTURAL_DEPT_ID = "cultural";
+const RAZORPAY_CHECKOUT_SRC = "https://checkout.razorpay.com/v1/checkout.js";
+
+type RazorpayPaymentProof = {
+  orderId: string;
+  paymentId: string;
+  signature: string;
+};
+
+type CouponData = {
+  registrationId: string;
+  participantName: string;
+  participantEmail: string;
+  eventName: string;
+  eventDate: string;
+  venue: string;
+  issuedAt: string;
+  entryCode: string;
+  teamCount: number;
+  eventCategory: string;
+  eventImage?: string;
+};
+
+declare global {
+  interface Window {
+    Razorpay?: any;
+  }
+}
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -20,8 +46,233 @@ const schema = z.object({
   college: z.string().trim().min(1, "College is required").max(200),
 });
 
+const loadRazorpayCheckout = async () => {
+  if (typeof window === "undefined") return false;
+  if (window.Razorpay) return true;
+
+  return new Promise<boolean>((resolve) => {
+    const script = document.createElement("script");
+    script.src = RAZORPAY_CHECKOUT_SRC;
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
+const parseFeeToRupees = (fee: string, teamSize: number) => {
+  if (!fee) return 0;
+  if (/free|nil|none/i.test(fee)) return 0;
+
+  const amountMatch = fee.replace(/,/g, "").match(/(\d+)/);
+  if (!amountMatch) return 0;
+
+  const baseAmount = Number(amountMatch[1]);
+  const perHead = /per\s*(head|participant|member)/i.test(fee);
+  return perHead ? baseAmount * Math.max(teamSize, 1) : baseAmount;
+};
+
+const escapeXml = (value: string) =>
+  value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+
+const base64Encode = (bytes: Uint8Array) => {
+  let binary = "";
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+  }
+  return btoa(binary);
+};
+
+const base64ToBytes = (base64: string) => {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+};
+
+const fetchAsDataUrl = async (url?: string, fallbackType = "image/png") => {
+  if (!url) return null;
+  const res = await fetch(url);
+  if (!res.ok) return null;
+  const contentType = res.headers.get("content-type") || fallbackType;
+  const bytes = new Uint8Array(await res.arrayBuffer());
+  return `data:${contentType};base64,${base64Encode(bytes)}`;
+};
+
+const buildCouponSvg = (coupon: CouponData, qrDataUrl: string, eventImageDataUrl: string | null) => {
+  const safeName = escapeXml(coupon.participantName);
+  const safeEventName = escapeXml(coupon.eventName);
+  const safeVenue = escapeXml(coupon.venue || "TBA");
+  const safeDate = escapeXml(coupon.eventDate || "TBA");
+  const safeCategory = escapeXml(coupon.eventCategory || "Event");
+  const teamLabel = escapeXml(coupon.teamCount > 1 ? `${coupon.teamCount} members` : "Individual");
+  const regLabel = escapeXml(coupon.registrationId.substring(0, 8).toUpperCase());
+  const codeLabel = escapeXml(coupon.entryCode);
+  const fallbackImage =
+    "data:image/svg+xml;base64," +
+    base64Encode(
+      new TextEncoder().encode(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"><rect width="100%" height="100%" fill="#1f2937"/><text x="50%" y="50%" fill="#f9fafb" font-family="Arial" font-size="20" text-anchor="middle">Kapricious 2026</text></svg>`,
+      ),
+    );
+  const eventImage = eventImageDataUrl || fallbackImage;
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="60" y1="60" x2="1140" y2="615" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111827"/>
+      <stop offset="1" stop-color="#1F2937"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#F6D28A"/>
+      <stop offset="1" stop-color="#E7A93E"/>
+    </linearGradient>
+    <clipPath id="posterClip"><rect x="720" y="122" width="390" height="220" rx="28"/></clipPath>
+  </defs>
+  <rect width="1200" height="675" rx="38" fill="#EDE4D6"/>
+  <rect x="18" y="18" width="1164" height="639" rx="30" fill="url(#bg)"/>
+  <rect x="60" y="60" width="1080" height="555" rx="28" fill="#0F172A" stroke="#334155"/>
+  <rect x="60" y="60" width="1080" height="92" rx="28" fill="url(#accent)"/>
+  <text x="96" y="110" fill="#111827" font-family="Arial" font-size="20" font-weight="700" letter-spacing="4">KAPRICIOUS 2026</text>
+  <text x="96" y="136" fill="#3F2E0F" font-family="Arial" font-size="38" font-weight="700">EVENT COUPON</text>
+  <text x="865" y="115" fill="#3F2E0F" font-family="Arial" font-size="16" font-weight="700" letter-spacing="3">ENTRY CODE</text>
+  <text x="865" y="142" fill="#111827" font-family="monospace" font-size="28" font-weight="700">${codeLabel}</text>
+  <text x="96" y="210" fill="#94A3B8" font-family="Arial" font-size="14" font-weight="700" letter-spacing="3">REGISTERED PARTICIPANT</text>
+  <text x="96" y="248" fill="#F8FAFC" font-family="Arial" font-size="34" font-weight="700">${safeName}</text>
+  <text x="96" y="302" fill="#94A3B8" font-family="Arial" font-size="14" font-weight="700" letter-spacing="3">EVENT</text>
+  <text x="96" y="340" fill="#F8FAFC" font-family="Arial" font-size="30" font-weight="700">${safeEventName}</text>
+  <text x="96" y="374" fill="#CBD5E1" font-family="Arial" font-size="18">${safeCategory}</text>
+  <rect x="96" y="420" width="250" height="90" rx="20" fill="#111827" stroke="#334155"/>
+  <text x="120" y="455" fill="#94A3B8" font-family="Arial" font-size="13" font-weight="700" letter-spacing="2">EVENT DATE</text>
+  <text x="120" y="487" fill="#F8FAFC" font-family="Arial" font-size="22" font-weight="700">${safeDate}</text>
+  <rect x="368" y="420" width="300" height="90" rx="20" fill="#111827" stroke="#334155"/>
+  <text x="392" y="455" fill="#94A3B8" font-family="Arial" font-size="13" font-weight="700" letter-spacing="2">VENUE</text>
+  <text x="392" y="487" fill="#F8FAFC" font-family="Arial" font-size="22" font-weight="700">${safeVenue}</text>
+  <rect x="96" y="530" width="250" height="52" rx="18" fill="#111827" stroke="#334155"/>
+  <text x="120" y="562" fill="#94A3B8" font-family="Arial" font-size="13" font-weight="700" letter-spacing="2">TEAM SIZE</text>
+  <text x="244" y="562" fill="#F8FAFC" font-family="Arial" font-size="18" font-weight="700">${teamLabel}</text>
+  <rect x="368" y="530" width="300" height="52" rx="18" fill="#111827" stroke="#334155"/>
+  <text x="392" y="562" fill="#94A3B8" font-family="Arial" font-size="13" font-weight="700" letter-spacing="2">REG ID</text>
+  <text x="480" y="562" fill="#F8FAFC" font-family="monospace" font-size="18" font-weight="700">${regLabel}</text>
+  <rect x="720" y="122" width="390" height="220" rx="28" fill="#0B1220" stroke="#334155"/>
+  <image href="${eventImage}" x="720" y="122" width="390" height="220" preserveAspectRatio="xMidYMid slice" clip-path="url(#posterClip)"/>
+  <rect x="720" y="374" width="170" height="170" rx="24" fill="#F8FAFC"/>
+  <image href="${qrDataUrl}" x="737" y="391" width="136" height="136"/>
+  <text x="912" y="430" fill="#94A3B8" font-family="Arial" font-size="13" font-weight="700" letter-spacing="2">SCAN AT ENTRY</text>
+  <text x="912" y="466" fill="#F8FAFC" font-family="Arial" font-size="24" font-weight="700">Kapricious Pass</text>
+  <text x="912" y="500" fill="#CBD5E1" font-family="Arial" font-size="16">Use this QR and code at check-in.</text>
+  <text x="912" y="540" fill="#EAB308" font-family="Arial" font-size="14" font-weight="700">Carry this coupon with you.</text>
+  <text x="96" y="615" fill="#64748B" font-family="Arial" font-size="14">KMEA Engineering College - Official event coupon for venue verification</text>
+</svg>`;
+};
+
+const renderSvgToJpeg = async (svg: string, width = 1200, height = 675) => {
+  const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  try {
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error("Failed to render coupon artwork."));
+      image.src = url;
+    });
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas not available for coupon generation.");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, width, height);
+    ctx.drawImage(img, 0, 0, width, height);
+    return canvas.toDataURL("image/jpeg", 0.95);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+};
+
+const buildPdfFromJpegDataUrl = (jpegDataUrl: string, width = 1200, height = 675) => {
+  const [, base64] = jpegDataUrl.split(",", 2);
+  const jpegBytes = base64ToBytes(base64);
+  const enc = new TextEncoder();
+  const chunks: Uint8Array[] = [];
+  const offsets: number[] = [0];
+  let length = 0;
+
+  const pushText = (text: string) => {
+    const bytes = enc.encode(text);
+    chunks.push(bytes);
+    length += bytes.length;
+  };
+  const pushBytes = (bytes: Uint8Array) => {
+    chunks.push(bytes);
+    length += bytes.length;
+  };
+  const mark = () => offsets.push(length);
+
+  pushText("%PDF-1.4\n");
+  mark();
+  pushText("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+  mark();
+  pushText("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+  mark();
+  pushText(`3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${width} ${height}] /Resources << /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>\nendobj\n`);
+  const content = `q\n${width} 0 0 ${height} 0 0 cm\n/Im0 Do\nQ`;
+  mark();
+  pushText(`4 0 obj\n<< /Length ${enc.encode(content).length} >>\nstream\n${content}\nendstream\nendobj\n`);
+  mark();
+  pushText(`5 0 obj\n<< /Type /XObject /Subtype /Image /Width ${width} /Height ${height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\nstream\n`);
+  pushBytes(jpegBytes);
+  pushText("\nendstream\nendobj\n");
+
+  const xrefOffset = length;
+  pushText("xref\n0 6\n0000000000 65535 f \n");
+  for (let i = 1; i <= 5; i++) {
+    pushText(`${String(offsets[i]).padStart(10, "0")} 00000 n \n`);
+  }
+  pushText(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`);
+
+  return new Blob(chunks, { type: "application/pdf" });
+};
+
+const downloadDesignedCouponPdf = async (coupon: CouponData) => {
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(coupon.entryCode)}&bgcolor=ffffff&color=111827`;
+  const [qrDataUrl, eventImageDataUrl] = await Promise.all([
+    fetchAsDataUrl(qrUrl, "image/png"),
+    fetchAsDataUrl(coupon.eventImage, "image/jpeg"),
+  ]);
+  if (!qrDataUrl) throw new Error("Unable to generate coupon QR.");
+
+  const couponSvg = buildCouponSvg(coupon, qrDataUrl, eventImageDataUrl);
+  const jpegDataUrl = await renderSvgToJpeg(couponSvg);
+  const pdfBlob = buildPdfFromJpegDataUrl(jpegDataUrl);
+
+  const url = URL.createObjectURL(pdfBlob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = `kapricious-coupon-${coupon.registrationId}.pdf`;
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+  URL.revokeObjectURL(url);
+};
+
 // Floating particles component
 const FloatingParticles = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
       {[...Array(20)].map((_, i) => (
@@ -76,14 +327,12 @@ const Register = () => {
   const preselectedDeptParam = searchParams.get("dept") || searchParams.get("department") || "";
 
   const preselectedFlagship = getEventById(preselectedEvent);
-  const preselectedCultural = culturalEvents.find(ev => ev.id === preselectedEvent);
-  
-  const allDeptEvents = [...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
+
+  const allDeptEvents = [...mainEvents, ...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
   const preselectedDeptEvent = allDeptEvents.find(ev => ev.id === preselectedEvent);
   
   const getInitialDept = () => {
     if (preselectedFlagship) return FLAGSHIP_DEPT_ID;
-    if (preselectedCultural) return CULTURAL_DEPT_ID;
     if (preselectedDeptParam) return preselectedDeptParam;
     if (preselectedDeptEvent && preselectedDeptEvent.department) {
       return preselectedDeptEvent.department;
@@ -92,7 +341,7 @@ const Register = () => {
   };
 
   const [selectedDept, setSelectedDept] = useState(getInitialDept());
-  const [selectedEvent, setSelectedEvent] = useState(preselectedFlagship || preselectedCultural || preselectedDeptEvent ? preselectedEvent : "");
+  const [selectedEvent, setSelectedEvent] = useState(preselectedFlagship || preselectedDeptEvent ? preselectedEvent : "");
   const [form, setForm] = useState({ name: "", email: "", phone: "", college: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [registered, setRegistered] = useState(false);
@@ -102,20 +351,21 @@ const Register = () => {
   const [slotCheckLoading, setSlotCheckLoading] = useState(false);
   const [slotsAvailable, setSlotsAvailable] = useState<number | null>(null);
   const [maxSlots, setMaxSlots] = useState<number | null>(null);
+  const [paymentProof, setPaymentProof] = useState<RazorpayPaymentProof | null>(null);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [couponData, setCouponData] = useState<CouponData | null>(null);
+  const [couponDownloading, setCouponDownloading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
+  const { scrollYProgress } = useScroll();
   const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
   useEffect(() => {
     if (preselectedFlagship) {
       setSelectedDept(FLAGSHIP_DEPT_ID);
       setSelectedEvent(preselectedEvent);
-    } else if (preselectedCultural) {
-      setSelectedDept(CULTURAL_DEPT_ID);
-      setSelectedEvent(preselectedEvent);
     }
-  }, [preselectedEvent, preselectedFlagship, preselectedCultural]);
+  }, [preselectedEvent, preselectedFlagship]);
 
   const { data: departments } = useQuery({
     queryKey: ["departments"],
@@ -129,14 +379,14 @@ const Register = () => {
   const visibleDepartments = departments?.filter((d) => {
     const normalizedCode = (d.code || "").toUpperCase();
     const normalizedName = (d.name || "").toLowerCase();
-    if (["CULTURAL", "FLAGSHIP", "AI"].includes(normalizedCode)) return false;
+    if (["FLAGSHIP", "AI"].includes(normalizedCode)) return false;
     if (normalizedName.includes("artificial intelligence")) return false;
     return true;
   });
 
   useEffect(() => {
     if (!departments || !preselectedEvent) return;
-    if (selectedDept === FLAGSHIP_DEPT_ID || selectedDept === CULTURAL_DEPT_ID) return;
+    if (selectedDept === FLAGSHIP_DEPT_ID) return;
     if (preselectedDeptEvent && preselectedDeptEvent.department) {
       const deptByCode = departments.find(d => d.code === preselectedDeptEvent.department);
       if (deptByCode && selectedDept !== deptByCode.id) {
@@ -169,11 +419,9 @@ const Register = () => {
     if (selectedDept === FLAGSHIP_DEPT_ID) {
       return flagshipEvents.map(e => ({ id: e.id, title: e.title, type: "flagship" }));
     }
-    if (selectedDept === CULTURAL_DEPT_ID) {
-      return culturalEvents.map(e => ({ id: e.id, title: e.title, type: "cultural" }));
-    }
     if (selectedDept && departments) {
       const dept = departments.find(d => d.id === selectedDept);
+      if (dept?.code === "CULTURAL") return mainEvents.map(e => ({ id: e.id, title: e.title }));
       if (dept?.code === "CSE") return cseEvents.map(e => ({ id: e.id, title: e.title }));
       if (dept?.code === "CE") return ceEvents.map(e => ({ id: e.id, title: e.title }));
       if (dept?.code === "ME") return meEvents.map(e => ({ id: e.id, title: e.title }));
@@ -189,9 +437,8 @@ const Register = () => {
 
   const getSelectedEventDetails = () => {
     if (selectedDept === FLAGSHIP_DEPT_ID) return getEventById(selectedEvent);
-    if (selectedDept === CULTURAL_DEPT_ID) return culturalEvents.find(ev => ev.id === selectedEvent);
     if (selectedDept && departments) {
-      const allEvents = [...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
+      const allEvents = [...mainEvents, ...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
       return allEvents.find(ev => ev.id === selectedEvent);
     }
     return undefined;
@@ -199,8 +446,18 @@ const Register = () => {
 
   const selectedEventDetails = getSelectedEventDetails();
 
+  const selectedEventLabel =
+    selectedDept === FLAGSHIP_DEPT_ID
+      ? "Flagship Event"
+      : (selectedEventDetails && "department" in selectedEventDetails && selectedEventDetails.department === "CULTURAL")
+        ? "Cultural Event"
+        : "Department Event";
+
   const isTeamEvent = selectedEventDetails && 'teamSize' in selectedEventDetails && (selectedEventDetails as any).teamSize > 1;
   const maxTeamSize = isTeamEvent ? (selectedEventDetails as any).teamSize : 1;
+  const registrationFeeText = selectedEventDetails && "registrationFee" in selectedEventDetails ? (selectedEventDetails as any).registrationFee || "" : "";
+  const payableRupees = parseFeeToRupees(registrationFeeText, isTeamEvent ? selectedTeamSize : 1);
+  const payableAmountInPaise = payableRupees * 100;
 
   useEffect(() => {
     if (selectedTeamSize > 1) {
@@ -221,6 +478,7 @@ const Register = () => {
     setCurrentStep("details");
     setSlotsAvailable(null);
     setMaxSlots(null);
+    setPaymentProof(null);
   }, [selectedEvent]);
 
   const findDbEventId = (eventTitle: string): string | null => {
@@ -238,8 +496,7 @@ const Register = () => {
   // Get event title from selected event
   const getEventTitle = () => {
     if (selectedDept === FLAGSHIP_DEPT_ID) return getEventById(selectedEvent)?.title || "";
-    if (selectedDept === CULTURAL_DEPT_ID) return culturalEvents.find(ev => ev.id === selectedEvent)?.title || "";
-    const allHardcoded = [...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
+    const allHardcoded = [...mainEvents, ...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
     return allHardcoded.find(ev => ev.id === selectedEvent)?.title || "";
   };
 
@@ -266,6 +523,19 @@ const Register = () => {
       const dbEventId = findDbEventId(eventTitle);
       if (!dbEventId) {
         toast.error("Event not found in database. Please try again later.");
+        return;
+      }
+
+      const normalizedEmail = result.data.email.trim().toLowerCase();
+      const { count: duplicateCount, error: duplicateError } = await supabase
+        .from("registrations")
+        .select("id", { head: true, count: "exact" })
+        .eq("event_id", dbEventId)
+        .eq("email", normalizedEmail);
+
+      if (duplicateError) throw duplicateError;
+      if (duplicateCount && duplicateCount > 0) {
+        toast.error("You’ve already registered for this event with that email.");
         return;
       }
 
@@ -301,8 +571,6 @@ const Register = () => {
     mutationFn: async () => {
       const validated = schema.parse(form);
       const isFlagship = selectedDept === FLAGSHIP_DEPT_ID;
-      const isCultural = selectedDept === CULTURAL_DEPT_ID;
-
       const eventTitle = getEventTitle();
       const dbEventId = findDbEventId(eventTitle);
       const dbDeptId = findDbDeptId(eventTitle);
@@ -340,6 +608,8 @@ const Register = () => {
         department_id: dbDeptId,
         team_size: isTeamEvent ? selectedTeamSize : 1,
         team_members: selectedTeamSize > 1 ? teamMembers.filter(m => m.trim()) : null,
+        transaction_id: paymentProof?.paymentId ?? null,
+        payment_status: paymentProof ? "verified" : "pending",
       }]).select("id").single();
       
       if (error) {
@@ -354,9 +624,9 @@ const Register = () => {
       if (isFlagship) {
         const fe = getEventById(selectedEvent);
         if (fe) { eventDate = fe.date; venue = fe.venue; }
-      } else if (isCultural) {
-        const ce = culturalEvents.find(ev => ev.id === selectedEvent);
-        if (ce) { eventDate = ce.date || ""; venue = ce.venue || ""; }
+      } else if (selectedEventDetails && "department" in selectedEventDetails && selectedEventDetails.department === "CULTURAL") {
+        eventDate = selectedEventDetails.date || "";
+        venue = selectedEventDetails.venue || "";
       } else {
         const { data: eventData } = await supabase
           .from("events")
@@ -378,20 +648,29 @@ const Register = () => {
           venue,
           teamCount: isTeamEvent ? selectedTeamSize : 1,
           eventImage: selectedEventDetails && "image" in selectedEventDetails ? (selectedEventDetails as any).image ?? "" : "",
-          eventCategory:
-            selectedDept === FLAGSHIP_DEPT_ID
-              ? "Flagship Event"
-              : selectedDept === CULTURAL_DEPT_ID
-                ? "Cultural Event"
-                : "Department Event",
+          eventCategory: selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : "Department Event",
         },
       }).catch((err) => { console.error("Email send failed:", err); return null; });
 
       const emailRateLimited = emailRes?.data?.rateLimited === true;
-      return { regData, emailRateLimited };
+      const coupon: CouponData = {
+        registrationId: regData.id,
+        participantName: validated.name,
+        participantEmail: validated.email,
+        eventName,
+        eventDate,
+        venue,
+        issuedAt: new Date().toLocaleString(),
+        entryCode: emailRes?.data?.entryCode || `KAP-${regData.id.substring(0, 6).toUpperCase()}`,
+        teamCount: isTeamEvent ? selectedTeamSize : 1,
+        eventCategory: selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : "Department Event",
+        eventImage: selectedEventDetails && "image" in selectedEventDetails ? (selectedEventDetails as any).image ?? "" : "",
+      };
+      return { regData, emailRateLimited, coupon };
     },
-    onSuccess: ({ emailRateLimited }) => {
+    onSuccess: ({ emailRateLimited, coupon }) => {
       setRegistered(true);
+      setCouponData(coupon);
       if (emailRateLimited) {
         toast.info("Registration successful! However, we couldn't send your event pass right now due to high demand. Please check your email tomorrow or contact the admin for your pass.");
       } else {
@@ -400,14 +679,119 @@ const Register = () => {
       setForm({ name: "", email: "", phone: "", college: "" });
       setSelectedEvent("");
       setCurrentStep("details");
+      setPaymentProof(null);
     },
     onError: (err: Error) => {
       toast.error(err.message);
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const startRazorpayPayment = async () => {
+    if (!selectedEventDetails) return false;
+    if (payableAmountInPaise <= 0) return true;
+
+    const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+    if (!keyId) {
+      toast.info("Payment gateway is not configured yet. Continuing with registration for now.");
+      return true;
+    }
+
+    const loaded = await loadRazorpayCheckout();
+    if (!loaded || !window.Razorpay) {
+      toast.error("Unable to load Razorpay checkout.");
+      return false;
+    }
+
+    setPaymentLoading(true);
+    try {
+      const eventTitle = getEventTitle();
+      const orderRes = await fetch("/api/razorpay/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: payableAmountInPaise,
+          currency: "INR",
+          receipt: `${eventTitle}-${Date.now()}`,
+          notes: { eventTitle, email: form.email.trim().toLowerCase() },
+        }),
+      });
+
+      const orderPayload = await orderRes.json();
+      if (!orderRes.ok || !orderPayload?.order?.id) {
+        throw new Error(orderPayload?.error || "Failed to create payment order.");
+      }
+
+      const paymentResult: RazorpayPaymentProof | null = await new Promise((resolve, reject) => {
+        const checkout = new window.Razorpay({
+          key: keyId,
+          amount: payableAmountInPaise,
+          currency: "INR",
+          name: "Kapricious 2026",
+          description: eventTitle,
+          order_id: orderPayload.order.id,
+          prefill: {
+            name: form.name,
+            email: form.email,
+            contact: form.phone,
+          },
+          notes: { eventTitle },
+          theme: { color: "#22c55e" },
+          handler: (response: any) => {
+            resolve({
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+            });
+          },
+          modal: {
+            ondismiss: () => resolve(null),
+          },
+        });
+        checkout.on("payment.failed", (response: any) => {
+          reject(new Error(response?.error?.description || "Payment failed."));
+        });
+        checkout.open();
+      });
+
+      if (!paymentResult) {
+        toast.info("Payment cancelled.");
+        return false;
+      }
+
+      const verifyRes = await fetch("/api/razorpay/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          razorpay_order_id: paymentResult.orderId,
+          razorpay_payment_id: paymentResult.paymentId,
+          razorpay_signature: paymentResult.signature,
+        }),
+      });
+      const verifyPayload = await verifyRes.json();
+      if (!verifyRes.ok || !verifyPayload?.verified) {
+        throw new Error(verifyPayload?.error || "Payment signature verification failed.");
+      }
+
+      setPaymentProof(paymentResult);
+      toast.success("Payment verified. Finalizing registration...");
+      return true;
+    } catch (error: any) {
+      toast.error(error?.message || "Payment could not be completed.");
+      return false;
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (mutation.isPending || paymentLoading) return;
+
+    if (payableAmountInPaise > 0 && !paymentProof) {
+      const paid = await startRazorpayPayment();
+      if (!paid) return;
+    }
+
     mutation.mutate();
   };
 
@@ -452,13 +836,39 @@ const Register = () => {
           >
             Your registration was successful. We've sent your event pass with a QR code to your email.
           </motion.p>
+          {couponData ? (
+            <motion.button
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.65 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={async () => {
+                try {
+                  setCouponDownloading(true);
+                  await downloadDesignedCouponPdf(couponData);
+                } catch (error: any) {
+                  toast.error(error?.message || "Failed to download designed coupon PDF.");
+                } finally {
+                  setCouponDownloading(false);
+                }
+              }}
+              disabled={couponDownloading}
+              className="w-full mb-3 border border-border rounded-2xl px-6 py-3.5 text-sm font-bold text-foreground hover:bg-secondary/50 transition-all disabled:opacity-60"
+            >
+              {couponDownloading ? "Preparing Designed PDF..." : "Download Coupon PDF"}
+            </motion.button>
+          ) : null}
           <motion.button
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setRegistered(false)}
+            onClick={() => {
+              setRegistered(false);
+              setCouponData(null);
+            }}
             className="w-full bg-foreground text-background rounded-2xl px-6 py-3.5 text-sm font-bold hover:opacity-90 transition-all"
           >
             Register for Another Event
@@ -637,7 +1047,6 @@ const Register = () => {
                               <option key={d.id} value={d.id}>{d.name} ({d.code})</option>
                             ))}
                           </optgroup>
-                          <option value={CULTURAL_DEPT_ID}>🎭 Cultural Events</option>
                         </select>
                       </div>
                     </div>
@@ -678,7 +1087,7 @@ const Register = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-[10px] font-bold tracking-wider uppercase text-accent">
-                              {selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : selectedDept === CULTURAL_DEPT_ID ? "Cultural Event" : "Department Event"}
+                              {selectedEventLabel}
                             </span>
                           </div>
                           <h4 className="font-display font-bold text-foreground truncate">{selectedEventDetails.title}</h4>
@@ -905,9 +1314,11 @@ const Register = () => {
                       <CreditCard className="w-5 h-5 text-muted-foreground" />
                     </div>
                     <h3 className="font-display text-xs font-bold text-foreground mb-1">PAYMENT GATEWAY</h3>
-                    <p className="text-[10px] text-muted-foreground mb-3 uppercase tracking-wider">Coming Soon</p>
+                    <p className="text-[10px] text-muted-foreground mb-3 uppercase tracking-wider">
+                      {payableAmountInPaise > 0 ? "Razorpay Test Mode" : "No Payment Required"}
+                    </p>
                     <div className="flex justify-center gap-2">
-                      {["Razorpay", "Stripe", "Cashfree"].map((g) => (
+                      {["Razorpay", "Test API"].map((g) => (
                         <span key={g} className="rounded-full bg-card border border-border px-2.5 py-0.5 text-[9px] tracking-wider text-muted-foreground">{g}</span>
                       ))}
                     </div>
@@ -922,19 +1333,19 @@ const Register = () => {
                 <div className="p-6 md:p-8">
                   <motion.button
                     type="submit"
-                    disabled={mutation.isPending}
+                    disabled={mutation.isPending || paymentLoading}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     className="group w-full flex items-center justify-center gap-3 bg-foreground text-background rounded-2xl py-4 font-bold text-sm tracking-wider uppercase hover:opacity-90 transition-all disabled:opacity-50"
                   >
-                    {mutation.isPending ? (
+                    {mutation.isPending || paymentLoading ? (
                       <span className="flex items-center gap-2">
                         <span className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
-                        Registering...
+                        {paymentLoading ? "Processing payment..." : "Registering..."}
                       </span>
                     ) : (
                       <>
-                        Confirm Registration
+                        {payableAmountInPaise > 0 ? "Pay & Confirm Registration" : "Confirm Registration"}
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </>
                     )}

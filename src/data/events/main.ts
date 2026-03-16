@@ -1,13 +1,14 @@
-import { DepartmentEvent } from "./types";
+﻿import { DepartmentEvent } from "./types";
 
-export const culturalEvents: DepartmentEvent[] = [
+export const mainEvents: DepartmentEvent[] = [
   {
     id: "fashion-show",
     title: "Fashion Show",
     teamSize: 10,
     registrationFee: "₹250 per head",
     prizePool: "₹75,000",
-    details: "Showcase your creativity and style on the grand runway. Teams present themed fashion collections with coordinated choreography, music, and stunning outfits.",
+    details:
+      "Showcase themed fashion collections with choreography, music, and styling on the main stage runway.",
     prizes: ["🥇 ₹50,000", "🥈 ₹25,000"],
     type: "team",
     department: "CULTURAL",
@@ -18,18 +19,17 @@ export const culturalEvents: DepartmentEvent[] = [
     venue: "Main Auditorium, KMEA Engineering College",
     rules: [
       "Teams of 8-12 members",
-      "Theme must be disclosed during registration",
+      "Theme must be declared during registration",
       "Performance duration: 8-12 minutes",
-      "Costumes and props are team's responsibility",
-      "No vulgarity or offensive content",
-      "Music tracks to be submitted 2 days before",
-      "Judging: Theme (25%), Costumes (25%), Choreography (25%), Overall Impact (25%)"
+      "Costumes and props are team responsibility",
+      "No vulgar or offensive content",
+      "Judging: theme, costumes, choreography, overall impact"
     ],
     highlights: [
       "Grand runway setup",
-      "Professional lighting & sound",
-      "Showcase your creativity",
-      "Massive prize pool"
+      "Professional light and sound",
+      "High-visibility main stage slot",
+      "Largest stage prize pool"
     ]
   },
   {
@@ -38,7 +38,8 @@ export const culturalEvents: DepartmentEvent[] = [
     teamSize: 8,
     registrationFee: "₹250 per head",
     prizePool: "₹75,000",
-    details: "Bring the stage alive with synchronized moves and electrifying performances. Any dance form welcome - classical, western, fusion, or folk.",
+    details:
+      "Bring the stage alive with synchronized choreography across classical, western, fusion, or folk formats.",
     prizes: ["🥇 ₹50,000", "🥈 ₹25,000"],
     type: "team",
     department: "CULTURAL",
@@ -50,17 +51,16 @@ export const culturalEvents: DepartmentEvent[] = [
     rules: [
       "Teams of 6-10 members",
       "Performance duration: 5-8 minutes",
-      "Any dance form allowed",
-      "Props allowed but setup time limited",
-      "Music track to be submitted beforehand",
+      "Any dance style allowed",
+      "Props allowed with limited setup time",
       "No fire, water, or hazardous materials",
-      "Judging: Choreography (30%), Synchronization (30%), Expression (20%), Costumes (20%)"
+      "Judging: choreography, synchronization, expression, costumes"
     ],
     highlights: [
-      "All dance forms welcome",
-      "Professional sound system",
-      "Stage lighting effects",
-      "Exciting performances"
+      "All dance styles welcome",
+      "Pro-stage audio setup",
+      "High-energy audience slot",
+      "Top-tier team prizes"
     ]
   },
   {
@@ -69,7 +69,8 @@ export const culturalEvents: DepartmentEvent[] = [
     teamSize: 4,
     registrationFee: "₹200",
     prizePool: "₹8,000",
-    details: "A unique synchronization challenge where teams perform choreographed steps in perfect unison. Precision and timing are key to victory.",
+    details:
+      "A synchronization challenge where teams perform in perfect unison and timing under fixed music cues.",
     prizes: ["🥇 ₹5,000", "🥈 ₹3,000"],
     type: "team",
     department: "CULTURAL",
@@ -81,16 +82,16 @@ export const culturalEvents: DepartmentEvent[] = [
     rules: [
       "Teams of 4 members",
       "Performance duration: 3-5 minutes",
-      "All members must perform identical steps",
-      "Background music will be provided",
+      "All members must maintain synchronized movement",
+      "Background track will be provided",
       "No props allowed",
-      "Judging: Synchronization (50%), Creativity (25%), Energy (25%)"
+      "Judging: synchronization, creativity, energy"
     ],
     highlights: [
-      "Test your coordination",
-      "Fun team challenge",
-      "Quick rounds",
-      "Exciting format"
+      "Precision choreography format",
+      "Fast, high-intensity rounds",
+      "Strong crowd engagement",
+      "Dedicated sync-scoring panel"
     ]
   },
   {
@@ -99,7 +100,8 @@ export const culturalEvents: DepartmentEvent[] = [
     teamSize: 1,
     registrationFee: "₹100",
     prizePool: "₹3,000",
-    details: "Capture the essence of the fest through your lens. A theme will be announced on spot, and you have limited time to click the best shots.",
+    details:
+      "Capture the fest through your lens after an on-spot theme reveal and submit your best framed shots.",
     prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
     type: "individual",
     department: "CULTURAL",
@@ -110,27 +112,27 @@ export const culturalEvents: DepartmentEvent[] = [
     venue: "Campus Wide, KMEA Engineering College",
     rules: [
       "Individual participation",
-      "Bring your own camera/smartphone",
-      "Theme announced at start",
-      "Time limit: 2 hours for shooting",
-      "Submit best 3 photos",
-      "Basic editing allowed, no heavy manipulation",
-      "Judging: Creativity (40%), Theme relevance (30%), Technical quality (30%)"
+      "Theme announced at event start",
+      "Bring your own camera or smartphone",
+      "Submit best 3 photos only",
+      "Basic color correction allowed",
+      "Judging: creativity, theme relevance, technical quality"
     ],
     highlights: [
-      "Explore your creativity",
-      "Capture fest moments",
-      "Any camera allowed",
-      "On-spot theme"
+      "On-spot theme challenge",
+      "Open format camera participation",
+      "Campus photo trails",
+      "Curated jury review"
     ]
   },
   {
     id: "star-of-kapricious",
     title: "Star of Kapricious",
     teamSize: 1,
-    registrationFee: "₹350",
+    registrationFee: "₹250",
     prizePool: "₹15,000",
-    details: "The ultimate talent showcase! Sing, dance, perform standup, play instruments, or showcase any unique talent. The stage is yours to shine.",
+    details:
+      "A grand talent showcase where individuals perform singing, dancing, standup, instrumental, or any unique act on the main stage.",
     prizes: ["🥇 ₹10,000", "🥈 ₹5,000"],
     type: "individual",
     department: "CULTURAL",
@@ -143,17 +145,15 @@ export const culturalEvents: DepartmentEvent[] = [
       "Individual participation only",
       "Any talent welcome: singing, dancing, comedy, instruments, etc.",
       "Performance duration: 3-5 minutes",
-      "Bring your own instruments/props if needed",
-      "Pre-recorded music allowed for singers",
-      "Preliminary round may be held if entries exceed limit",
-      "Judging: Talent (40%), Stage presence (30%), Audience engagement (30%)"
+      "Bring your own instruments or props",
+      "Pre-recorded tracks allowed for singers",
+      "Judging: talent (40%), stage presence (30%), audience engagement (30%)"
     ],
     highlights: [
-      "Showcase ANY talent",
-      "Grand stage",
+      "Grand stage with pro lighting",
       "Celebrity judges",
+      "Showcase any talent",
       "Biggest individual prize"
     ]
   }
 ];
-

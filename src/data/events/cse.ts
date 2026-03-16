@@ -1,193 +1,200 @@
-import { DepartmentEvent } from "./types";
+﻿import { DepartmentEvent } from "./types";
 
 export const cseEvents: DepartmentEvent[] = [
   {
     id: "prompt-wars",
     title: "Prompt Wars",
     teamSize: 1,
-    registrationFee: "₹50",
+    registrationFee: "₹100 per participant",
     prizePool: "₹3,000",
-    details: "Participants craft optimized prompts to generate the best AI output under given constraints.",
+    details:
+      "Engineering creative prompts to generate the best AI output under specific constraints. Judges evaluate precision, clarity, and results.",
     prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
     type: "individual",
     department: "CSE",
     departmentName: "Computer Science & Engineering",
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "10:00 AM - 12:00 PM",
-    venue: "Computer Lab, KMEA Engineering College",
+    venue: "AI Lab, KMEA Engineering College",
     rules: [
       "Individual participation",
-      "Time limit: 60 minutes",
-      "Multiple AI tasks will be given",
-      "Best prompt engineering wins",
-      "ChatGPT/Gemini will be used",
-      "Judging: Accuracy, Creativity, Efficiency"
+      "60 minutes per round",
+      "Pre-defined datasets and prompts provided",
+      "Best output judged on relevance, creativity, and utility",
+      "No internet access beyond the provided tools",
+      "Multiple stages: creation, refinement, evaluation"
     ],
     highlights: [
-      "Learn AI prompting",
-      "Latest AI technology",
-      "Industry-relevant skill",
-      "Exciting challenges"
+      "Master prompt engineering",
+      "Work with generative AI",
+      "Tight technical constraints",
+      "Judged by AI experts"
     ]
   },
   {
     id: "bug-bounty",
     title: "Bug Bounty",
     teamSize: 1,
-    registrationFee: "₹50",
-    prizePool: "₹3,000",
-    details: "Participants fix buggy code within a time limit.",
-    prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
+    registrationFee: "₹50 per participant",
+    prizePool: "₹1,500",
+    details:
+      "Participants hunt and patch bugs in provided code. Speed, accuracy, and clean fixes determine the winners.",
+    prizes: ["🥇 ₹1,000", "🥈 ₹500"],
     type: "individual",
     department: "CSE",
     departmentName: "Computer Science & Engineering",
     image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "11:00 AM - 1:00 PM",
-    venue: "Computer Lab, KMEA Engineering College",
+    date: "March 27, 2026",
+    time: "2:00 PM - 4:00 PM",
+    venue: "Cyber Lab, KMEA Engineering College",
     rules: [
       "Individual participation",
-      "Time limit: 90 minutes",
-      "Code in Python/Java/C++",
-      "Fix all bugs to score",
-      "More bugs fixed = More points",
-      "Fastest correct solution wins"
+      "90-minute timeframe",
+      "Codebases in Python, JavaScript, or C++",
+      "Each bug has predefined score",
+      "Submissions must include fixed file and explanation",
+      "More bugs fixed and cleaner patches score higher"
     ],
     highlights: [
-      "Real-world debugging",
+      "Real debugging experience",
       "Multiple languages",
-      "Test your skills",
-      "Great practice"
+      "Score by efficiency",
+      "Platform-agnostic challenges"
     ]
   },
   {
     id: "css-royale",
     title: "CSS Royale",
     teamSize: 1,
-    registrationFee: "₹50",
-    prizePool: "₹3,000",
-    details: "Design a visually appealing webpage using only HTML & CSS.",
-    prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
+    registrationFee: "₹50 per participant",
+    prizePool: "₹1,500",
+    details:
+      "Design a visually striking layout using only HTML and CSS. Judges look for creativity, responsiveness, and mastery of modern CSS techniques.",
+    prizes: ["🥇 ₹1,000", "🥈 ₹500"],
     type: "individual",
     department: "CSE",
     departmentName: "Computer Science & Engineering",
     image: "https://images.unsplash.com/photo-1621839673705-6617adf9e890?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
-    time: "2:00 PM - 4:00 PM",
-    venue: "Computer Lab, KMEA Engineering College",
+    time: "10:00 AM - 12:00 PM",
+    venue: "Frontend Lab, KMEA Engineering College",
     rules: [
       "Individual participation",
-      "Only HTML & CSS allowed",
-      "No JavaScript",
-      "Time limit: 2 hours",
-      "Design given at start",
-      "Judging: Visual accuracy, Creativity, Code quality"
+      "Only HTML and CSS allowed",
+      "No JavaScript or frameworks",
+      "Two-hour time limit",
+      "Responsive layout required",
+      "Judging: aesthetics, structure, responsiveness"
     ],
     highlights: [
-      "Pure CSS challenge",
-      "No frameworks",
-      "Test frontend skills",
-      "Portfolio material"
+      "Pure CSS creativity",
+      "Responsive design challenge",
+      "Ideal for frontenders",
+      "Showcase your design skills"
     ]
   },
   {
-    id: "no-run-ninja",
-    title: "NO-Run Ninja",
+    id: "build-a-pc",
+    title: "Build a PC",
     teamSize: 1,
-    registrationFee: "₹50",
+    registrationFee: "₹100 per participant",
     prizePool: "₹3,000",
-    details: "Participants write code without compiling or running it.",
+    details:
+      "Assemble a complete working PC from provided components. Points for speed, cable management, and performance tuning.",
     prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
     type: "individual",
     department: "CSE",
     departmentName: "Computer Science & Engineering",
-    image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1200&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
-    time: "10:00 AM - 11:30 AM",
-    venue: "Computer Lab, KMEA Engineering College",
+    time: "2:00 PM - 4:00 PM",
+    venue: "Hardware Lab, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "No running/compiling allowed",
-      "Paper-based submission",
-      "Code must be logically correct",
-      "Time limit: 60 minutes",
-      "Judging by expert panel"
+      "Individual participants",
+      "Components provided on-site",
+      "Time limit: 90 minutes",
+      "Must boot into BIOS and run basic diagnostics",
+      "Presentation on build choices encouraged",
+      "Bonus points for cable management and cooling"
     ],
     highlights: [
-      "Test logical thinking",
-      "Pure coding skill",
-      "No debugging allowed",
-      "Mental challenge"
+      "Hands-on hardware skill",
+      "Build and tune PCs",
+      "Judged on performance",
+      "Great for engineering portfolios"
     ]
   },
   {
     id: "code-catastrophe",
     title: "Code Catastrophe",
     teamSize: 1,
-    registrationFee: "₹50",
-    prizePool: "₹3,000",
-    details: "Write the most chaotic but functional code. Creativity in confusion wins.",
-    prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
+    registrationFee: "₹50 per participant",
+    prizePool: "₹1,500",
+    details:
+      "Write chaotic yet functional code. Balance creativity and correctness while embracing unconventional solutions.",
+    prizes: ["🥇 ₹1,000", "🥈 ₹500"],
     type: "individual",
     department: "CSE",
     departmentName: "Computer Science & Engineering",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "3:00 PM - 4:30 PM",
-    venue: "Computer Lab, KMEA Engineering College",
+    date: "March 27, 2026",
+    time: "4:00 PM - 6:00 PM",
+    venue: "Innovation Studio, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Code must work correctly",
-      "More chaotic = More points",
+      "Solo coding challenge",
       "Time limit: 90 minutes",
-      "Any language allowed",
-      "Judging: Chaos level, Creativity, Functionality"
+      "Any programming language allowed",
+      "Code must be functional and pass provided tests",
+      "Creativity bonus for unique solutions",
+      "Judging: functionality, uniqueness, flair"
     ],
     highlights: [
-      "Fun coding challenge",
-      "Break all conventions",
-      "Creative coding",
-      "Unique competition"
+      "Fun coding format",
+      "Break conventions intentionally",
+      "Creative and functional",
+      "Unique prize categories"
     ]
   },
   {
     id: "tech-escape-room",
-    title: "TECH ESCAPE ROOM",
+    title: "Tech Escape Room",
     teamSize: 4,
     registrationFee: "₹200 per team",
-    prizePool: "₹6,000",
-    details: "A QR-based interactive technical escape challenge where teams solve encryption, debugging, and logic puzzles to regain system control within 60 minutes.",
-    prizes: ["🥇 ₹4,000", "🥈 ₹2,000"],
+    prizePool: "₹5,000",
+    details:
+      "Decode encryptions, crack logic puzzles, and debug systems to escape the themed room before time runs out.",
+    prizes: ["🥇 ₹3,000", "🥈 ₹2,000"],
     type: "team",
     department: "CSE",
     departmentName: "Computer Science & Engineering",
     image: "https://images.unsplash.com/photo-1489389944381-3471b5b30f04?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "2:00 PM - 5:00 PM",
+    date: "March 27, 2026",
+    time: "6:00 PM - 9:00 PM",
     venue: "CSE Department, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "60 minutes time limit",
+      "Teams of up to four members",
+      "60-minute cumulative time limit",
+      "No outside help allowed",
       "Solve all puzzles to escape",
-      "QR codes for clues",
-      "No external help",
+      "QR clues will be distributed",
       "Fastest escape wins"
     ],
     highlights: [
-      "Immersive experience",
-      "Technical puzzles",
-      "Team collaboration",
-      "Thrilling challenge"
+      "Immersive puzzle room",
+      "Technical and logical challenges",
+      "Team collaboration vital",
+      "Thrilling timed format"
     ]
   },
   {
     id: "hackathon",
     title: "Hackathon",
     teamSize: 4,
-    registrationFee: "₹200",
+    registrationFee: "₹400 per team",
     prizePool: "₹15,000",
-    details: "A team-based innovation challenge where participants build a working prototype within a fixed duration.",
+    details:
+      "A 12-hour innovation sprint where teams build a working prototype addressing real-world problems.",
     prizes: ["🥇 ₹10,000", "🥈 ₹5,000"],
     type: "team",
     department: "CSE",
@@ -195,20 +202,20 @@ export const cseEvents: DepartmentEvent[] = [
     image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
     time: "9:00 AM - 9:00 PM",
-    venue: "Computer Lab Complex, KMEA Engineering College",
+    venue: "Hack Lab, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "12-hour coding marathon",
-      "Problem statement at start",
-      "Working prototype required",
+      "Teams of up to four members",
+      "12-hour hack window",
+      "Problem statement announced at kickoff",
+      "Working prototype mandatory",
       "Any tech stack allowed",
-      "Judging: Innovation, Implementation, Presentation"
+      "Judge on innovation, implementation, presentation"
     ],
     highlights: [
-      "Full-day hackathon",
-      "Build real projects",
-      "Mentorship available",
-      "Biggest prize pool"
+      "Full-day coding marathon",
+      "Build real-world solutions",
+      "Mentors on standby",
+      "Biggest prizes of the fest"
     ]
   }
 ];

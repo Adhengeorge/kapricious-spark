@@ -1,73 +1,76 @@
-import { DepartmentEvent } from "./types";
+﻿import { DepartmentEvent } from "./types";
 
 export const meEvents: DepartmentEvent[] = [
   {
     id: "assemble-x",
-    title: "ASSEMBLE X (VR-based EV Assembly Challenge)",
+    title: "Assemble-X (EV Edition)",
     teamSize: 1,
     registrationFee: "₹100 per team",
     prizePool: "₹7,500",
-    details: "A VR-based EV assembly challenge testing speed, precision, technical skills, and innovation.",
+    details:
+      "A VR-based Electric Vehicle assembly challenge where participants assemble EV components in a simulated factory. The event tests speed, precision, technical knowledge, and innovation.",
     prizes: ["🥇 ₹5,000", "🥈 ₹2,500"],
     type: "individual",
     department: "ME",
     departmentName: "Mechanical Engineering",
     image: "https://images.unsplash.com/photo-1617802690992-15d93263d3a9?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "10:00 AM - 1:00 PM",
+    date: "March 27, 2026",
+    time: "10:00 AM - 12:30 PM",
     venue: "VR Lab, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "VR equipment will be provided",
-      "Complete EV assembly in VR environment",
-      "Fastest accurate assembly wins",
-      "No prior VR experience required",
-      "Safety briefing mandatory"
+      "Solo participants only",
+      "VR headsets and tools provided",
+      "Complete the EV assembly within the time limit",
+      "Accuracy and innovation are both scored",
+      "No external references or help allowed",
+      "Final ranking combines speed + precision"
     ],
     highlights: [
-      "Cutting-edge VR technology",
-      "Electric vehicle assembly",
-      "Immersive experience",
-      "Learn EV components"
+      "Immersive VR assembly",
+      "Electric vehicle focus",
+      "Precision and innovation scoring",
+      "Hands-on technical challenge"
     ]
   },
   {
     id: "rc-trails",
-    title: "RC-TRAILS",
+    title: "RC Trails",
     teamSize: 1,
     registrationFee: "₹200 per team",
     prizePool: "₹4,500",
-    details: "High-speed RC lap time challenge testing precision, control, and fastest track performance.",
+    details:
+      "A high-speed remote-control vehicle lap-time challenge where participants race against the clock while maintaining control and precision.",
     prizes: ["🥇 ₹3,000", "🥈 ₹1,500"],
     type: "individual",
     department: "ME",
     departmentName: "Mechanical Engineering",
-    image: "https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "2:00 PM - 5:00 PM",
-    venue: "Outdoor Track, KMEA Engineering College",
+    image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1200&h=600&fit=crop",
+    date: "March 27, 2026",
+    time: "2:30 PM - 5:00 PM",
+    venue: "Outdoor RC Track, KMEA Engineering College",
     rules: [
       "Individual participation",
-      "Bring your own RC car or use provided",
-      "Multiple laps, best time counts",
-      "Track boundaries must be followed",
-      "No modifications during race",
-      "Battery swaps allowed between runs"
+      "Bring your own RC vehicle or use the provided fleet",
+      "Multiple laps; best lap time counts",
+      "Stay within track boundaries",
+      "Battery swaps only in the pit area",
+      "Judging prioritises speed and vehicle control"
     ],
     highlights: [
-      "Exciting RC racing",
-      "Professional track setup",
-      "Multiple attempts",
-      "Thrilling competition"
+      "Professional RC circuit",
+      "Speed and handling challenge",
+      "Multiple timed laps",
+      "Thrilling crowd experience"
     ]
   },
   {
     id: "cad-combat",
-    title: "CAD COMBAT",
+    title: "CAD Combat",
     teamSize: 1,
     registrationFee: "₹100 per participant",
     prizePool: "₹3,000",
-    details: "CAD design challenge testing precision, creativity, and engineering skills.",
+    details:
+      "Create accurate and creative CAD models within a limited time. The judges evaluate design clarity, engineering understanding, and finishing skills.",
     prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
     type: "individual",
     department: "ME",
@@ -77,18 +80,18 @@ export const meEvents: DepartmentEvent[] = [
     time: "10:00 AM - 12:00 PM",
     venue: "CAD Lab, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Software: AutoCAD/SolidWorks/Fusion 360",
-      "Time limit: 90 minutes",
-      "Design problem given at start",
-      "Accuracy and creativity judged",
-      "File submission in standard format"
+      "Solo participants only",
+      "Use AutoCAD, SolidWorks, or Fusion 360",
+      "Problem statement disclosed at the start",
+      "90-minute window to complete the model",
+      "Submit final file along with a short design rationale",
+      "Judging: precision, creativity, feasibility"
     ],
     highlights: [
-      "Industry-standard CAD software",
-      "Real engineering problems",
-      "Skill-based competition",
-      "Great for portfolio"
+      "Industry-standard CAD tools",
+      "Real-world engineering briefs",
+      "Precise measurements matter",
+      "Great for design portfolios"
     ]
   },
   {
@@ -97,7 +100,8 @@ export const meEvents: DepartmentEvent[] = [
     teamSize: 2,
     registrationFee: "₹50 per participant",
     prizePool: "₹1,500",
-    details: "Technical mechanical quiz testing core concepts, speed, accuracy, and engineering knowledge.",
+    details:
+      "A rapid-fire quiz covering core mechanical engineering concepts. Teams are tested on speed, accuracy, and depth of knowledge.",
     prizes: ["🥇 ₹1,000", "🥈 ₹500"],
     type: "team",
     department: "ME",
@@ -107,57 +111,59 @@ export const meEvents: DepartmentEvent[] = [
     time: "11:00 AM - 1:00 PM",
     venue: "Seminar Hall, KMEA Engineering College",
     rules: [
-      "Teams of 2 members",
-      "Multiple rounds",
-      "Mechanical engineering topics",
-      "No electronic devices",
-      "Negative marking applies",
-      "Finals: Rapid fire round"
+      "Teams of two members",
+      "Written and buzzer rounds",
+      "Topics: mechanics, materials, fluids, dynamics",
+      "No electronic aids allowed",
+      "Negative marking for wrong answers",
+      "Final rapid fire decides the winners"
     ],
     highlights: [
-      "Test your ME knowledge",
+      "Core ME brain-teasers",
+      "Team synergy matters",
       "Multi-round format",
-      "Team collaboration",
-      "Exciting finals"
+      "High-energy buzzer finale"
     ]
   },
   {
     id: "sustainable-innovation-pitching",
-    title: "SUSTAINABLE INNOVATION PITCHING",
+    title: "Sustainable Innovation Pitching",
     teamSize: 4,
     registrationFee: "₹100 per participant",
     prizePool: "₹3,000",
-    details: "Sustainability innovation pitch showcasing impactful, feasible, eco-friendly engineering solutions.",
+    details:
+      "Pitch eco-friendly engineering solutions to real challenges. Teams present the idea, prototype, and impact roadmap to industry judges.",
     prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
     type: "team",
     department: "ME",
     departmentName: "Mechanical Engineering",
     image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "2:00 PM - 5:00 PM",
+    date: "March 27, 2026",
+    time: "2:00 PM - 4:30 PM",
     venue: "Conference Hall, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "Pitch duration: 10 minutes",
-      "Q&A: 5 minutes",
-      "Presentation slides required",
-      "Prototype/model preferred",
-      "Judging: Innovation, Feasibility, Impact, Presentation"
+      "Teams of up to four members",
+      "Pitch duration: 10 minutes + 5 minutes Q&A",
+      "Presenters must highlight sustainability metrics",
+      "Prototype or mock-up encouraged",
+      "Judging: innovation, feasibility, impact, delivery",
+      "Slide deck submission required"
     ],
     highlights: [
-      "Showcase sustainable ideas",
-      "Industry expert judges",
-      "Networking opportunity",
-      "Make real impact"
+      "Sustainability-first pitching",
+      "Connect with industry mentors",
+      "Showcase prototypes",
+      "Networking opportunity"
     ]
   },
   {
     id: "lathe-master",
-    title: "LATHE MASTER",
+    title: "Lathe Master",
     teamSize: 1,
     registrationFee: "₹100",
     prizePool: "₹3,000",
-    details: "Hands-on machining contest where participants shape raw material into a finished mechanical component using a lathe.",
+    details:
+      "A hands-on machining contest that challenges participants to convert raw material into a precision component using a lathe machine.",
     prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
     type: "individual",
     department: "ME",
@@ -165,20 +171,20 @@ export const meEvents: DepartmentEvent[] = [
     image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
     time: "10:00 AM - 1:00 PM",
-    venue: "Workshop, KMEA Engineering College",
+    venue: "Mechanical Workshop, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Safety gear mandatory",
+      "Solo participation only",
+      "Safety gear must be worn at all times",
       "Time limit: 45 minutes",
       "Raw material and tools provided",
-      "Judging: Accuracy, Finish, Time",
-      "Safety violations may disqualify"
+      "Judging: accuracy, surface finish, time",
+      "Safety violations lead to disqualification"
     ],
     highlights: [
       "Real machining experience",
-      "Work on actual lathe",
-      "Learn workshop skills",
-      "Certificate for all"
+      "Work on industrial lathe",
+      "Precision-focused challenge",
+      "Certificates for all"
     ]
   }
 ];

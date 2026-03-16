@@ -1,124 +1,159 @@
-import { DepartmentEvent } from "./types";
+﻿import { DepartmentEvent } from "./types";
 
 export const raEvents: DepartmentEvent[] = [
   {
-    id: "robo-soccer",
-    title: "Robo Soccer",
+    id: "robosoccer",
+    title: "Robosoccer",
     teamSize: 4,
-    registrationFee: "₹50 per participant",
-    prizePool: "₹3,000",
-    details: "A thrilling robot soccer competition where teams control robots to score goals and win.",
-    prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
+    registrationFee: "₹50 per member",
+    prizePool: "₹1,000",
+    details:
+      "Teams deliver autonomous robots that play soccer on a mini pitch. Strategy, agility, and teamwork decide the score.",
+    prizes: ["🥇 ₹1,000"],
     type: "team",
     department: "RAE",
     departmentName: "Robotics & Automation Engineering",
     image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "10:00 AM - 1:00 PM",
-    venue: "Robotics Lab, KMEA Engineering College",
+    venue: "Robotics Arena, KMEA Engineering College",
     rules: [
-      "Teams of 2-4 members",
-      "Robots must be autonomous or remote controlled",
-      "Maximum robot dimensions: 30cm x 30cm x 30cm",
-      "Match duration: 5 minutes",
-      "No ramming or damaging opponent robots",
-      "Highest goals scored wins"
+      "Teams of up to four members",
+      "Robots may be remote controlled or autonomous",
+      "Robot dimensions limited to 30 cm cube",
+      "Match duration: 5 minutes per half",
+      "No deliberate damage to opponent robots",
+      "Judging: goals scored, fair play, design"
     ],
     highlights: [
-      "Exciting robot matches",
-      "Work with real robots",
-      "Team competition format",
-      "Attractive prizes"
+      "High-energy robot soccer",
+      "Compact robotics arena",
+      "Strategy meets precision",
+      "Huge prize pool"
     ]
   },
   {
     id: "line-tracer",
     title: "Line Tracer",
     teamSize: 4,
-    registrationFee: "₹80 per participant",
-    prizePool: "₹4,000",
-    details: "Build and program a robot to follow a line track with speed and precision.",
-    prizes: ["🥇 ₹2,500", "🥈 ₹1,500"],
+    registrationFee: "₹80 per member",
+    prizePool: "₹1,000",
+    details:
+      "Build and program a robot that follows a complex line track with speed and accuracy.",
+    prizes: ["🥇 ₹1,000"],
     type: "team",
     department: "RAE",
     departmentName: "Robotics & Automation Engineering",
     image: "https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "2:00 PM - 5:00 PM",
     venue: "Robotics Lab, KMEA Engineering College",
     rules: [
-      "Teams of 2-4 members",
-      "Robot must follow black line on white surface",
-      "Track includes curves and intersections",
-      "Fastest completion time wins",
-      "Robot must complete track without manual intervention",
-      "Multiple attempts allowed, best time counts"
+      "Teams of up to four members",
+      "Robot must follow the black line on a white surface",
+      "Track includes tight curves and intersections",
+      "Fastest completion wins",
+      "No manual intervention during the run",
+      "Judging: speed, precision, innovation"
     ],
     highlights: [
-      "Design your own line follower",
+      "Precision line tracking",
       "Challenging track layout",
-      "Speed-based competition",
+      "Speed and control",
       "Learn robotics fundamentals"
     ]
   },
   {
-    id: "vibe-coding-ideathon",
-    title: "Vibe Coding Ideathon",
-    teamSize: 4,
-    registrationFee: "₹100 per participant",
-    prizePool: "₹8,000",
-    details: "An innovative ideathon where teams develop creative coding solutions to real-world problems.",
-    prizes: ["🥇 ₹5,000", "🥈 ₹3,000"],
-    type: "team",
+    id: "innovatex",
+    title: "InnovateX – Robotics & Tech Talks",
+    teamSize: 1,
+    registrationFee: "Free",
+    prizePool: "None",
+    details:
+      "A speaker series featuring robotics innovators who share insights on automation, AI, and real-world implementations.",
+    prizes: ["Knowledge & networking"],
+    type: "individual",
     department: "RAE",
     departmentName: "Robotics & Automation Engineering",
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "9:00 AM - 6:00 PM",
-    venue: "Computer Lab, KMEA Engineering College",
+    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop",
+    date: "March 27, 2026",
+    time: "4:00 PM - 5:30 PM",
+    venue: "Robotics Innovation Hall, KMEA Engineering College",
     rules: [
-      "Teams of 2-4 members",
-      "Problem statement given at start",
-      "Duration: 6 hours",
-      "Any programming language allowed",
-      "Working prototype required for submission",
-      "Judging: Innovation (40%), Implementation (35%), Presentation (25%)"
+      "Open to everyone",
+      "Seats on a first-come basis",
+      "Q&A after each talk",
+      "Professional conduct required",
+      "Recordings for internal use only",
+      "Respect the speaker schedule"
     ],
     highlights: [
-      "Full-day coding marathon",
-      "Real-world problem solving",
-      "Mentorship available",
-      "Networking with peers"
+      "Expert robotics talks",
+      "Live Q&A",
+      "Networking with scientists",
+      "Inspiration for new projects"
     ]
   },
   {
-    id: "circuit-rush",
-    title: "Circuit Rush",
-    teamSize: 3,
-    registrationFee: "₹50 per participant",
-    prizePool: "₹5,500",
-    details: "A fast-paced circuit building challenge testing your electronics knowledge and speed.",
-    prizes: ["🥇 ₹3,000", "🥈 ₹2,500"],
-    type: "team",
+    id: "tech-insights",
+    title: "Tech Insights – Expert Talk (NPOL Scientist)",
+    teamSize: 1,
+    registrationFee: "Free",
+    prizePool: "None",
+    details:
+      "A fireside session with an NPOL scientist covering robotics research, defense automation, and emerging technologies.",
+    prizes: ["Thought leadership"],
+    type: "individual",
     department: "RAE",
     departmentName: "Robotics & Automation Engineering",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
-    time: "11:00 AM - 1:00 PM",
-    venue: "Electronics Lab, KMEA Engineering College",
+    time: "10:00 AM - 11:30 AM",
+    venue: "Conference Hall, KMEA Engineering College",
     rules: [
-      "Teams of 2-3 members",
-      "Build given circuit within time limit",
-      "All components provided",
-      "Circuit must be functional",
-      "Fastest working circuit wins",
-      "Safety guidelines must be followed"
+      "Free entry",
+      "Audience participation encouraged",
+      "Photography allowed with permission",
+      "Maintain decorum at all times",
+      "Session open for limited seats",
+      "No commercial promotions"
     ],
     highlights: [
-      "Speed circuit building",
-      "Test practical skills",
-      "Team coordination required",
-      "Exciting competition format"
+      "Science-driven talk",
+      "Learn from an NPOL expert",
+      "Future of robotics",
+      "Close-up on defense automation"
+    ]
+  },
+  {
+    id: "path-to-pitch",
+    title: "Path to Pitch – Robotics Workshop",
+    teamSize: 1,
+    registrationFee: "Free",
+    prizePool: "None",
+    details:
+      "Hands-on workshop covering robotics prototyping, pitching to investors, and preparing demo scripts for automations.",
+    prizes: ["Workshop kit"],
+    type: "individual",
+    department: "RAE",
+    departmentName: "Robotics & Automation Engineering",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop",
+    date: "March 28, 2026",
+    time: "2:00 PM - 4:00 PM",
+    venue: "Robotics Studio, KMEA Engineering College",
+    rules: [
+      "Prior registration required",
+      "Bring your own notebook or laptop",
+      "Materials will be shared in small batches",
+      "Participate in quick pitch rounds",
+      "Collaboration encouraged",
+      "Completion certificate provided"
+    ],
+    highlights: [
+      "Pitch readiness",
+      "Prototyping fundamentals",
+      "Mentorship on demos",
+      "Interactive learning"
     ]
   }
 ];

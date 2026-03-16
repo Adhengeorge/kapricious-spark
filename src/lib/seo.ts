@@ -10,7 +10,7 @@ export const SITE_NAME = "Kapricious 2026";
 export const SITE_TITLE =
   "Kapricious 2026 | Tech Fest at KMEA Engineering College, Edathala, Aluva";
 export const DEFAULT_DESCRIPTION =
-  "Kapricious 2026 is the flagship tech fest of KMEA Engineering College, Edathala, Aluva, Kerala. Explore flagship events, department competitions, cultural programs, and registrations for March 27-28, 2026.";
+  "Kapricious 2026 is the flagship tech fest of KMEA Engineering College, Edathala, Aluva, Kerala. Explore flagship events, department competitions, cultural events, and registrations for March 27-28, 2026.";
 export const DEFAULT_KEYWORDS = [
   "Kapricious 2026",
   "KMEA tech fest",
@@ -20,7 +20,8 @@ export const DEFAULT_KEYWORDS = [
   "Kerala engineering college fest",
   "college tech fest 2026",
   "department events",
-  "cultural events",
+  "talent showcase",
+  "main stage events",
 ];
 const DEFAULT_IMAGE_PATH = "/logo.png";
 const ORGANIZATION_NAME = "KMEA Engineering College";
@@ -235,9 +236,9 @@ export const getBaseMetadata = (): Metadata => ({
   description: DEFAULT_DESCRIPTION,
   keywords: DEFAULT_KEYWORDS,
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
 });
 
@@ -261,7 +262,7 @@ export const getHomeSchema = () => {
 
 export const getEventsMetadata = () => {
   const description =
-    "Browse flagship events, department competitions, workshops, and cultural highlights at Kapricious 2026, KMEA Engineering College, Edathala, Aluva.";
+    "Browse flagship events, department competitions, workshops, and cultural event highlights at Kapricious 2026, KMEA Engineering College, Edathala, Aluva.";
 
   return buildMetadata({
     pathname: "/events",
@@ -274,7 +275,7 @@ export const getEventsMetadata = () => {
 export const getEventsSchema = () => {
   const canonicalUrl = buildCanonicalUrl("/events");
   const description =
-    "Browse flagship events, department competitions, workshops, and cultural highlights at Kapricious 2026, KMEA Engineering College, Edathala, Aluva.";
+    "Browse flagship events, department competitions, workshops, and cultural event highlights at Kapricious 2026, KMEA Engineering College, Edathala, Aluva.";
 
   return [
     createPageSchema("Kapricious 2026 Events", description, canonicalUrl),
@@ -302,29 +303,6 @@ export const getRegisterSchema = () => {
     "Kapricious 2026 Registration",
     description,
     buildCanonicalUrl("/register"),
-  );
-};
-
-export const getCulturalRegisterMetadata = () => {
-  const description =
-    "Register for Kapricious 2026 cultural events at KMEA Engineering College, Edathala, Aluva and join the fest's stage, performance, and creative competitions.";
-
-  return buildMetadata({
-    pathname: "/cultural-register",
-    title: `Cultural Registration | ${SITE_NAME}`,
-    description,
-    keywords: [...DEFAULT_KEYWORDS, "Kapricious cultural events", "cultural fest registration"],
-  });
-};
-
-export const getCulturalRegisterSchema = () => {
-  const description =
-    "Register for Kapricious 2026 cultural events at KMEA Engineering College, Edathala, Aluva and join the fest's stage, performance, and creative competitions.";
-
-  return createPageSchema(
-    "Kapricious 2026 Cultural Registration",
-    description,
-    buildCanonicalUrl("/cultural-register"),
   );
 };
 

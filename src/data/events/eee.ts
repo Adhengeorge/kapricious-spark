@@ -1,154 +1,128 @@
-import { DepartmentEvent } from "./types";
+﻿import { DepartmentEvent } from "./types";
 
 export const eeeEvents: DepartmentEvent[] = [
   {
     id: "arduino-crafters",
     title: "Arduino Crafters",
     teamSize: 1,
-    registrationFee: "₹50",
+    registrationFee: "₹50 per participant",
     prizePool: "₹1,500",
-    details: "Participants design and demonstrate a basic Arduino-based circuit using provided components.",
+    details:
+      "Design, code, and demo a working Arduino project using modular sensors and actuators. Creativity and reliability are key.",
     prizes: ["🥇 ₹1,000", "🥈 ₹500"],
     type: "individual",
     department: "EEE",
     departmentName: "Electrical & Electronics Engineering",
     image: "https://images.unsplash.com/photo-1553406830-ef2513450d76?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "10:00 AM - 12:00 PM",
     venue: "EEE Lab, KMEA Engineering College",
     rules: [
-      "Individual participation only",
-      "Components will be provided",
-      "Time limit: 60 minutes",
-      "Circuit must be functional",
-      "Basic Arduino boards provided",
-      "Judging: Creativity, Functionality, Efficiency"
+      "Individual participation",
+      "Boards and sensors provided",
+      "Time limit: 90 minutes",
+      "Code must be documented",
+      "Judging: innovation, functionality, documentation",
+      "No pre-built modules allowed"
     ],
     highlights: [
-      "Hands-on Arduino experience",
-      "Learn embedded programming",
-      "Showcase your creativity",
-      "Certificate for all"
+      "Hands-on embedded coding",
+      "Create working demos",
+      "Learn Arduino wiring",
+      "Expert feedback"
     ]
   },
   {
     id: "zap-free-zone",
     title: "Zap Free Zone",
     teamSize: 1,
-    registrationFee: "₹50",
+    registrationFee: "₹50 per participant",
     prizePool: "₹1,500",
-    details: "A reaction-based fun game where participants must avoid zap zones and complete challenges early.",
+    details:
+      "Navigate a reaction-driven arena while avoiding zap zones and completing rapid-fire electrical challenges.",
     prizes: ["🥇 ₹1,000", "🥈 ₹500"],
     type: "individual",
     department: "EEE",
     departmentName: "Electrical & Electronics Engineering",
     image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "11:00 AM - 1:00 PM",
     venue: "EEE Department, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Avoid touching zap zones",
-      "Complete challenges within time",
-      "Multiple rounds with elimination",
-      "Fastest completion wins",
-      "Safety is priority"
+      "Solo participants",
+      "Avoid touching marked zap zones",
+      "Challenges come in rounds with increasing difficulty",
+      "Timer stops on contact with forbidden areas",
+      "Use provided toolkit only",
+      "Fastest completion wins"
     ],
     highlights: [
-      "Fun reaction game",
-      "Test your reflexes",
-      "Multiple rounds",
-      "Exciting prizes"
+      "Adrenaline-fueled reaction game",
+      "Test reflexes and timing",
+      "Multiple thrilling rounds",
+      "Safety-first setup"
     ]
   },
   {
     id: "defuse-x",
-    title: "DEFUSE-X",
+    title: "Defuse-X",
     teamSize: 3,
     registrationFee: "₹150 per team",
-    prizePool: "₹4,000",
-    details: "An intense logical and teamwork-based challenge where participants defuse a 'bomb' by solving technical clues under time pressure.",
-    prizes: ["🥇 ₹2,500", "🥈 ₹1,500"],
+    prizePool: "₹3,500",
+    details:
+      "A high-pressure challenge where teams decode clues and complete circuit puzzles to 'defuse' a mock device before time runs out.",
+    prizes: ["🥇 ₹3,500"],
     type: "team",
     department: "EEE",
     departmentName: "Electrical & Electronics Engineering",
     image: "https://images.unsplash.com/photo-1489389944381-3471b5b30f04?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "2:00 PM - 5:00 PM",
+    date: "March 27, 2026",
+    time: "2:00 PM - 4:30 PM",
     venue: "EEE Lab, KMEA Engineering College",
     rules: [
-      "Teams of 3 members",
-      "Solve technical puzzles to defuse",
-      "Time limit: 30 minutes",
-      "Communication only within team",
-      "No external help allowed",
+      "Teams of three members",
+      "Solve puzzles to unlock the next clue",
+      "Communication only within the team",
+      "Time limit: 30 minutes per round",
+      "No outside assistance",
       "Fastest defusal wins"
     ],
     highlights: [
-      "Exciting escape room format",
-      "Team coordination required",
-      "Technical puzzles",
-      "Adrenaline-pumping experience"
-    ]
-  },
-  {
-    id: "seated-soccer",
-    title: "Seated Soccer",
-    teamSize: 1,
-    registrationFee: "₹60",
-    prizePool: "₹1,500",
-    details: "A fun and competitive seated soccer game where players remain seated and use only their feet to control the ball and score goals. Tests agility, coordination, and quick reflexes in a unique twist on traditional football.",
-    prizes: ["🥇 ₹1,000", "🥈 ₹500"],
-    type: "individual",
-    department: "EEE",
-    departmentName: "Electrical & Electronics Engineering",
-    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "10:00 AM - 2:00 PM",
-    venue: "Common Area, KMEA Engineering College",
-    rules: [
-      "Individual participation",
-      "Players must remain seated throughout the game",
-      "Only feet can be used to control and kick the ball",
-      "Tournament knockout format",
-      "Best of 3 games per match",
-      "Finals: Best of 5"
-    ],
-    highlights: [
-      "Unique seated football challenge",
-      "Tournament knockout format",
-      "Tests coordination and reflexes",
-      "Great fun and entertainment"
+      "Team coordination",
+      "Logical and circuit puzzles",
+      "Tension-filled atmosphere",
+      "Real-time scoring"
     ]
   },
   {
     id: "stacker-blocks",
     title: "Stacker Blocks",
     teamSize: 1,
-    registrationFee: "₹30",
+    registrationFee: "₹30 per participant",
     prizePool: "₹800",
-    details: "A classic fast-paced game that tests reflexes, concentration and control under increasing difficulty.",
-    prizes: ["🥇 ₹500", "🥈 ₹300"],
+    details:
+      "Stack as many blocks as possible while maintaining balance and speed. Each level ramps up the challenge.",
+    prizes: ["🥇 ₹800"],
     type: "individual",
     department: "EEE",
     departmentName: "Electrical & Electronics Engineering",
     image: "https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "11:00 AM - 1:00 PM",
-    venue: "EEE Department, KMEA Engineering College",
+    venue: "EEE Activity Zone, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Stack blocks as high as possible",
-      "Increasing speed with each level",
+      "Solo participation",
+      "Stack blocks in allotted time",
+      "Blocks shrink in size at higher levels",
       "Top score wins",
-      "Multiple attempts allowed",
-      "Best score counts"
+      "Multiple attempts allowed, best score counts",
+      "No external aids"
     ],
     highlights: [
-      "Classic arcade game",
-      "Test your reflexes",
-      "Addictive gameplay",
-      "Quick rounds"
+      "Fast-paced reflex test",
+      "Simple yet addictive",
+      "Quick rounds",
+      "Ideal for casual participants"
     ]
   },
   {
@@ -156,59 +130,30 @@ export const eeeEvents: DepartmentEvent[] = [
     title: "Power Play Arena",
     teamSize: 4,
     registrationFee: "₹80 per participant",
-    prizePool: "TBD",
-    details: "A competitive gaming arena where participants compete in popular console games for top score.",
-    prizes: ["TBD"],
+    prizePool: "Nil",
+    details:
+      "Compete in popular console and PC titles inside a dedicated gaming arena. Score points, survive eliminations, and claim bragging rights.",
+    prizes: ["Bragging rights and swag"],
     type: "team",
     department: "EEE",
     departmentName: "Electrical & Electronics Engineering",
     image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "10:00 AM - 6:00 PM",
     venue: "Gaming Zone, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "Multiple game titles available",
-      "Tournament bracket format",
-      "Fair play rules apply",
-      "Controllers provided",
-      "Bring your own allowed"
+      "Teams of up to four participants",
+      "Multiple game titles in rotation",
+      "Tournament bracket structure",
+      "Fair play and sportsmanship required",
+      "Controllers and consoles provided",
+      "Participants responsible for their slots"
     ],
     highlights: [
-      "Multiple gaming titles",
-      "Competitive gaming",
-      "Console gaming experience",
-      "Full day event"
-    ]
-  },
-  {
-    id: "find-the-suspect",
-    title: "Find The Suspect",
-    teamSize: 3,
-    registrationFee: "₹90 per team",
-    prizePool: "₹2,500",
-    details: "A mystery-solving event where participants analyze clues, logic trails and evidence to identify the suspects.",
-    prizes: ["🥇 ₹1,500", "🥈 ₹1,000"],
-    type: "team",
-    department: "EEE",
-    departmentName: "Electrical & Electronics Engineering",
-    image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "2:00 PM - 4:00 PM",
-    venue: "Campus Wide, KMEA Engineering College",
-    rules: [
-      "Teams of 3 members",
-      "Analyze all given clues",
-      "Follow logical trail",
-      "First correct answer wins",
-      "No external help",
-      "Time limit: 90 minutes"
-    ],
-    highlights: [
-      "Mystery solving format",
-      "Team detective work",
-      "Logical reasoning required",
-      "Exciting finale"
+      "Full-day gaming arena",
+      "Multiple titles to choose",
+      "Casual and competitive vibes",
+      "Earn tournament points"
     ]
   }
 ];

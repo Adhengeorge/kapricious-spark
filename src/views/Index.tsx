@@ -9,11 +9,15 @@ import { hasWarmLandingCache, preloadLandingExperience } from "@/lib/landingPrel
 
 const Index = () => {
   const [isReady, setIsReady] = useState(false);
-  const [progress, setProgress] = useState(() => (hasWarmLandingCache() ? 0.3 : 0));
-  const [cached, setCached] = useState(() => hasWarmLandingCache());
+  const [progress, setProgress] = useState(0);
+  const [cached, setCached] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
+    const cacheHit = hasWarmLandingCache();
+
+    setCached(cacheHit);
+    setProgress(cacheHit ? 0.3 : 0);
 
     preloadLandingExperience((nextProgress) => {
       if (!isMounted) return;

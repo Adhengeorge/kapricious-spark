@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "lint": "eslint .",
-    "start": "next start",
+    "start": "next start -p 3001",
     "test": "vitest run",
     "test:watch": "vitest"
   },

@@ -13,7 +13,7 @@ import {
   raEvents,
   sfEvents,
   eceEvents,
-  culturalEvents,
+  mainEvents,
 } from "@/data/events/index";
 
 const eventMedia: Record<string, { type: "video"; src: string }> = {
@@ -28,14 +28,14 @@ const eventMedia: Record<string, { type: "video"; src: string }> = {
 };
 
 const departmentEvents = [
-  { code: "CULTURAL", name: "Cultural Events", events: culturalEvents },
+  { code: "CULTURAL", name: "Cultural Events", events: mainEvents },
   { code: "CSE", name: "Computer Science & Engineering", events: cseEvents },
   { code: "CE", name: "Civil Engineering", events: ceEvents },
   { code: "ME", name: "Mechanical Engineering", events: meEvents },
   { code: "EEE", name: "Electrical & Electronics Engineering", events: eeeEvents },
   { code: "ECE", name: "Electronics & Communication Engineering", events: eceEvents },
   { code: "RAE", name: "Robotics & Automation Engineering", events: raEvents },
-  { code: "SF", name: "Fire & Safety", events: sfEvents },
+  { code: "SF", name: "Safety & Fire Engineering", events: sfEvents },
 ];
 
 const EventCard = memo(({ event, index }: { event: any; index: number }) => {

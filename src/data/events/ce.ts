@@ -1,43 +1,45 @@
-import { DepartmentEvent } from "./types";
+﻿import { DepartmentEvent } from "./types";
 
 export const ceEvents: DepartmentEvent[] = [
   {
     id: "bridgit",
-    title: "BRIDGIT (Bridge Modelling Competition)",
+    title: "Bridgit (Bridge Modelling)",
     teamSize: 4,
     registrationFee: "₹200 per team",
     prizePool: "₹4,500",
-    details: "A structural model-making competition where teams design and construct a bridge using limited materials. The model will be tested for load carrying capacity and structural efficiency.",
+    details:
+      "Design and construct a bridge using limited materials. The structure will be tested for load bearing capacity and efficiency.",
     prizes: ["🥇 ₹3,000", "🥈 ₹1,500"],
     type: "team",
     department: "CE",
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "9:00 AM - 1:00 PM",
-    venue: "Civil Lab, KMEA Engineering College",
+    venue: "Civil Engineering Lab, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "Materials provided: ice cream sticks, glue",
-      "Maximum span: 50cm",
-      "Must support minimum 1kg load",
+      "Teams of up to four members",
+      "Use only the materials provided",
+      "Maximum span: 50 cm",
+      "Bridge must support the specified load",
       "Time limit: 3 hours",
-      "Judging: Load capacity, Design, Aesthetics"
+      "Judging: load capacity, design, creativity"
     ],
     highlights: [
       "Hands-on structural design",
       "Real load testing",
       "Team collaboration",
-      "Learn engineering principles"
+      "Budget-aware engineering"
     ]
   },
   {
     id: "cad-illumina",
-    title: "CAD ILLUMINA",
+    title: "CAD Illumina",
     teamSize: 1,
     registrationFee: "₹100",
     prizePool: "₹3,750",
-    details: "A software-based drafting competition that evaluates students' technical accuracy, speed, and design understanding within a specified time.",
+    details:
+      "A software-based drafting competition that tests speed, accuracy, and technical understanding on CAD tools.",
     prizes: ["🥇 ₹2,500", "🥈 ₹1,250"],
     type: "individual",
     department: "CE",
@@ -45,59 +47,61 @@ export const ceEvents: DepartmentEvent[] = [
     image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
     time: "10:00 AM - 12:00 PM",
-    venue: "CAD Lab, KMEA Engineering College",
+    venue: "Civil CAD Lab, KMEA Engineering College",
     rules: [
       "Individual participation",
-      "Software: AutoCAD",
+      "AutoCAD or similar software only",
       "Time limit: 90 minutes",
-      "Civil engineering drawing given",
-      "Accuracy is key",
-      "Standard drafting conventions must be followed"
+      "Problem statement issued at start",
+      "File submission in standard format",
+      "Judging: speed, accuracy, presentation"
     ],
     highlights: [
-      "Industry-standard software",
+      "Industry-standard drafting",
       "Civil engineering focus",
-      "Skill-based competition",
-      "Build your portfolio"
+      "Creativity under time pressure",
+      "Portfolio-ready work"
     ]
   },
   {
     id: "movethon",
-    title: "MOVETHON",
+    title: "Movethon",
     teamSize: 4,
     registrationFee: "₹200",
     prizePool: "₹4,500",
-    details: "A team event where students develop simple and innovative ideas to solve real-world civil engineering problems.",
+    details:
+      "Teams develop creative solutions for real-world civil engineering problems and present their innovations.",
     prizes: ["🥇 ₹3,000", "🥈 ₹1,500"],
     type: "team",
     department: "CE",
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "2:00 PM - 5:00 PM",
     venue: "Conference Hall, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "Problem statement given at start",
-      "Develop innovative solution",
-      "Presentation: 10 minutes",
-      "Q&A: 5 minutes",
-      "Judging: Innovation, Feasibility, Presentation"
+      "Teams of four members",
+      "Problem statements revealed at start",
+      "Pitch must include feasibility study",
+      "Presentations limited to 10 minutes",
+      "Q&A for 5 minutes per team",
+      "Judging: innovation, viability, presentation"
     ],
     highlights: [
-      "Real-world problems",
-      "Innovation focused",
-      "Present to experts",
-      "Great networking"
+      "Real-world civil challenges",
+      "Innovation-focused",
+      "Mentorship from faculty",
+      "Networking opportunity"
     ]
   },
   {
     id: "quizzard",
-    title: "QUIZZARD",
+    title: "Quizzard",
     teamSize: 2,
     registrationFee: "₹50 per team",
     prizePool: "₹4,500",
-    details: "A knowledge-based competition focusing on core civil engineering subjects which is conducted in multi levels.",
+    details:
+      "A multi-round technical quiz covering structures, surveying, materials, and smart infrastructure.",
     prizes: ["🥇 ₹3,000", "🥈 ₹1,500"],
     type: "team",
     department: "CE",
@@ -107,57 +111,59 @@ export const ceEvents: DepartmentEvent[] = [
     time: "11:00 AM - 1:00 PM",
     venue: "Seminar Hall, KMEA Engineering College",
     rules: [
-      "Teams of 2 members",
-      "Multiple rounds",
-      "Topics: Structures, Surveying, Materials, etc.",
-      "No electronic devices",
-      "Negative marking in written round",
-      "Finals: Buzzer round"
+      "Teams of two members",
+      "Rounds: written, rapid-fire, buzzer",
+      "Topics span structures, surveying, materials",
+      "No electronic devices allowed",
+      "Negative marking applies on written rounds",
+      "Tie-breaker through buzzer round"
     ],
     highlights: [
-      "Multi-level quiz",
+      "Multi-level quiz format",
       "Civil engineering focus",
-      "Team participation",
-      "Exciting buzzer round"
+      "Team strategy is key",
+      "Exciting buzzer finale"
     ]
   },
   {
     id: "infrahunt",
-    title: "INFRAHUNT (Treasure Hunt)",
+    title: "Infrahunt",
     teamSize: 4,
     registrationFee: "₹200",
     prizePool: "₹3,000",
-    details: "A fun, team-based event where participants solve engineering and technical-related clues to find the final treasure.",
+    details:
+      "A technical treasure hunt where teams solve civil engineering clues to reach the finish line.",
     prizes: ["🥇 ₹3,000"],
     type: "team",
     department: "CE",
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "2:00 PM - 4:00 PM",
     venue: "Campus Wide, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "Follow clues in sequence",
-      "Civil engineering themed clues",
-      "First team to treasure wins",
-      "No external help",
-      "Stay within campus boundaries"
+      "Teams of four members",
+      "Solve engineering-themed clues sequentially",
+      "Stay within campus boundaries",
+      "Clue books provided at each checkpoint",
+      "No external assistance allowed",
+      "First team to reach the treasure wins"
     ],
     highlights: [
-      "Campus-wide hunt",
-      "Engineering puzzles",
+      "Engineered treasure hunt",
       "Team adventure",
+      "Puzzles rooted in civil themes",
       "Fun and learning"
     ]
   },
   {
     id: "structra",
-    title: "STRUCTRA",
+    title: "Structra (Paper Tower Challenge)",
     teamSize: 4,
     registrationFee: "₹200",
     prizePool: "₹3,000",
-    details: "A fun structural challenge where teams build the tallest free-standing tower using only paper and limited materials within a fixed time, testing creativity, stability, and basic engineering principles.",
+    details:
+      "Build the tallest freestanding tower using limited paper and materials within a fixed time to test creativity and structural stability.",
     prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
     type: "team",
     department: "CE",
@@ -167,18 +173,18 @@ export const ceEvents: DepartmentEvent[] = [
     time: "3:00 PM - 5:00 PM",
     venue: "Civil Lab, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "Materials: Paper, tape only",
+      "Teams of four members",
+      "Use only paper, tape, and glue",
       "Time limit: 45 minutes",
-      "Tower must stand for 30 seconds",
-      "Height measured at top",
-      "No external support allowed"
+      "Tower must stand for at least 30 seconds",
+      "Height measured at the highest stable point",
+      "No external supports allowed"
     ],
     highlights: [
+      "Creative structural challenge",
       "Tallest tower wins",
-      "Creative challenge",
       "Team coordination",
-      "Fun competition"
+      "Hands-on civil fundamentals"
     ]
   }
 ];

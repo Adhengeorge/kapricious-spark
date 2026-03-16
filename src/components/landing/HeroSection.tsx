@@ -316,7 +316,7 @@ const HeroSection = () => {
                 </h1>
                 <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-white/70 md:mx-0 md:text-base">
                   Kapricious 2026 is the flagship tech fest of KMEA Engineering College, Edathala, Aluva,
-                  bringing together flagship challenges, department events, and cultural programs on March
+                  bringing together flagship challenges, department competitions, and cultural events on March
                   27-28, 2026.
                 </p>
               </motion.div>

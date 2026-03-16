@@ -2,6 +2,7 @@
 export type { DepartmentEvent, FlagshipEvent, CulturalEvent } from "./types";
 
 // Department Events
+export { mainEvents } from "./main";
 export { eceEvents } from "./ece";
 export { sfEvents } from "./sf";
 export { raEvents } from "./rae";
@@ -11,10 +12,10 @@ export { ceEvents } from "./ce";
 export { cseEvents } from "./cse";
 
 // Other Events
-export { culturalEvents } from "./cultural";
 export { flagshipEvents, getEventById } from "./flagship";
 
 // Re-import for combined exports
+import { mainEvents } from "./main";
 import { eceEvents } from "./ece";
 import { sfEvents } from "./sf";
 import { raEvents } from "./rae";
@@ -22,12 +23,11 @@ import { eeeEvents } from "./eee";
 import { meEvents } from "./me";
 import { ceEvents } from "./ce";
 import { cseEvents } from "./cse";
-import { culturalEvents } from "./cultural";
 import { DepartmentEvent } from "./types";
 
 // All department events combined
 export const allDepartmentEvents: DepartmentEvent[] = [
-  ...culturalEvents,
+  ...mainEvents,
   ...eceEvents,
   ...sfEvents,
   ...raEvents,

@@ -1,29 +1,15 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Search, X, ArrowRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import ScrollRobot from "@/components/ScrollRobot";
-import { allDepartmentEvents } from "@/data/events/index";
+import { allDepartmentEvents, sortDepartmentEventsByPrizePool } from "@/data/events/index";
 
 const FEATURED_EVENTS_AUTOPLAY_MS = 4000;
-
-// Parse prize string like "₹40,000" to number
-const parsePrize = (prize: string): number => {
-  return parseInt(prize.replace(/[₹,]/g, ''), 10) || 0;
-};
-
-// Top 3 department events by prize pool
-const topEvents = [...allDepartmentEvents]
-  .sort((a, b) => parsePrize(b.prizePool) - parsePrize(a.prizePool))
-  .slice(0, 3)
-  .map(e => ({
-    id: e.id, title: e.title, prize: e.prizePool, description: e.details,
-    date: e.date, link: `/events/${e.id}`, department: e.departmentName,
-  }));
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -32,6 +18,21 @@ const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const router = useRouter();
+  const topEvents = useMemo(
+    () =>
+      sortDepartmentEventsByPrizePool(allDepartmentEvents)
+        .slice(0, 3)
+        .map((event) => ({
+          id: event.id,
+          title: event.title,
+          prize: event.prizePool,
+          description: event.details,
+          date: event.date,
+          link: `/events/${event.id}`,
+          department: event.departmentName,
+        })),
+    []
+  );
 
   // Embla carousels
   const [mobileRef, mobileApi] = useEmblaCarousel({ loop: true, align: "start", dragFree: false });
@@ -378,3 +379,6 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
+
+

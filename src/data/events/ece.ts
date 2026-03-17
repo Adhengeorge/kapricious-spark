@@ -15,8 +15,8 @@ export const eceEvents: DepartmentEvent[] = [
     departmentName: "Electronics & Communication Engineering",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "09:00 AM - 10:30 AM",
-    venue: "ECE Lab, KMEA Engineering College",
+    time: "11:30 AM - 4:00 PM",
+    venue: "B308",
     rules: [
       "Individual participation",
       "Battle stages are time-boxed",
@@ -46,8 +46,8 @@ export const eceEvents: DepartmentEvent[] = [
     departmentName: "Electronics & Communication Engineering",
     image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "11:00 AM - 12:30 PM",
-    venue: "ECE Innovation Lab, KMEA Engineering College",
+    time: "11:30 AM - 4:00 PM",
+    venue: "B214",
     rules: [
       "Individual participation",
       "Laser grid is simulator based",
@@ -77,8 +77,8 @@ export const eceEvents: DepartmentEvent[] = [
     departmentName: "Electronics & Communication Engineering",
     image: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "01:00 PM - 02:30 PM",
-    venue: "Seminar Hall, KMEA Engineering College",
+    time: "11:30 AM - 4:00 PM",
+    venue: "B307",
     rules: [
       "Individual participation",
       "Multiple-choice and puzzle rounds",
@@ -96,7 +96,7 @@ export const eceEvents: DepartmentEvent[] = [
   },
   {
     id: "electro-hunt",
-    title: "ElectroDex",
+    title: "Electro Hunt",
     teamSize: 1,
     registrationFee: "₹200 per team",
     prizePool: "₹3,000",
@@ -108,8 +108,8 @@ export const eceEvents: DepartmentEvent[] = [
     departmentName: "Electronics & Communication Engineering",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "02:45 PM - 04:30 PM",
-    venue: "Campus Wide, KMEA Engineering College",
+    time: "2:00 PM - 4:00 PM",
+    venue: "Green Block",
     rules: [
       "Individual participation",
       "Complete sequential checkpoints",
@@ -139,8 +139,8 @@ export const eceEvents: DepartmentEvent[] = [
     departmentName: "Electronics & Communication Engineering",
     image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "04:45 PM - 06:30 PM",
-    venue: "Computer Lab, KMEA Engineering College",
+    time: "11:30 AM - 4:00 PM",
+    venue: "B303",
     rules: [
       "Individual participation",
       "Programming in C/C++ for microcontrollers",

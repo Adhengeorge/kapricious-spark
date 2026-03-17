@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import CountdownTimer from "@/components/CountdownTimer";
 
 const departments = [
+  "Sports Fiesta",
   "CSE",
   "Civil",
   "ECE",
@@ -38,7 +39,7 @@ const ScrollCards = () => {
           >
             <div className="flex justify-between items-center mb-4 md:mb-6">
               <h3 className="font-display text-xs md:text-sm tracking-tight">DEPARTMENTS</h3>
-              <span className="text-muted-foreground text-[10px] md:text-xs">7 departments</span>
+              <span className="text-muted-foreground text-[10px] md:text-xs">9 groups</span>
             </div>
             <div className="flex flex-wrap gap-1.5 md:gap-2">
               {departments.map((dept) => (

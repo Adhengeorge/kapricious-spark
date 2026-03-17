@@ -16,7 +16,7 @@ export const ceEvents: DepartmentEvent[] = [
     image: "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
     time: "9:00 AM - 1:00 PM",
-    venue: "Civil Engineering Lab, KMEA Engineering College",
+    venue: "D304",
     rules: [
       "Teams of up to four members",
       "Use only the materials provided",
@@ -46,8 +46,8 @@ export const ceEvents: DepartmentEvent[] = [
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
-    time: "10:00 AM - 12:00 PM",
-    venue: "Civil CAD Lab, KMEA Engineering College",
+    time: "9:30 AM - 11:30 AM",
+    venue: "CAD Lab, Civil Block",
     rules: [
       "Individual participation",
       "AutoCAD or similar software only",
@@ -77,8 +77,8 @@ export const ceEvents: DepartmentEvent[] = [
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "2:00 PM - 5:00 PM",
-    venue: "Conference Hall, KMEA Engineering College",
+    time: "2:00 PM - 4:00 PM",
+    venue: "Smart Class, Civil Block",
     rules: [
       "Teams of four members",
       "Problem statements revealed at start",
@@ -108,8 +108,8 @@ export const ceEvents: DepartmentEvent[] = [
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
-    time: "11:00 AM - 1:00 PM",
-    venue: "Seminar Hall, KMEA Engineering College",
+    time: "9:30 AM - 11:30 AM",
+    venue: "Seminar Hall, Civil Block",
     rules: [
       "Teams of two members",
       "Rounds: written, rapid-fire, buzzer",
@@ -140,7 +140,7 @@ export const ceEvents: DepartmentEvent[] = [
     image: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
     time: "2:00 PM - 4:00 PM",
-    venue: "Campus Wide, KMEA Engineering College",
+    venue: "Whole Department",
     rules: [
       "Teams of four members",
       "Solve engineering-themed clues sequentially",
@@ -170,8 +170,8 @@ export const ceEvents: DepartmentEvent[] = [
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
-    time: "3:00 PM - 5:00 PM",
-    venue: "Civil Lab, KMEA Engineering College",
+    time: "9:00 AM - 11:00 AM",
+    venue: "Seminar Hall, Civil Block",
     rules: [
       "Teams of four members",
       "Use only paper, tape, and glue",

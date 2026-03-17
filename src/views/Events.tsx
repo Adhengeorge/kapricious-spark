@@ -3,7 +3,7 @@
 import { memo, useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, Play, Sparkles } from "lucide-react";
 import {
   cseEvents,
@@ -14,6 +14,7 @@ import {
   sfEvents,
   eceEvents,
   mainEvents,
+  sportsEvents,
   sortDepartmentEventsByPrizePool,
 } from "@/data/events/index";
 
@@ -30,6 +31,7 @@ const eventMedia: Record<string, { type: "video"; src: string }> = {
 
 const departmentEvents = [
   { code: "CULTURAL", name: "Cultural Events", events: sortDepartmentEventsByPrizePool(mainEvents) },
+  { code: "SPORTS", name: "Sports Fiesta", events: sortDepartmentEventsByPrizePool(sportsEvents) },
   { code: "CSE", name: "Computer Science & Engineering", events: sortDepartmentEventsByPrizePool(cseEvents) },
   { code: "CE", name: "Civil Engineering", events: sortDepartmentEventsByPrizePool(ceEvents) },
   { code: "ME", name: "Mechanical Engineering", events: sortDepartmentEventsByPrizePool(meEvents) },
@@ -39,7 +41,19 @@ const departmentEvents = [
   { code: "SF", name: "Safety & Fire Engineering", events: sortDepartmentEventsByPrizePool(sfEvents) },
 ];
 
-const EventCard = memo(({ event, index }: { event: any; index: number }) => {
+const isValidDepartmentFilter = (value: string | null) =>
+  value === "ALL" || departmentEvents.some((dept) => dept.code === value);
+
+const EventCard = memo(
+  ({
+    event,
+    index,
+    activeFilter,
+  }: {
+    event: any;
+    index: number;
+    activeFilter: string;
+  }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const media = eventMedia[event.id];
@@ -49,6 +63,11 @@ const EventCard = memo(({ event, index }: { event: any; index: number }) => {
   const fallbackImage =
     "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=500&fit=crop";
   const eventImage = event.image || fallbackImage;
+
+  const detailHref =
+    activeFilter !== "ALL"
+      ? `/events/${event.id}?department=${activeFilter}`
+      : `/events/${event.id}`;
 
   return (
     <motion.div
@@ -115,7 +134,7 @@ const EventCard = memo(({ event, index }: { event: any; index: number }) => {
         </div>
 
         <Link
-          href={`/events/${event.id}`}
+          href={detailHref}
           className="mt-4 group/btn flex items-center justify-center gap-2 w-full bg-foreground text-background px-5 py-3 rounded-2xl hover:opacity-90 transition-all text-xs font-bold tracking-wider uppercase"
         >
           View Details
@@ -124,11 +143,19 @@ const EventCard = memo(({ event, index }: { event: any; index: number }) => {
       </div>
     </motion.div>
   );
-});
+  }
+);
 
 EventCard.displayName = "EventCard";
 
-const DepartmentSection = memo(({ dept }: { dept: (typeof departmentEvents)[0] }) => {
+const DepartmentSection = memo(
+  ({
+    dept,
+    activeFilter,
+  }: {
+    dept: (typeof departmentEvents)[0];
+    activeFilter: string;
+  }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -158,25 +185,52 @@ const DepartmentSection = memo(({ dept }: { dept: (typeof departmentEvents)[0] }
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {dept.events.map((event, i) => (
-          <EventCard key={event.id} event={event} index={i} />
+          <EventCard key={event.id} event={event} index={i} activeFilter={activeFilter} />
         ))}
       </div>
     </div>
   );
-});
+  }
+);
 
 DepartmentSection.displayName = "DepartmentSection";
 
 const Events = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { scrollYProgress } = useScroll();
   const headerY = useTransform(scrollYProgress, [0, 0.1], [0, -30]);
   const [activeFilter, setActiveFilter] = useState<string>("ALL");
+
+  useEffect(() => {
+    const requestedDepartment = searchParams.get("department")?.toUpperCase() || "ALL";
+    if (isValidDepartmentFilter(requestedDepartment) && requestedDepartment !== activeFilter) {
+      setActiveFilter(requestedDepartment);
+    }
+    if (!isValidDepartmentFilter(requestedDepartment) && activeFilter !== "ALL") {
+      setActiveFilter("ALL");
+    }
+  }, [activeFilter, searchParams]);
 
   const filteredDepartments =
     activeFilter === "ALL"
       ? departmentEvents
       : departmentEvents.filter((dept) => dept.code === activeFilter);
+
+  const handleFilterChange = (nextFilter: string) => {
+    setActiveFilter(nextFilter);
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (nextFilter === "ALL") {
+      params.delete("department");
+    } else {
+      params.set("department", nextFilter);
+    }
+
+    const query = params.toString();
+    router.replace(query ? `/events?${query}` : "/events", { scroll: false });
+  };
 
   useEffect(() => {
     if (typeof window === "undefined" || !window.location.hash) {
@@ -247,7 +301,7 @@ const Events = () => {
       >
         <div className="flex flex-wrap justify-center gap-2 md:gap-2.5">
           <button
-            onClick={() => setActiveFilter("ALL")}
+            onClick={() => handleFilterChange("ALL")}
             className={`px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest border transition-all duration-300 ${
               activeFilter === "ALL"
                 ? "bg-foreground text-background border-foreground"
@@ -259,7 +313,7 @@ const Events = () => {
           {departmentEvents.map((dept) => (
             <button
               key={dept.code}
-              onClick={() => setActiveFilter(dept.code)}
+              onClick={() => handleFilterChange(dept.code)}
               className={`px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest border transition-all duration-300 ${
                 activeFilter === dept.code
                   ? "bg-foreground text-background border-foreground"
@@ -273,7 +327,7 @@ const Events = () => {
       </motion.div>
 
       {filteredDepartments.map((dept) => (
-        <DepartmentSection key={dept.code} dept={dept} />
+        <DepartmentSection key={dept.code} dept={dept} activeFilter={activeFilter} />
       ))}
     </div>
   );

@@ -19,15 +19,6 @@ type EmailPayload = {
   eventCategory?: string;
 };
 
-function generateEntryCode(): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let code = "KAP-";
-  for (let i = 0; i < 6; i++) {
-    code += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return code;
-}
-
 function escapeHtml(value: string): string {
   return value
     .replaceAll("&", "&amp;")
@@ -254,6 +245,7 @@ Deno.serve(async (req) => {
       participantEmail,
       eventName,
       registrationId,
+      entryCode,
       eventDate,
       venue,
       teamCount,
@@ -261,11 +253,10 @@ Deno.serve(async (req) => {
       eventCategory,
     } = requestData;
 
-    if (!participantEmail || !participantName || !eventName || !registrationId) {
+    if (!participantEmail || !participantName || !eventName || !registrationId || !entryCode) {
       throw new Error("Missing required fields");
     }
 
-    const entryCode = generateEntryCode();
     const parsedDate = eventDate ? new Date(eventDate) : null;
     const formattedDate = parsedDate && !Number.isNaN(parsedDate.getTime())
       ? parsedDate.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })

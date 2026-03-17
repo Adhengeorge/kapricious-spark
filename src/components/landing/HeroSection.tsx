@@ -11,6 +11,23 @@ import { allDepartmentEvents, sortDepartmentEventsByPrizePool } from "@/data/eve
 
 const FEATURED_EVENTS_AUTOPLAY_MS = 4000;
 
+<<<<<<< HEAD
+=======
+// Parse prize string like "₹40,000" to number
+const parsePrize = (prize: string): number => {
+  return parseInt(prize.replace(/[₹,]/g, ''), 10) || 0;
+};
+
+// Top 3 department events by prize pool
+const topEvents = [...allDepartmentEvents]
+  .sort((a, b) => parsePrize(b.prizePool) - parsePrize(a.prizePool))
+  .slice(0, 3)
+  .map(e => ({
+    id: e.id, title: e.title, prize: e.prizePool, description: e.details,
+    date: e.date, link: `/events/${e.id}`, department: e.departmentName, image: e.image,
+  }));
+
+>>>>>>> a458511 (Changes in admin and addition of events,Venues,Logo)
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -257,33 +274,38 @@ const HeroSection = () => {
                       <Link
                         key={event.id}
                         href={event.link}
-                        className="featured-event-card min-w-0 flex-[0_0_100%] block group rounded-[28px] border border-border/80 bg-card p-4 shadow-[0_18px_40px_rgba(2,5,19,0.08)]"
+                        className="featured-event-card relative min-w-0 flex-[0_0_100%] block group overflow-hidden rounded-[28px] border border-border/80 bg-card p-4 shadow-[0_18px_40px_rgba(2,5,19,0.08)]"
                         aria-label={`Open featured event ${event.title}`}
+                        style={{
+                          backgroundImage: `linear-gradient(180deg, rgba(2, 6, 23, 0.18) 0%, rgba(2, 6, 23, 0.82) 58%, rgba(2, 6, 23, 0.94) 100%), url(${event.image})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }}
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <span className="inline-flex items-center rounded-full border border-border bg-secondary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                            <span className="inline-flex items-center rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/80 backdrop-blur-sm">
                               Open Event
                             </span>
                           </div>
-                          <div className="featured-event-card__icon shrink-0 rounded-full border border-border bg-background p-2 text-foreground">
+                          <div className="featured-event-card__icon shrink-0 rounded-full border border-white/20 bg-black/30 p-2 text-white backdrop-blur-sm">
                             <ArrowRight className="h-4 w-4" />
                           </div>
                         </div>
                         <div className="mt-4">
-                          <h4 className="text-base font-bold text-foreground font-display tracking-tight transition-colors group-hover:text-primary">
+                          <h4 className="text-base font-bold text-white font-display tracking-tight transition-colors group-hover:text-white/90">
                             {event.title}
                           </h4>
-                          <p className="text-sm text-muted-foreground leading-relaxed mt-1.5 line-clamp-2">
+                          <p className="text-sm text-white/75 leading-relaxed mt-1.5 line-clamp-2">
                             {event.description}
                           </p>
                         </div>
                         <div className="mt-4 flex items-center justify-between gap-3">
                           <div className="flex items-center gap-2 min-w-0">
-                            <span className="text-xs px-2 py-1 rounded-full bg-secondary text-muted-foreground whitespace-nowrap">{event.prize}</span>
-                            <span className="text-xs text-muted-foreground truncate">{event.department}</span>
+                            <span className="text-xs px-2 py-1 rounded-full bg-black/30 text-white/85 whitespace-nowrap backdrop-blur-sm">{event.prize}</span>
+                            <span className="text-xs text-white/70 truncate">{event.department}</span>
                           </div>
-                          <span className="text-[11px] font-medium text-foreground/75 whitespace-nowrap">{event.date}</span>
+                          <span className="text-[11px] font-medium text-white/70 whitespace-nowrap">{event.date}</span>
                         </div>
                       </Link>
                     ))}
@@ -317,7 +339,7 @@ const HeroSection = () => {
                 </h1>
                 <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-white/70 md:mx-0 md:text-base">
                   Kapricious 2026 is the flagship tech fest of KMEA Engineering College, Edathala, Aluva,
-                  bringing together flagship challenges, department competitions, and cultural events on March
+                  bringing together flagship challenges, sports events, department competitions, and cultural events on March
                   27-28, 2026.
                 </p>
               </motion.div>
@@ -347,27 +369,32 @@ const HeroSection = () => {
               <Link
                 key={event.id}
                 href={event.link}
-                className="featured-event-card min-w-0 flex-[0_0_100%] block rounded-[24px] border border-border bg-card p-4 shadow-[0_18px_36px_rgba(2,5,19,0.08)] active:scale-[0.985] transition-all duration-300"
+                className="featured-event-card relative min-w-0 flex-[0_0_100%] block overflow-hidden rounded-[24px] border border-border bg-card p-4 shadow-[0_18px_36px_rgba(2,5,19,0.08)] active:scale-[0.985] transition-all duration-300"
                 aria-label={`Open featured event ${event.title}`}
+                style={{
+                  backgroundImage: `linear-gradient(180deg, rgba(2, 6, 23, 0.18) 0%, rgba(2, 6, 23, 0.82) 58%, rgba(2, 6, 23, 0.94) 100%), url(${event.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <span className="inline-flex items-center rounded-full border border-border bg-secondary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                  <span className="inline-flex items-center rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/80 backdrop-blur-sm">
                     Featured Link
                   </span>
-                  <div className="featured-event-card__icon shrink-0 rounded-full border border-border bg-background p-2 text-foreground">
+                  <div className="featured-event-card__icon shrink-0 rounded-full border border-white/20 bg-black/30 p-2 text-white backdrop-blur-sm">
                     <ArrowRight className="h-4 w-4" />
                   </div>
                 </div>
                 <div className="mt-4">
-                  <h4 className="text-sm font-bold text-foreground font-display tracking-tight">{event.title}</h4>
-                  <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed">{event.description}</p>
+                  <h4 className="text-sm font-bold text-white font-display tracking-tight">{event.title}</h4>
+                  <p className="text-xs text-white/75 mt-1.5 line-clamp-2 leading-relaxed">{event.description}</p>
                 </div>
                 <div className="flex items-center justify-between gap-2 mt-3">
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-muted-foreground whitespace-nowrap">{event.prize}</span>
-                    <span className="text-[10px] text-muted-foreground truncate">{event.department}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-black/30 text-white/85 whitespace-nowrap backdrop-blur-sm">{event.prize}</span>
+                    <span className="text-[10px] text-white/70 truncate">{event.department}</span>
                   </div>
-                  <span className="text-[10px] font-medium text-foreground/75 whitespace-nowrap">{event.date}</span>
+                  <span className="text-[10px] font-medium text-white/70 whitespace-nowrap">{event.date}</span>
                 </div>
               </Link>
             ))}

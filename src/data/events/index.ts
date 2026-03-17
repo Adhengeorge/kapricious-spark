@@ -10,6 +10,7 @@ export { eeeEvents } from "./eee";
 export { meEvents } from "./me";
 export { ceEvents } from "./ce";
 export { cseEvents } from "./cse";
+export { sportsEvents } from "./sports";
 
 // Other Events
 export { flagshipEvents, getEventById } from "./flagship";
@@ -23,6 +24,7 @@ import { eeeEvents } from "./eee";
 import { meEvents } from "./me";
 import { ceEvents } from "./ce";
 import { cseEvents } from "./cse";
+import { sportsEvents } from "./sports";
 import { DepartmentEvent } from "./types";
 
 const prizePoolToNumber = (value: string) => {
@@ -37,6 +39,7 @@ export const sortDepartmentEventsByPrizePool = (events: DepartmentEvent[]) =>
 // All department events combined
 export const allDepartmentEvents: DepartmentEvent[] = [
   ...mainEvents,
+  ...sportsEvents,
   ...eceEvents,
   ...sfEvents,
   ...raEvents,

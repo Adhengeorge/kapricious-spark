@@ -76,7 +76,7 @@ export const meEvents: DepartmentEvent[] = [
     department: "ME",
     departmentName: "Mechanical Engineering",
     image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "10:00 AM - 12:00 PM",
     venue: "CAD Lab, KMEA Engineering College",
     rules: [
@@ -107,7 +107,7 @@ export const meEvents: DepartmentEvent[] = [
     department: "ME",
     departmentName: "Mechanical Engineering",
     image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
+    date: "March 27, 2026",
     time: "11:00 AM - 1:00 PM",
     venue: "Seminar Hall, KMEA Engineering College",
     rules: [

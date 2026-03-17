@@ -8,13 +8,23 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { toast } from "sonner";
 import { z } from "zod";
 import { User, Mail, Phone, GraduationCap, Layers, Calendar, CheckCircle2, CreditCard, ShieldCheck, ArrowRight, Trophy, Sparkles, Zap, Users, AlertTriangle, Loader2 } from "lucide-react";
-import { flagshipEvents, getEventById, mainEvents, cseEvents, ceEvents, meEvents, eeeEvents, raEvents, sfEvents, eceEvents, sortDepartmentEventsByPrizePool } from "@/data/events/index";
+import { flagshipEvents, getEventById, mainEvents, sportsEvents, cseEvents, ceEvents, meEvents, eeeEvents, raEvents, sfEvents, eceEvents, sortDepartmentEventsByPrizePool } from "@/data/events/index";
 
 const FLAGSHIP_DEPT_ID = "flagship";
+const SPORTS_DEPT_ID = "sports";
 const LIMITED_EVENT_IDS = new Set(["hackathon"]);
 const RAZORPAY_CHECKOUT_SRC = "https://checkout.razorpay.com/v1/checkout.js";
 
 type RazorpayPaymentProof = {
+  orderId: string;
+  paymentId: string;
+  signature: string;
+  amountRupees: number;
+  currency: string;
+  gatewayStatus: string;
+};
+
+type RazorpayCheckoutResult = {
   orderId: string;
   paymentId: string;
   signature: string;
@@ -72,6 +82,9 @@ const parseFeeToRupees = (fee: string, teamSize: number) => {
   const perHead = /per\s*(head|participant|member)/i.test(fee);
   return perHead ? baseAmount * Math.max(teamSize, 1) : baseAmount;
 };
+
+const buildEntryCodeFromRegistrationId = (registrationId: string) =>
+  `KAP-${registrationId.replace(/-/g, "").substring(0, 8).toUpperCase()}`;
 
 const escapeXml = (value: string) =>
   value
@@ -333,11 +346,12 @@ const Register = () => {
 
   const preselectedFlagship = getEventById(preselectedEvent);
 
-  const allDeptEvents = [...mainEvents, ...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
+  const allDeptEvents = [...mainEvents, ...sportsEvents, ...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
   const preselectedDeptEvent = allDeptEvents.find(ev => ev.id === preselectedEvent);
   
   const getInitialDept = () => {
     if (preselectedFlagship) return FLAGSHIP_DEPT_ID;
+    if (preselectedDeptEvent?.department === "SPORTS") return SPORTS_DEPT_ID;
     if (preselectedDeptParam) return preselectedDeptParam;
     if (preselectedDeptEvent && preselectedDeptEvent.department) {
       return preselectedDeptEvent.department;
@@ -393,7 +407,15 @@ const Register = () => {
   useEffect(() => {
     if (!departments || !preselectedEvent) return;
     if (selectedDept === FLAGSHIP_DEPT_ID) return;
+    if (selectedDept === SPORTS_DEPT_ID) return;
     if (preselectedDeptEvent && preselectedDeptEvent.department) {
+      if (preselectedDeptEvent.department === "SPORTS") {
+        if (selectedDept !== SPORTS_DEPT_ID) {
+          setSelectedDept(SPORTS_DEPT_ID);
+          setSelectedEvent(preselectedEvent);
+        }
+        return;
+      }
       const deptByCode = departments.find(d => d.code === preselectedDeptEvent.department);
       if (deptByCode && selectedDept !== deptByCode.id) {
         setSelectedDept(deptByCode.id);
@@ -425,6 +447,9 @@ const Register = () => {
     if (selectedDept === FLAGSHIP_DEPT_ID) {
       return flagshipEvents.map(e => ({ id: e.id, title: e.title, type: "flagship" }));
     }
+    if (selectedDept === SPORTS_DEPT_ID) {
+      return sortDepartmentEventsByPrizePool(sportsEvents).map(e => ({ id: e.id, title: e.title }));
+    }
     if (selectedDept && departments) {
       const dept = departments.find(d => d.id === selectedDept);
       if (dept?.code === "CULTURAL") return sortDepartmentEventsByPrizePool(mainEvents).map(e => ({ id: e.id, title: e.title }));
@@ -443,8 +468,11 @@ const Register = () => {
 
   const getSelectedEventDetails = () => {
     if (selectedDept === FLAGSHIP_DEPT_ID) return getEventById(selectedEvent);
+    if (selectedDept === SPORTS_DEPT_ID) {
+      return sportsEvents.find(ev => ev.id === selectedEvent);
+    }
     if (selectedDept && departments) {
-      const allEvents = [...mainEvents, ...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
+      const allEvents = [...mainEvents, ...sportsEvents, ...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
       return allEvents.find(ev => ev.id === selectedEvent);
     }
     return undefined;
@@ -457,6 +485,8 @@ const Register = () => {
   const selectedEventLabel =
     selectedDept === FLAGSHIP_DEPT_ID
       ? "Flagship Event"
+      : selectedDept === SPORTS_DEPT_ID
+        ? "Sports Event"
       : (selectedEventDetails && "department" in selectedEventDetails && selectedEventDetails.department === "CULTURAL")
         ? "Cultural Event"
         : "Department Event";
@@ -507,7 +537,7 @@ const Register = () => {
   // Get event title from selected event
   const getEventTitle = () => {
     if (selectedDept === FLAGSHIP_DEPT_ID) return getEventById(selectedEvent)?.title || "";
-    const allHardcoded = [...mainEvents, ...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
+    const allHardcoded = [...mainEvents, ...sportsEvents, ...cseEvents, ...ceEvents, ...meEvents, ...eeeEvents, ...raEvents, ...sfEvents, ...eceEvents];
     return allHardcoded.find(ev => ev.id === selectedEvent)?.title || "";
   };
 
@@ -617,15 +647,24 @@ const Register = () => {
         }
       }
 
+      const registrationId = crypto.randomUUID();
+      const entryCode = buildEntryCodeFromRegistrationId(registrationId);
+
       const { data: regData, error } = await supabase.from("registrations").insert([{
+        id: registrationId,
         name: validated.name,
         email: validated.email,
         phone: validated.phone,
         college: validated.college,
         event_id: dbEventId,
         department_id: dbDeptId,
+        entry_code: entryCode,
+        amount_paid: paymentProof ? paymentProof.amountRupees : payableAmountInPaise <= 0 ? 0 : null,
         team_size: isTeamEvent ? selectedTeamSize : 1,
         team_members: selectedTeamSize > 1 ? teamMembers.filter(m => m.trim()) : null,
+        razorpay_order_id: paymentProof?.orderId ?? null,
+        payment_currency: paymentProof?.currency ?? (payableAmountInPaise <= 0 ? "INR" : null),
+        payment_gateway_status: paymentProof?.gatewayStatus ?? (payableAmountInPaise <= 0 ? "free" : null),
         transaction_id: paymentProof?.paymentId ?? null,
         payment_status: paymentProof ? "verified" : "pending",
       }]).select("id").single();
@@ -642,6 +681,9 @@ const Register = () => {
       if (isFlagship) {
         const fe = getEventById(selectedEvent);
         if (fe) { eventDate = fe.date; venue = fe.venue; }
+      } else if (selectedEventDetails && "department" in selectedEventDetails && selectedEventDetails.department === "SPORTS") {
+        eventDate = selectedEventDetails.date || "";
+        venue = selectedEventDetails.venue || "";
       } else if (selectedEventDetails && "department" in selectedEventDetails && selectedEventDetails.department === "CULTURAL") {
         eventDate = selectedEventDetails.date || "";
         venue = selectedEventDetails.venue || "";
@@ -662,11 +704,12 @@ const Register = () => {
           participantEmail: validated.email,
           eventName,
           registrationId: regData.id,
+          entryCode,
           eventDate,
           venue,
           teamCount: isTeamEvent ? selectedTeamSize : 1,
           eventImage: selectedEventDetails && "image" in selectedEventDetails ? (selectedEventDetails as any).image ?? "" : "",
-          eventCategory: selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : "Department Event",
+          eventCategory: selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : selectedDept === SPORTS_DEPT_ID ? "Sports Event" : "Department Event",
         },
       }).catch((err) => { console.error("Email send failed:", err); return null; });
 
@@ -679,9 +722,9 @@ const Register = () => {
         eventDate,
         venue,
         issuedAt: new Date().toLocaleString(),
-        entryCode: emailRes?.data?.entryCode || `KAP-${regData.id.substring(0, 6).toUpperCase()}`,
+        entryCode,
         teamCount: isTeamEvent ? selectedTeamSize : 1,
-        eventCategory: selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : "Department Event",
+        eventCategory: selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : selectedDept === SPORTS_DEPT_ID ? "Sports Event" : "Department Event",
         eventImage: selectedEventDetails && "image" in selectedEventDetails ? (selectedEventDetails as any).image ?? "" : "",
       };
       return { regData, emailRateLimited, coupon };
@@ -739,7 +782,7 @@ const Register = () => {
         throw new Error(orderPayload?.error || "Failed to create payment order.");
       }
 
-      const paymentResult: RazorpayPaymentProof | null = await new Promise((resolve, reject) => {
+      const paymentResult: RazorpayCheckoutResult | null = await new Promise((resolve, reject) => {
         const checkout = new window.Razorpay({
           key: keyId,
           amount: payableAmountInPaise,
@@ -790,7 +833,17 @@ const Register = () => {
         throw new Error(verifyPayload?.error || "Payment signature verification failed.");
       }
 
-      setPaymentProof(paymentResult);
+      const verifiedPayment = verifyPayload?.payment;
+      if (!verifiedPayment || !Number.isFinite(Number(verifiedPayment.amount))) {
+        throw new Error("Verified payment details are incomplete.");
+      }
+
+      setPaymentProof({
+        ...paymentResult,
+        amountRupees: Number(verifiedPayment.amount) / 100,
+        currency: verifiedPayment.currency || "INR",
+        gatewayStatus: verifiedPayment.status || "unknown",
+      });
       toast.success("Payment verified. Finalizing registration...");
       return true;
     } catch (error: any) {
@@ -1138,6 +1191,9 @@ const Register = () => {
                           className={selectClass}
                         >
                           <option value="">Select</option>
+                          <optgroup label="Special Events">
+                            <option value={SPORTS_DEPT_ID}>Sports Fiesta (SPORTS)</option>
+                          </optgroup>
                           <optgroup label="Department Events">
                             {visibleDepartments?.map((d) => (
                               <option key={d.id} value={d.id}>{d.name} ({d.code})</option>

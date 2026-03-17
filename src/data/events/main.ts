@@ -4,11 +4,15 @@ export const mainEvents: DepartmentEvent[] = [
   {
     id: "fashion-show",
     title: "Fashion Show",
+<<<<<<< HEAD
     teamSize: 14,
+=======
+    teamSize: 5,
+>>>>>>> a458511 (Changes in admin and addition of events,Venues,Logo)
     registrationFee: "₹250 per head (College teams) / ₹350 per head (Other teams)",
     prizePool: "₹75,000",
     details:
-      "Showcase themed fashion collections with choreography, music, and styling on the main stage runway.",
+      "Teams present a themed fashion performance featuring an introduction, ramp walk, and final pose. The event evaluates theme representation, costume creativity, stage confidence, and team coordination on the main stage.",
     prizes: ["🥇 ₹50,000", "🥈 ₹25,000"],
     type: "team",
     department: "CULTURAL",
@@ -18,6 +22,7 @@ export const mainEvents: DepartmentEvent[] = [
     time: "5:30 PM - 7:30 PM",
     venue: "Auditorium",
     rules: [
+<<<<<<< HEAD
       "Open-theme show; no specific theme requirements",
       "Team event with 8-14 members",
       "Time limit: 15 minutes total (including setup and performance)",
@@ -29,12 +34,29 @@ export const mainEvents: DepartmentEvent[] = [
       "Judging: Costume & Creativity, Ramp Walk & Confidence, Overall Presentation",
       "Judges' decision is final and binding",
       "Use of cigarettes, alcohol, or any unfair means is prohibited"
+=======
+      "Open to all registered fest participants",
+      "Participants must perform in teams",
+      "Minimum team size: 5 members",
+      "Each team must have a team leader for coordination",
+      "Teams must follow the theme provided by the organizers",
+      "Teams must report to the venue on time for briefing and coordination",
+      "Each team will be given a specific time limit for the ramp walk or performance",
+      "Performance should include introduction, ramp walk, and final pose",
+      "Background music must be submitted to the organizers before the event",
+      "Participants must ensure proper coordination and synchronization",
+      "Use of fire, water, or hazardous materials is strictly prohibited",
+      "Any vulgarity or inappropriate content will lead to disqualification",
+      "Participants are responsible for their costumes and accessories",
+      "Judging: theme representation, creativity and innovation, confidence and stage presence, coordination",
+      "The judges' decision will be final and binding"
+>>>>>>> a458511 (Changes in admin and addition of events,Venues,Logo)
     ],
     highlights: [
-      "Grand runway setup",
-      "Professional light and sound",
-      "High-visibility main stage slot",
-      "Largest stage prize pool"
+      "Theme-based team runway performance",
+      "Includes introduction, ramp walk, and final pose",
+      "Judged on costume creativity and stage confidence",
+      "Largest cultural team prize pool"
     ]
   },
   {
@@ -44,7 +66,7 @@ export const mainEvents: DepartmentEvent[] = [
     registrationFee: "₹250 per head",
     prizePool: "₹75,000",
     details:
-      "Bring the stage alive with synchronized choreography across classical, western, fusion, or folk formats.",
+      "Bring the stage alive with a coordinated team dance performance across classical, western, fusion, or folk formats while following organizer instructions and fest participation guidelines.",
     prizes: ["🥇 ₹50,000", "🥈 ₹25,000"],
     type: "team",
     department: "CULTURAL",
@@ -54,6 +76,7 @@ export const mainEvents: DepartmentEvent[] = [
     time: "3:30 PM - 5:30 PM",
     venue: "Auditorium",
     rules: [
+<<<<<<< HEAD
       "Team size: Minimum 8 members, maximum 20 members",
       "Performance time limit: 5-10 minutes (exceeding may lead to disqualification)",
       "One minute will be allotted for stage arrangement before performance",
@@ -65,24 +88,42 @@ export const mainEvents: DepartmentEvent[] = [
       "Any vulgarity or inappropriate content leads to immediate disqualification",
       "Judging criteria: synchronization, choreography, creativity, rhythm, stage presence, overall presentation",
       "Judges' decision is final and binding"
+=======
+      "Open to all registered fest participants",
+      "Participants must carry valid ID cards during the event",
+      "Registration must be completed before the deadline",
+      "Participants must follow all instructions given by the organizers",
+      "Team participation applies for this event",
+      "Each participant may register for multiple events unless there is a time clash",
+      "Substitution of participants is not allowed after registration",
+      "Participants must maintain discipline throughout the event",
+      "Misconduct, cheating, or unfair means will lead to disqualification",
+      "Respect towards judges, organizers, and fellow participants is mandatory",
+      "The judges' decision will be final and binding",
+      "Results will be announced after evaluation",
+      "No disputes regarding results will be entertained",
+      "Organizers reserve the right to modify rules if required",
+      "Participants are responsible for their belongings",
+      "Any damage to property will be the responsibility of the participant"
+>>>>>>> a458511 (Changes in admin and addition of events,Venues,Logo)
     ],
     highlights: [
-      "All dance styles welcome",
-      "Pro-stage audio setup",
-      "High-energy audience slot",
-      "Top-tier team prizes"
+      "Team dance stage event",
+      "High-energy auditorium performance slot",
+      "Valid for registered fest participants only",
+      "Top-tier cultural team prizes"
     ]
   },
   {
     id: "step-in-synchro",
-    title: "Spot Choreo",
-    teamSize: 1,
+    title: "Rhythm - Spot Choreo",
+    teamSize: 5,
     registrationFee: "₹200",
     prizePool: "₹8,000",
     details:
-      "A synchronization challenge where teams perform in perfect unison and timing under fixed music cues.",
+      "Prepare and perform an on-the-spot choreography based on the music or theme provided by the organizers. Rhythm tests creativity, synchronization, adaptability, expression, and stage energy in a fast-turnaround performance format.",
     prizes: ["🥇 ₹5,000", "🥈 ₹3,000"],
-    type: "individual",
+    type: "team",
     department: "CULTURAL",
     departmentName: "Cultural Events",
     image: "https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1200&h=600&fit=crop",
@@ -90,6 +131,7 @@ export const mainEvents: DepartmentEvent[] = [
     time: "2:00 PM - 3:30 PM",
     venue: "Auditorium",
     rules: [
+<<<<<<< HEAD
       "Individual event",
       "Random songs will be played for contestants",
       "Songs will cover multiple languages",
@@ -99,22 +141,39 @@ export const mainEvents: DepartmentEvent[] = [
       "Bring a valid ID card on event day",
       "Report at least 30 minutes prior to the schedule",
       "Judges' decision is final and binding"
+=======
+      "Open to all registered fest participants",
+      "Solo and team entries are allowed",
+      "Team size: 1 to 5 members",
+      "Multiple teams from the same college are allowed",
+      "Choreography must be prepared on the spot based on the music or theme provided",
+      "Preparation time will be given before the performance begins",
+      "Performance duration should stay within 3 to 5 minutes",
+      "Participants must use the music provided by the organizers",
+      "Inappropriate or offensive content is strictly prohibited",
+      "Dangerous props or fire are not allowed",
+      "Exceeding the time limit may lead to penalties",
+      "Any misconduct or rule violation will lead to disqualification",
+      "Judging: choreography, synchronization, expression and energy, adaptability",
+      "Participants must report to the venue on time",
+      "The judges' decision will be final and binding"
+>>>>>>> a458511 (Changes in admin and addition of events,Venues,Logo)
     ],
     highlights: [
-      "Precision choreography format",
-      "Fast, high-intensity rounds",
-      "Strong crowd engagement",
-      "Dedicated sync-scoring panel"
+      "Official event title: Rhythm",
+      "Solo or team participation up to 5 members",
+      "On-the-spot choreography challenge",
+      "Judged on creativity, synchronization, and adaptability"
     ]
   },
   {
     id: "spot-photography",
-    title: "Spot Photography",
+    title: "Spot Photography - Pixora",
     teamSize: 1,
     registrationFee: "₹100",
     prizePool: "₹3,000",
     details:
-      "Capture the fest through your lens after an on-spot theme reveal and submit your best framed shots.",
+      "Capture an original image based on the on-spot theme announcement and submit it within 24 hours. Pixora rewards creativity, technical quality, and how strongly your photograph reflects the given theme and the Kapricious fest spirit.",
     prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
     type: "individual",
     department: "CULTURAL",
@@ -124,6 +183,7 @@ export const mainEvents: DepartmentEvent[] = [
     time: "10:00 AM - 1:00 PM",
     venue: "Campus Wide, KMEA Engineering College",
     rules: [
+<<<<<<< HEAD
       "General Rules: Competition is open to all registered participants of the tech fest",
       "General Rules: Each participant must carry their own camera or smartphone for photography",
       "General Rules: Theme will be given on the spot and images must be based on that theme",
@@ -147,12 +207,24 @@ export const mainEvents: DepartmentEvent[] = [
       "Additional Guidelines: Judges' decision is final and binding",
       "Additional Guidelines: Any rule violation leads to disqualification",
       "Additional Guidelines: Organizers may use submitted photographs for promotional/documentation purposes"
+=======
+      "Open to all registered Kapricious participants",
+      "Bring your own DSLR camera or high-end smartphone",
+      "Theme will be announced on the spot and photos must be taken only after the announcement",
+      "One final JPEG image must be submitted per participant within 24 hours using the shared drive link",
+      "Minimum image size: 1024 x 768 pixels",
+      "Submit both the original unedited image and the final edited version",
+      "Heavy manipulation or adding/removing elements is not permitted",
+      "Plagiarism, stock images, or pre-taken photos will lead to disqualification",
+      "Do not disturb people, animals, or the environment and avoid restricted areas",
+      "Judging: creativity and originality, technical quality, and relevance to the theme"
+>>>>>>> a458511 (Changes in admin and addition of events,Venues,Logo)
     ],
     highlights: [
-      "On-spot theme challenge",
-      "Open format camera participation",
-      "Campus photo trails",
-      "Curated jury review"
+      "Official event title: Pixora",
+      "24-hour submission window",
+      "DSLR or smartphone participation",
+      "Judged on originality, technique, and theme relevance"
     ]
   },
   {

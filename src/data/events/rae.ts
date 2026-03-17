@@ -15,8 +15,8 @@ export const raEvents: DepartmentEvent[] = [
     departmentName: "Robotics & Automation Engineering",
     image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "10:00 AM - 1:00 PM",
-    venue: "Robotics Arena, KMEA Engineering College",
+    time: "10:00 AM - 12:00 PM",
+    venue: "Badminton Court",
     rules: [
       "Teams of up to four members",
       "Robots may be remote controlled or autonomous",
@@ -46,8 +46,8 @@ export const raEvents: DepartmentEvent[] = [
     departmentName: "Robotics & Automation Engineering",
     image: "https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "2:00 PM - 5:00 PM",
-    venue: "Robotics Lab, KMEA Engineering College",
+    time: "1:00 PM - 4:00 PM",
+    venue: "Badminton Court",
     rules: [
       "Teams of up to four members",
       "Robot must follow the black line on a white surface",

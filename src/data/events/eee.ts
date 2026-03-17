@@ -15,8 +15,8 @@ export const eeeEvents: DepartmentEvent[] = [
     departmentName: "Electrical & Electronics Engineering",
     image: "https://images.unsplash.com/photo-1553406830-ef2513450d76?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "10:00 AM - 12:00 PM",
-    venue: "EEE Lab, KMEA Engineering College",
+    time: "11:30 AM - 2:00 PM",
+    venue: "C406",
     rules: [
       "Individual participation",
       "Boards and sensors provided",
@@ -46,8 +46,8 @@ export const eeeEvents: DepartmentEvent[] = [
     departmentName: "Electrical & Electronics Engineering",
     image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "11:00 AM - 1:00 PM",
-    venue: "EEE Department, KMEA Engineering College",
+    time: "11:30 AM - 3:00 PM",
+    venue: "C205-A",
     rules: [
       "Solo participants",
       "Avoid touching marked zap zones",
@@ -77,8 +77,8 @@ export const eeeEvents: DepartmentEvent[] = [
     departmentName: "Electrical & Electronics Engineering",
     image: "https://images.unsplash.com/photo-1489389944381-3471b5b30f04?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "2:00 PM - 4:30 PM",
-    venue: "EEE Lab, KMEA Engineering College",
+    time: "2:00 PM - 5:00 PM",
+    venue: "C209",
     rules: [
       "Teams of three members",
       "Solve puzzles to unlock the next clue",
@@ -109,7 +109,7 @@ export const eeeEvents: DepartmentEvent[] = [
     image: "https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
     time: "11:00 AM - 1:00 PM",
-    venue: "EEE Activity Zone, KMEA Engineering College",
+    venue: "C205B",
     rules: [
       "Solo participation",
       "Stack blocks in allotted time",
@@ -139,8 +139,8 @@ export const eeeEvents: DepartmentEvent[] = [
     departmentName: "Electrical & Electronics Engineering",
     image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "10:00 AM - 6:00 PM",
-    venue: "Gaming Zone, KMEA Engineering College",
+    time: "12:00 PM - 6:00 PM",
+    venue: "C306",
     rules: [
       "Teams of up to four participants",
       "Multiple game titles in rotation",

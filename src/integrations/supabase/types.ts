@@ -135,45 +135,66 @@ export type Database = {
       }
       registrations: {
         Row: {
+          amount_paid: number | null
+          checked_in: boolean
+          checked_in_at: string | null
           college: string
           created_at: string
           department_id: string
           email: string
+          entry_code: string
           event_id: string
           id: string
           name: string
+          payment_currency: string | null
+          payment_gateway_status: string | null
           payment_status: string
           phone: string
+          razorpay_order_id: string | null
           screenshot_url: string | null
           team_members: Json | null
           team_size: number | null
           transaction_id: string | null
         }
         Insert: {
+          amount_paid?: number | null
+          checked_in?: boolean
+          checked_in_at?: string | null
           college: string
           created_at?: string
           department_id: string
           email: string
+          entry_code: string
           event_id: string
           id?: string
           name: string
+          payment_currency?: string | null
+          payment_gateway_status?: string | null
           payment_status?: string
           phone: string
+          razorpay_order_id?: string | null
           screenshot_url?: string | null
           team_members?: Json | null
           team_size?: number | null
           transaction_id?: string | null
         }
         Update: {
+          amount_paid?: number | null
+          checked_in?: boolean
+          checked_in_at?: string | null
           college?: string
           created_at?: string
           department_id?: string
           email?: string
+          entry_code?: string
           event_id?: string
           id?: string
           name?: string
+          payment_currency?: string | null
+          payment_gateway_status?: string | null
           payment_status?: string
           phone?: string
+          razorpay_order_id?: string | null
           screenshot_url?: string | null
           team_members?: Json | null
           team_size?: number | null

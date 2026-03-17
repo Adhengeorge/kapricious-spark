@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Calendar,
@@ -26,9 +26,16 @@ const fadeUp = {
 
 const EventDetail = () => {
   const params = useParams<{ eventId: string }>();
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const eventId = Array.isArray(params?.eventId) ? params.eventId[0] : params?.eventId;
   const event = eventId ? getDepartmentEventById(eventId) : null;
+  const activeDepartment = searchParams.get("department")?.toUpperCase();
+  const backHref =
+    activeDepartment && event
+      ? `/events?department=${activeDepartment}#${event.id}`
+      : event
+        ? `/events#${event.id}`
+        : "/events";
 
   if (!event) {
     return (
@@ -53,7 +60,7 @@ const EventDetail = () => {
           className="flex items-center gap-2 text-sm text-muted-foreground mb-8"
         >
           <button
-            onClick={() => router.push("/events")}
+            onClick={() => window.location.assign(backHref)}
             className="flex items-center gap-1 hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> Events

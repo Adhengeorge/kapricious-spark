@@ -34,12 +34,9 @@ export const eceEvents: DepartmentEvent[] = [
     time: "10:00 AM - 12:00 PM",
     venue: "ECE Lab, KMEA Engineering College",
     rules: [
-      "Individual participation only",
-      "Participants must navigate through laser grid without touching any beam",
-      "Time limit: 5 minutes per attempt",
-      "Touching a laser results in penalty points",
-      "Fastest completion time wins",
-      "Decision of judges is final"
+      "Participants must move through the laser maze without breaking beams",
+      "Each beam break adds penalty time",
+      "Fastest completion time wins"
     ],
     highlights: [
       "Real laser obstacle course",
@@ -64,12 +61,10 @@ export const eceEvents: DepartmentEvent[] = [
     time: "2:00 PM - 5:00 PM",
     venue: "Campus Wide, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Follow all clues in sequence",
-      "No external help or internet allowed",
-      "All puzzles must be solved to complete the hunt",
-      "First to find the treasure wins",
-      "Decision of organizers is final"
+      "Teams of 4 members",
+      "Each clue leads to the next checkpoint",
+      "Use of mobile phones is not allowed",
+      "Team completing all stages fastest wins"
     ],
     highlights: [
       "Campus-wide treasure hunt",
@@ -94,12 +89,9 @@ export const eceEvents: DepartmentEvent[] = [
     time: "11:00 AM - 1:00 PM",
     venue: "ECE Workshop, KMEA Engineering College",
     rules: [
-      "Individual participation only",
-      "All soldering equipment will be provided",
-      "Time limit: 30 minutes",
-      "Circuit must be functional after assembly",
-      "Judging based on quality, speed, and functionality",
-      "Safety guidelines must be followed"
+      "Participants must replicate the given circuit design",
+      "Components will be provided",
+      "Judged based on accuracy, soldering quality, and neatness"
     ],
     highlights: [
       "Hands-on soldering challenge",
@@ -124,12 +116,9 @@ export const eceEvents: DepartmentEvent[] = [
     time: "3:00 PM - 5:00 PM",
     venue: "Computer Lab, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Programming in C/C++ for microcontrollers",
-      "Time limit: 90 minutes",
-      "Code must compile and run successfully",
-      "No pre-written code allowed",
-      "Internet access restricted to documentation only"
+      "Participants must identify the correct wire connections",
+      "Incorrect wire selection may lead to penalties or disqualification",
+      "Fastest successful defusal wins"
     ],
     highlights: [
       "Embedded systems focus",
@@ -154,11 +143,8 @@ export const eceEvents: DepartmentEvent[] = [
     time: "9:00 AM - 11:00 AM",
     venue: "Seminar Hall, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Multiple choice and short answer questions",
-      "Time limit: 60 minutes",
-      "No electronic devices allowed",
-      "Negative marking for wrong answers",
+      "Participants identify electronic components",
+      "Must mention component name, value and application",
       "Highest score wins"
     ],
     highlights: [
@@ -370,12 +356,10 @@ export const raEvents: DepartmentEvent[] = [
     time: "10:00 AM - 1:00 PM",
     venue: "Robotics Lab, KMEA Engineering College",
     rules: [
-      "Teams of 2-4 members",
-      "Robots must be autonomous or remote controlled",
-      "Maximum robot dimensions: 30cm x 30cm x 30cm",
-      "Match duration: 5 minutes",
-      "No ramming or damaging opponent robots",
-      "Highest goals scored wins"
+      "Team size: 2-4 members",
+      "Robots will be provided by the department",
+      "Each team is allowed 10 minutes",
+      "The team that scores the maximum goals wins"
     ],
     highlights: [
       "Exciting robot matches",
@@ -400,12 +384,10 @@ export const raEvents: DepartmentEvent[] = [
     time: "2:00 PM - 5:00 PM",
     venue: "Robotics Lab, KMEA Engineering College",
     rules: [
-      "Teams of 2-4 members",
-      "Robot must follow black line on white surface",
-      "Track includes curves and intersections",
-      "Fastest completion time wins",
-      "Robot must complete track without manual intervention",
-      "Multiple attempts allowed, best time counts"
+      "Participants must bring their own robot",
+      "Team size: 2-4 members",
+      "Robots must follow the line and complete the goal in the shortest time",
+      "The team with the shortest time wins"
     ],
     highlights: [
       "Design your own line follower",
@@ -493,12 +475,12 @@ export const eeeEvents: DepartmentEvent[] = [
     time: "10:00 AM - 12:00 PM",
     venue: "EEE Lab, KMEA Engineering College",
     rules: [
-      "Individual participation only",
-      "Components will be provided",
-      "Time limit: 60 minutes",
-      "Circuit must be functional",
-      "Basic Arduino boards provided",
-      "Judging: Creativity, Functionality, Efficiency"
+      "Event is conducted as a tournament",
+      "A problem or task will be given to the participants",
+      "Participants must solve the task using the provided hardware/components only",
+      "Participants can use AI tools",
+      "Complete the task within the specified time constraint",
+      "Participants can choose required components from the given list"
     ],
     highlights: [
       "Hands-on Arduino experience",
@@ -523,12 +505,10 @@ export const eeeEvents: DepartmentEvent[] = [
     time: "11:00 AM - 1:00 PM",
     venue: "EEE Department, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Avoid touching zap zones",
-      "Complete challenges within time",
-      "Multiple rounds with elimination",
-      "Fastest completion wins",
-      "Safety is priority"
+      "Place the metal loop at the start of the wire before beginning",
+      "Use only one hand throughout the game",
+      "Do not touch the wire; contact triggers the buzzer/LED and loses the round",
+      "Reach the finish point without touching the wire to win"
     ],
     highlights: [
       "Fun reaction game",
@@ -553,12 +533,8 @@ export const eeeEvents: DepartmentEvent[] = [
     time: "2:00 PM - 5:00 PM",
     venue: "EEE Lab, KMEA Engineering College",
     rules: [
-      "Teams of 3 members",
-      "Solve technical puzzles to defuse",
-      "Time limit: 30 minutes",
-      "Communication only within team",
-      "No external help allowed",
-      "Fastest defusal wins"
+      "Team size: 3 members",
+      "Task completion time: 10 minutes"
     ],
     highlights: [
       "Exciting escape room format",
@@ -583,12 +559,12 @@ export const eeeEvents: DepartmentEvent[] = [
     time: "10:00 AM - 2:00 PM",
     venue: "Common Area, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Players must remain seated throughout the game",
-      "Only feet can be used to control and kick the ball",
-      "Tournament knockout format",
-      "Best of 3 games per match",
-      "Finals: Best of 5"
+      "Players must remain seated at all times",
+      "Use only feet to control and shoot the ball",
+      "Keep feet on your own side",
+      "Play without shoes",
+      "Score 3 goals to win",
+      "Maximum time: 5 minutes"
     ],
     highlights: [
       "Unique seated football challenge",
@@ -613,12 +589,10 @@ export const eeeEvents: DepartmentEvent[] = [
     time: "11:00 AM - 1:00 PM",
     venue: "EEE Department, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Stack blocks as high as possible",
-      "Increasing speed with each level",
-      "Top score wins",
-      "Multiple attempts allowed",
-      "Best score counts"
+      "Press the button once to stop the moving LED block and place it on the stack",
+      "The new block must align with the block below it to stay in the stack",
+      "If part of the block does not align, that part disappears",
+      "The game continues until the player stacks all blocks to the top or loses all blocks"
     ],
     highlights: [
       "Classic arcade game",
@@ -889,12 +863,14 @@ export const ceEvents: DepartmentEvent[] = [
     time: "9:00 AM - 1:00 PM",
     venue: "Civil Lab, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "Materials provided: ice cream sticks, glue",
-      "Maximum span: 50cm",
-      "Must support minimum 1kg load",
-      "Time limit: 3 hours",
-      "Judging: Load capacity, Design, Aesthetics"
+      "Team size: maximum four members",
+      "Only materials provided at the venue may be used (150 popsicle sticks and glue)",
+      "Construction must be completed within a maximum of three hours",
+      "Truss bridge model with minimum span 400 mm and width 100 mm",
+      "Winner based on maximum load capacity",
+      "In case of tie, aesthetics decide the winner",
+      "Load will be applied at the center of the span (mark midpoint)",
+      "Judges will oversee load testing and aesthetic evaluation; decision is final"
     ],
     highlights: [
       "Hands-on structural design",
@@ -919,12 +895,13 @@ export const ceEvents: DepartmentEvent[] = [
     time: "10:00 AM - 12:00 PM",
     venue: "CAD Lab, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Software: AutoCAD",
-      "Time limit: 90 minutes",
-      "Civil engineering drawing given",
-      "Accuracy is key",
-      "Standard drafting conventions must be followed"
+      "Eligibility: open to graduate students in accredited engineering programs or recent graduates",
+      "Specified CAD software may be required",
+      "Design challenge to be completed within the given timeframe",
+      "May require a 2D design",
+      "Drawings must include proper dimensions",
+      "Any discrepancy leads to disqualification",
+      "Results finalized by the reviewing committee"
     ],
     highlights: [
       "Industry-standard software",
@@ -949,12 +926,13 @@ export const ceEvents: DepartmentEvent[] = [
     time: "2:00 PM - 5:00 PM",
     venue: "Conference Hall, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "Problem statement given at start",
-      "Develop innovative solution",
-      "Presentation: 10 minutes",
-      "Q&A: 5 minutes",
-      "Judging: Innovation, Feasibility, Presentation"
+      "Team size: 4 members (ID card is mandatory)",
+      "Problem given on Day 1 (online) and solution presented on Day 2 (offline)",
+      "Presentation time is 15 minutes; teams must adhere to the limit",
+      "Report 15 minutes before the allotted time",
+      "Evaluation based on problem understanding, methodology, proposed solution, feasibility analysis",
+      "Decision of the panel will be final",
+      "Participation certificates will be provided"
     ],
     highlights: [
       "Real-world problems",
@@ -979,12 +957,18 @@ export const ceEvents: DepartmentEvent[] = [
     time: "11:00 AM - 1:00 PM",
     venue: "Seminar Hall, KMEA Engineering College",
     rules: [
-      "Teams of 2 members",
-      "Multiple rounds",
-      "Topics: Structures, Surveying, Materials, etc.",
-      "No electronic devices",
-      "Negative marking in written round",
-      "Finals: Buzzer round"
+      "Each team can have a maximum of two members",
+      "Time allotted for each question will be announced at the venue",
+      "Team members may discuss before answering",
+      "If a team cannot answer, they may pass",
+      "No response within time passes to the next team",
+      "Late answers are not considered correct",
+      "Preliminary round with maximum teams to start",
+      "Top teams advance to second round",
+      "Eight teams proceed to semi-final",
+      "Top four teams qualify for final",
+      "Each correct answer is 5 points; a passed question carries 3 points",
+      "Discussion between teams is strictly prohibited"
     ],
     highlights: [
       "Multi-level quiz",
@@ -1009,12 +993,14 @@ export const ceEvents: DepartmentEvent[] = [
     time: "2:00 PM - 4:00 PM",
     venue: "Campus Wide, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "Follow clues in sequence",
-      "Civil engineering themed clues",
-      "First team to treasure wins",
-      "No external help",
-      "Stay within campus boundaries"
+      "Team size: exactly four members; no participant can be in more than one team",
+      "Mobile phones, smart watches, or electronic gadgets are strictly not allowed",
+      "Solve clues in sequence; next clue only after the previous one is solved",
+      "All clues are technical and logic-based",
+      "External help is not allowed",
+      "Tampering with, hiding, or damaging clues leads to disqualification",
+      "First team to reach the final destination wins",
+      "Decision of the event coordinators is final in case of disputes"
     ],
     highlights: [
       "Campus-wide hunt",
@@ -1039,12 +1025,14 @@ export const ceEvents: DepartmentEvent[] = [
     time: "3:00 PM - 5:00 PM",
     venue: "Civil Lab, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "Materials: Paper, tape only",
-      "Time limit: 45 minutes",
-      "Tower must stand for 30 seconds",
-      "Height measured at top",
-      "No external support allowed"
+      "Team size: 2-4 members; no participant can be in more than one team",
+      "Teams will be provided paper sheets and limited materials only",
+      "Build the tower using only the provided materials",
+      "The tower must be free-standing with no external support",
+      "Time limit will be announced at the venue",
+      "Evaluation based on height and stability",
+      "Touching or disturbing other teams' structures leads to disqualification",
+      "Tallest stable paper tower wins"
     ],
     highlights: [
       "Tallest tower wins",
@@ -1072,12 +1060,21 @@ export const cseEvents: DepartmentEvent[] = [
     time: "10:00 AM - 12:00 PM",
     venue: "Computer Lab, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Time limit: 60 minutes",
-      "Multiple AI tasks will be given",
-      "Best prompt engineering wins",
-      "ChatGPT/Gemini will be used",
-      "Judging: Accuracy, Creativity, Efficiency"
+      "Event is open to all registered tech fest participants",
+      "Participants must participate individually",
+      "Total event duration: 75 minutes",
+      "The competition will have two rounds",
+      "Prompts must be created using the provided AI tool and model only",
+      "Round 1 - Image Generation: task/theme will be given",
+      "Round 1 time: 30 minutes",
+      "Top participants from Round 1 advance to Round 2",
+      "Round 2 - Video Generation: new task/theme will be given",
+      "Round 2 time: 45 minutes",
+      "Prompts must be created during the competition",
+      "Copying prompts or unfair practices are not allowed",
+      "Participants must submit both the prompt and the AI-generated output",
+      "Winners are selected based on prompt clarity, creativity, and quality of AI output",
+      "Judges' decision is final"
     ],
     highlights: [
       "Learn AI prompting",
@@ -1102,12 +1099,24 @@ export const cseEvents: DepartmentEvent[] = [
     time: "11:00 AM - 1:00 PM",
     venue: "Computer Lab, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Time limit: 90 minutes",
-      "Code in Python/Java/C++",
-      "Fix all bugs to score",
-      "More bugs fixed = More points",
-      "Fastest correct solution wins"
+      "Individual participation only",
+      "College ID is mandatory",
+      "Participants must register before the event begins",
+      "Participants can choose Python, C, C++, or Java",
+      "Buggy code will be provided during the event",
+      "Participants must identify and fix the errors",
+      "The event consists of one debugging round only",
+      "Participants must correct the given program within the time limit",
+      "Code must be submitted before time ends",
+      "System with compiler/IDE will be provided",
+      "Internet access is not allowed",
+      "AI tools (ChatGPT, Copilot, Gemini, etc.) are strictly prohibited",
+      "Use of AI assistance will result in disqualification",
+      "The corrected program must compile and run successfully",
+      "Late submissions will not be accepted",
+      "Judging: accuracy of corrected code, number of bugs fixed, time taken",
+      "Participants must work individually; discussion or copying is not allowed",
+      "Participant who fixes the maximum bugs correctly in the shortest time wins"
     ],
     highlights: [
       "Real-world debugging",
@@ -1132,12 +1141,18 @@ export const cseEvents: DepartmentEvent[] = [
     time: "2:00 PM - 4:00 PM",
     venue: "Computer Lab, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Only HTML & CSS allowed",
-      "No JavaScript",
-      "Time limit: 2 hours",
-      "Design given at start",
-      "Judging: Visual accuracy, Creativity, Code quality"
+      "Only HTML and CSS are allowed",
+      "JavaScript is strictly prohibited",
+      "CSS frameworks like Bootstrap or Tailwind are not allowed",
+      "You may use Flexbox, Grid, Animations, and Transitions",
+      "Internet usage allowed only for documentation (optional)",
+      "Code must be written during the event",
+      "Plagiarism leads to disqualification",
+      "Each participant must submit before the time limit",
+      "Total time allowed: 90 minutes",
+      "Students must carry their college ID",
+      "Decision of the judge will be final",
+      "Individual participation only"
     ],
     highlights: [
       "Pure CSS challenge",
@@ -1179,7 +1194,7 @@ export const cseEvents: DepartmentEvent[] = [
   {
     id: "code-catastrophe",
     title: "Code Catastrophe",
-    teamSize: 1,
+    teamSize: 2,
     registrationFee: "₹50",
     prizePool: "₹3,000",
     details: "Write the most chaotic but functional code. Creativity in confusion wins.",
@@ -1192,12 +1207,16 @@ export const cseEvents: DepartmentEvent[] = [
     time: "3:00 PM - 4:30 PM",
     venue: "Computer Lab, KMEA Engineering College",
     rules: [
-      "Individual participation",
-      "Code must work correctly",
-      "More chaotic = More points",
-      "Time limit: 90 minutes",
-      "Any language allowed",
-      "Judging: Chaos level, Creativity, Functionality"
+      "Program must compile and run successfully",
+      "Output should be correct according to the problem statement",
+      "Any programming language allowed (C, C++, Java, Python, etc.)",
+      "Participants may compete individually or in teams of up to 2 members",
+      "Internet usage is strictly restricted",
+      "Plagiarism or copying code from others leads to disqualification",
+      "Code should intentionally use poor coding practices",
+      "Make the code long, complex, and hard to read while producing correct output",
+      "Avoid built-in shortcuts; use unnecessarily complicated logic",
+      "Judges' decision will be final in selecting the worst (best) code"
     ],
     highlights: [
       "Fun coding challenge",
@@ -1222,12 +1241,24 @@ export const cseEvents: DepartmentEvent[] = [
     time: "2:00 PM - 5:00 PM",
     venue: "CSE Department, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "60 minutes time limit",
-      "Solve all puzzles to escape",
-      "QR codes for clues",
-      "No external help",
-      "Fastest escape wins"
+      "Teams of 2-4 members",
+      "College ID is mandatory",
+      "Register at the help desk 15 minutes before the event",
+      "First clue and zone details will be given at the start",
+      "All teams start together",
+      "Campus is divided into zones",
+      "Teams must stay together throughout the hunt",
+      "Clues include riddles, puzzles, cultural and tech challenges",
+      "Solve each clue to proceed",
+      "Mobile phones allowed only for QR codes and digital clues",
+      "No calling or searching for answers",
+      "Limited hints available; time penalty for each hint",
+      "No cheating or copying; do not damage or hide clues",
+      "Respect campus rules and property; follow volunteers' instructions",
+      "Disqualification for indiscipline or not obeying instructions",
+      "Fixed duration; participation certificates will be provided",
+      "First to complete the final clue wins",
+      "Judges' decision is final"
     ],
     highlights: [
       "Immersive experience",
@@ -1252,12 +1283,15 @@ export const cseEvents: DepartmentEvent[] = [
     time: "9:00 AM - 9:00 PM",
     venue: "Computer Lab Complex, KMEA Engineering College",
     rules: [
-      "Teams of up to 4 members",
-      "12-hour coding marathon",
-      "Problem statement at start",
-      "Working prototype required",
-      "Any tech stack allowed",
-      "Judging: Innovation, Implementation, Presentation"
+      "Participants can take part individually or in teams (maximum 3-4 members per team)",
+      "All participants must register before the event begins",
+      "Problem statement will be given at the start of the hackathon",
+      "Participants must complete the project within the given time limit",
+      "Use of online resources and open-source tools is allowed; copying existing projects is not permitted",
+      "All code and work must be created during the hackathon",
+      "Teams must present or demonstrate their project at the end of the event",
+      "Decision of the judges will be final",
+      "Participants must follow event rules and maintain proper discipline"
     ],
     highlights: [
       "Full-day hackathon",
@@ -1341,12 +1375,12 @@ export const culturalEvents: DepartmentEvent[] = [
   {
     id: "step-in-synchro",
     title: "Step in Synchro",
-    teamSize: 1,
+    teamSize: 4,
     registrationFee: "₹100",
     prizePool: "₹4,500",
     details: "A unique synchronization challenge where teams perform choreographed steps in perfect unison. Precision and timing are key to victory.",
     prizes: ["🥇 ₹3,000", "🥈 ₹1,500"],
-    type: "individual",
+    type: "team",
     department: "CULTURAL",
     departmentName: "Cultural Events",
     image: "https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1200&h=600&fit=crop",
@@ -1379,7 +1413,7 @@ export const culturalEvents: DepartmentEvent[] = [
     prizePool: "₹3,000",
     details: "Capture the essence of the fest through your lens. A theme will be announced on spot, and you have limited time to click the best shots.",
     prizes: ["🥇 ₹2,000", "🥈 ₹1,000"],
-    type: "individual",
+    type: "team",
     department: "CULTURAL",
     departmentName: "Cultural Events",
     image: "https://images.unsplash.com/photo-1502982720700-bfff97f2ecac?w=1200&h=600&fit=crop",

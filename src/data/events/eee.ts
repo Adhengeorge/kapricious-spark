@@ -18,12 +18,12 @@ export const eeeEvents: DepartmentEvent[] = [
     time: "11:30 AM - 2:00 PM",
     venue: "C406",
     rules: [
-      "Individual participation",
-      "Boards and sensors provided",
-      "Time limit: 90 minutes",
-      "Code must be documented",
-      "Judging: innovation, functionality, documentation",
-      "No pre-built modules allowed"
+      "Event is conducted as a tournament",
+      "A problem or task will be given to the participants",
+      "Participants must solve the task using the provided hardware/components only",
+      "Participants can use AI tools",
+      "Complete the task within the specified time constraint",
+      "Participants can choose required components from the given list"
     ],
     highlights: [
       "Hands-on embedded coding",
@@ -49,12 +49,10 @@ export const eeeEvents: DepartmentEvent[] = [
     time: "11:30 AM - 3:00 PM",
     venue: "C205-A",
     rules: [
-      "Solo participants",
-      "Avoid touching marked zap zones",
-      "Challenges come in rounds with increasing difficulty",
-      "Timer stops on contact with forbidden areas",
-      "Use provided toolkit only",
-      "Fastest completion wins"
+      "Place the metal loop at the start of the wire before beginning",
+      "Use only one hand throughout the game",
+      "Do not touch the wire; contact triggers the buzzer/LED and loses the round",
+      "Reach the finish point without touching the wire to win"
     ],
     highlights: [
       "Adrenaline-fueled reaction game",
@@ -80,12 +78,8 @@ export const eeeEvents: DepartmentEvent[] = [
     time: "2:00 PM - 5:00 PM",
     venue: "C209",
     rules: [
-      "Teams of three members",
-      "Solve puzzles to unlock the next clue",
-      "Communication only within the team",
-      "Time limit: 30 minutes per round",
-      "No outside assistance",
-      "Fastest defusal wins"
+      "Team size: 3 members",
+      "Task completion time: 10 minutes"
     ],
     highlights: [
       "Team coordination",
@@ -111,12 +105,10 @@ export const eeeEvents: DepartmentEvent[] = [
     time: "11:00 AM - 1:00 PM",
     venue: "C205B",
     rules: [
-      "Solo participation",
-      "Stack blocks in allotted time",
-      "Blocks shrink in size at higher levels",
-      "Top score wins",
-      "Multiple attempts allowed, best score counts",
-      "No external aids"
+      "Press the button once to stop the moving LED block and place it on the stack",
+      "The new block must align with the block below it to stay in the stack",
+      "If part of the block does not align, that part disappears",
+      "The game continues until the player stacks all blocks to the top or loses all blocks"
     ],
     highlights: [
       "Fast-paced reflex test",

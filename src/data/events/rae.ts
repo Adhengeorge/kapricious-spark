@@ -18,12 +18,10 @@ export const raEvents: DepartmentEvent[] = [
     time: "10:00 AM - 12:00 PM",
     venue: "Badminton Court",
     rules: [
-      "Teams of up to four members",
-      "Robots may be remote controlled or autonomous",
-      "Robot dimensions limited to 30 cm cube",
-      "Match duration: 5 minutes per half",
-      "No deliberate damage to opponent robots",
-      "Judging: goals scored, fair play, design"
+      "Team size: 2-4 members",
+      "Robots will be provided by the department",
+      "Each team is allowed 10 minutes",
+      "The team that scores the maximum goals wins"
     ],
     highlights: [
       "High-energy robot soccer",
@@ -49,12 +47,10 @@ export const raEvents: DepartmentEvent[] = [
     time: "1:00 PM - 4:00 PM",
     venue: "Badminton Court",
     rules: [
-      "Teams of up to four members",
-      "Robot must follow the black line on a white surface",
-      "Track includes tight curves and intersections",
-      "Fastest completion wins",
-      "No manual intervention during the run",
-      "Judging: speed, precision, innovation"
+      "Participants must bring their own robot",
+      "Team size: 2-4 members",
+      "Robots must follow the line and complete the goal in the shortest time",
+      "The team with the shortest time wins"
     ],
     highlights: [
       "Precision line tracking",

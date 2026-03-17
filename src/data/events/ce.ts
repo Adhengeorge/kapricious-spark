@@ -18,12 +18,14 @@ export const ceEvents: DepartmentEvent[] = [
     time: "9:00 AM - 1:00 PM",
     venue: "D304",
     rules: [
-      "Teams of up to four members",
-      "Use only the materials provided",
-      "Maximum span: 50 cm",
-      "Bridge must support the specified load",
-      "Time limit: 3 hours",
-      "Judging: load capacity, design, creativity"
+      "Team size: maximum four members",
+      "Only materials provided at the venue may be used (150 popsicle sticks and glue)",
+      "Construction must be completed within a maximum of three hours",
+      "Truss bridge model with minimum span 400 mm and width 100 mm",
+      "Winner based on maximum load capacity",
+      "In case of tie, aesthetics decide the winner",
+      "Load will be applied at the center of the span (mark midpoint)",
+      "Judges will oversee load testing and aesthetic evaluation; decision is final"
     ],
     highlights: [
       "Hands-on structural design",
@@ -49,12 +51,13 @@ export const ceEvents: DepartmentEvent[] = [
     time: "9:30 AM - 11:30 AM",
     venue: "CAD Lab, Civil Block",
     rules: [
-      "Individual participation",
-      "AutoCAD or similar software only",
-      "Time limit: 90 minutes",
-      "Problem statement issued at start",
-      "File submission in standard format",
-      "Judging: speed, accuracy, presentation"
+      "Eligibility: open to graduate students in accredited engineering programs or recent graduates",
+      "Specified CAD software may be required",
+      "Design challenge to be completed within the given timeframe",
+      "May require a 2D design",
+      "Drawings must include proper dimensions",
+      "Any discrepancy leads to disqualification",
+      "Results finalized by the reviewing committee"
     ],
     highlights: [
       "Industry-standard drafting",
@@ -80,12 +83,13 @@ export const ceEvents: DepartmentEvent[] = [
     time: "2:00 PM - 4:00 PM",
     venue: "Smart Class, Civil Block",
     rules: [
-      "Teams of four members",
-      "Problem statements revealed at start",
-      "Pitch must include feasibility study",
-      "Presentations limited to 10 minutes",
-      "Q&A for 5 minutes per team",
-      "Judging: innovation, viability, presentation"
+      "Team size: 4 members (ID card is mandatory)",
+      "Problem given on Day 1 (online) and solution presented on Day 2 (offline)",
+      "Presentation time is 15 minutes; teams must adhere to the limit",
+      "Report 15 minutes before the allotted time",
+      "Evaluation based on problem understanding, methodology, proposed solution, feasibility analysis",
+      "Decision of the panel will be final",
+      "Participation certificates will be provided"
     ],
     highlights: [
       "Real-world civil challenges",
@@ -111,12 +115,18 @@ export const ceEvents: DepartmentEvent[] = [
     time: "9:30 AM - 11:30 AM",
     venue: "Seminar Hall, Civil Block",
     rules: [
-      "Teams of two members",
-      "Rounds: written, rapid-fire, buzzer",
-      "Topics span structures, surveying, materials",
-      "No electronic devices allowed",
-      "Negative marking applies on written rounds",
-      "Tie-breaker through buzzer round"
+      "Each team can have a maximum of two members",
+      "Time allotted for each question will be announced at the venue",
+      "Team members may discuss before answering",
+      "If a team cannot answer, they may pass",
+      "No response within time passes to the next team",
+      "Late answers are not considered correct",
+      "Preliminary round with maximum teams to start",
+      "Top teams advance to second round",
+      "Eight teams proceed to semi-final",
+      "Top four teams qualify for final",
+      "Each correct answer is 5 points; a passed question carries 3 points",
+      "Discussion between teams is strictly prohibited"
     ],
     highlights: [
       "Multi-level quiz format",
@@ -142,12 +152,14 @@ export const ceEvents: DepartmentEvent[] = [
     time: "2:00 PM - 4:00 PM",
     venue: "Whole Department",
     rules: [
-      "Teams of four members",
-      "Solve engineering-themed clues sequentially",
-      "Stay within campus boundaries",
-      "Clue books provided at each checkpoint",
-      "No external assistance allowed",
-      "First team to reach the treasure wins"
+      "Team size: exactly four members; no participant can be in more than one team",
+      "Mobile phones, smart watches, or electronic gadgets are strictly not allowed",
+      "Solve clues in sequence; next clue only after the previous one is solved",
+      "All clues are technical and logic-based",
+      "External help is not allowed",
+      "Tampering with, hiding, or damaging clues leads to disqualification",
+      "First team to reach the final destination wins",
+      "Decision of the event coordinators is final in case of disputes"
     ],
     highlights: [
       "Engineered treasure hunt",
@@ -173,12 +185,14 @@ export const ceEvents: DepartmentEvent[] = [
     time: "9:00 AM - 11:00 AM",
     venue: "Seminar Hall, Civil Block",
     rules: [
-      "Teams of four members",
-      "Use only paper, tape, and glue",
-      "Time limit: 45 minutes",
-      "Tower must stand for at least 30 seconds",
-      "Height measured at the highest stable point",
-      "No external supports allowed"
+      "Team size: 2-4 members; no participant can be in more than one team",
+      "Teams will be provided paper sheets and limited materials only",
+      "Build the tower using only the provided materials",
+      "The tower must be free-standing with no external support",
+      "Time limit will be announced at the venue",
+      "Evaluation based on height and stability",
+      "Touching or disturbing other teams' structures leads to disqualification",
+      "Tallest stable paper tower wins"
     ],
     highlights: [
       "Creative structural challenge",

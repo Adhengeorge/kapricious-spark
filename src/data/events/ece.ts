@@ -22,12 +22,9 @@ export const eceEvents: DepartmentEvent[] = [
       phone: "+91 70128 30512",
     },
     rules: [
-      "Individual participation",
-      "Participants must replicate the given structure within the allotted time limit",
+      "Participants must replicate the given circuit design",
       "Components will be provided",
-      "Judged based on accuracy, soldering quality, and neatness",
-      "Use only the materials provided at the venue",
-      "Decision of the judges is final"
+      "Judged based on accuracy, soldering quality, and neatness"
     ],
     highlights: [
       "Structure replication challenge",
@@ -57,12 +54,9 @@ export const eceEvents: DepartmentEvent[] = [
       phone: "+91 85907 67010",
     },
     rules: [
-      "Individual participation",
       "Participants must move through the laser maze without breaking beams",
       "Each beam break adds penalty time",
-      "Fastest completion time wins",
-      "Follow arena instructions carefully",
-      "Decision of the judges is final"
+      "Fastest completion time wins"
     ],
     highlights: [
       "Laser maze challenge",
@@ -92,12 +86,9 @@ export const eceEvents: DepartmentEvent[] = [
       phone: "+91 90374 71665",
     },
     rules: [
-      "Individual participation",
       "Participants identify electronic components",
-      "Must mention component name, value if applicable, and function",
-      "Highest score wins",
-      "No external help or devices allowed",
-      "Judges decision is final"
+      "Must mention component name, value and application",
+      "Highest score wins"
     ],
     highlights: [
       "Component identification challenge",
@@ -128,10 +119,9 @@ export const eceEvents: DepartmentEvent[] = [
     },
     rules: [
       "Teams of 4 members",
-      "Each clue leads to the next",
-      "Team completing all stages fastest wins",
-      "Stay within the allowed event area",
-      "Organizers reserve the right to disqualify unfair play"
+      "Each clue leads to the next checkpoint",
+      "Use of mobile phones is not allowed",
+      "Team completing all stages fastest wins"
     ],
     highlights: [
       "4-member team event",
@@ -161,12 +151,9 @@ export const eceEvents: DepartmentEvent[] = [
       phone: "+91 97782 40531",
     },
     rules: [
-      "Individual participation",
       "Participants must identify the correct wire connections",
-      "Incorrect wire selection leads to penalties",
-      "Fastest successful defusal wins",
-      "Handle the setup carefully during the challenge",
-      "Decision of the judges is final"
+      "Incorrect wire selection may lead to penalties or disqualification",
+      "Fastest successful defusal wins"
     ],
     highlights: [
       "Bomb defusal challenge",

@@ -122,7 +122,7 @@ export const AUTO_SHOW_KEYWORDS = [
 // ORGANIZATION & VENUE DETAILS
 // ============================================================================
 
-const DEFAULT_IMAGE_PATH = "/og-image.png";
+const DEFAULT_IMAGE_PATH = "/logo.png";
 const LOGO_PATH = "/logo.png";
 const ORGANIZATION_NAME = "KMEA Engineering College";
 const ORGANIZATION_EMAIL = "kapricious@kmeacollege.ac.in";

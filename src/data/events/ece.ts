@@ -9,7 +9,7 @@ export const eceEvents: DepartmentEvent[] = [
     prizePool: "₹1,500",
     details:
       "Participants battle through rapid-fire circuit/frame challenges inspired by classic shooter missions.",
-    prizes: ["Prize pool coming soon"],
+    prizes: ["🥇 ₹1,000", "🥈 ₹500"],
     type: "individual",
     department: "ECE",
     departmentName: "Electronics & Communication Engineering",
@@ -40,7 +40,7 @@ export const eceEvents: DepartmentEvent[] = [
     prizePool: "₹2,000",
     details:
       "Navigate through a grid of lasers to reach the vault without tripping any beam, testing focus and control.",
-    prizes: ["Prize pool coming soon"],
+    prizes: ["🥇 ₹1,500", "🥈 ₹500"],
     type: "individual",
     department: "ECE",
     departmentName: "Electronics & Communication Engineering",
@@ -71,7 +71,7 @@ export const eceEvents: DepartmentEvent[] = [
     prizePool: "₹1,500",
     details:
       "A knowledge sprint reviewing electronic components, circuits, and communication systems across multiple rounds.",
-    prizes: ["Prize pool coming soon"],
+    prizes: ["🥇 ₹1,000", "🥈 ₹500"],
     type: "individual",
     department: "ECE",
     departmentName: "Electronics & Communication Engineering",
@@ -96,13 +96,13 @@ export const eceEvents: DepartmentEvent[] = [
   },
   {
     id: "electro-hunt",
-    title: "Electro Hunt",
+    title: "ElectroDex",
     teamSize: 1,
     registrationFee: "₹200 per team",
     prizePool: "₹3,000",
     details:
-      "Follow engineering clues spread across campus to crack circuits and win the treasure before other teams.",
-    prizes: ["Prize pool coming soon"],
+      "Decode clues, discover hidden checkpoints, and solve electronics-themed challenges across campus before time runs out.",
+    prizes: ["🥇 ₹3,000"],
     type: "individual",
     department: "ECE",
     departmentName: "Electronics & Communication Engineering",
@@ -132,8 +132,8 @@ export const eceEvents: DepartmentEvent[] = [
     registrationFee: "₹50 per head",
     prizePool: "₹1,500",
     details:
-      "An embedded systems challenge with time-boxed coding tasks on microcontrollers and IoT workflows.",
-    prizes: ["Prize pool coming soon"],
+      "A high-pressure bomb defusal challenge where participants must identify the right wires, decode clues, and disarm the device before time runs out.",
+    prizes: ["🥇 ₹1,000", "🥈 ₹500"],
     type: "individual",
     department: "ECE",
     departmentName: "Electronics & Communication Engineering",

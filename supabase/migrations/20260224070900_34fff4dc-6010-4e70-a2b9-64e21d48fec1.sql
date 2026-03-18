@@ -110,7 +110,7 @@ INSERT INTO public.departments (name, code) VALUES
   ('Electrical & Electronics', 'EEE'),
   ('Mechanical Engineering', 'ME'),
   ('Civil Engineering', 'CE'),
-  ('Robotics & Automation Engineering', 'RAE'),
+  ('Robotics & Automation Engineering', 'RA'),
   ('Safety & Fire Engineering', 'SF'),
   ('Kapricious Main Stage', 'MAIN');
 
@@ -361,7 +361,7 @@ INSERT INTO public.events (
   ('Robosoccer',
    'Autonomous or remote-controlled robots compete in a soccer match on a compact arena.',
    E'1. Teams of up to four\n2. Robots may be autonomous or remote controlled\n3. Maximum robot size: 30 cm cube\n4. Match duration: five minutes per half\n5. No damaging opponent robots\n6. Judging: goals, fair play, design',
-   (SELECT id FROM public.departments WHERE code='RAE'),
+   (SELECT id FROM public.departments WHERE code='RA'),
    '2026-03-27 10:00:00+05:30',
    'Robotics Arena, KMEA Engineering College',
    60,
@@ -369,7 +369,7 @@ INSERT INTO public.events (
   ('Line Tracer',
    'Build and program a robot to follow a complex line track with speed and accuracy.',
    E'1. Teams of four\n2. Robot must follow black line on white surface\n3. Track includes curves and intersections\n4. Fastest completion time wins\n5. No manual intervention allowed\n6. Judges score speed and precision',
-   (SELECT id FROM public.departments WHERE code='RAE'),
+   (SELECT id FROM public.departments WHERE code='RA'),
    '2026-03-27 14:00:00+05:30',
    'Robotics Lab, KMEA Engineering College',
    40,
@@ -377,7 +377,7 @@ INSERT INTO public.events (
   ('InnovateX – Robotics & Tech Talks',
    'Hear from robotics innovators sharing use cases in automation, AI, and emerging tech.',
    E'1. Open to all attendees\n2. Limited seating available\n3. Q&A follows each session\n4. Follow speaker schedule\n5. Recording for internal reference only\n6. Maintain decorum',
-   (SELECT id FROM public.departments WHERE code='RAE'),
+   (SELECT id FROM public.departments WHERE code='RA'),
    '2026-03-27 16:00:00+05:30',
    'Robotics Innovation Hall, KMEA Engineering College',
    120,
@@ -385,19 +385,12 @@ INSERT INTO public.events (
   ('Tech Insights – Expert Talk (NPOL Scientist)',
    'A fireside session with a scientist covering robotics research, defense automation, and future tech.',
    E'1. Free entry\n2. Audience participation encouraged\n3. Photography allowed with permission\n4. Sessions start on time\n5. No commercial promotions allowed\n6. Respect the speaker',
-   (SELECT id FROM public.departments WHERE code='RAE'),
+   (SELECT id FROM public.departments WHERE code='RA'),
    '2026-03-28 10:00:00+05:30',
    'Conference Hall, KMEA Engineering College',
    120,
    'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=1200&h=600&fit=crop'),
-  ('Path to Pitch – Robotics Workshop',
-   'Workshop on robotics prototyping, pitching concepts, and preparing demo scripts.',
-   E'1. Prior registration required\n2. Bring notebook or laptop\n3. Hands-on prototyping guidance provided\n4. Quick pitch rounds included\n5. Collaboration encouraged\n6. Completion certificate awarded',
-   (SELECT id FROM public.departments WHERE code='RAE'),
-   '2026-03-28 14:00:00+05:30',
-   'Robotics Studio, KMEA Engineering College',
-   60,
-   'https://images.unsplash.com/photo-1581091215367-47b6a3c6b7c1?w=1200&h=600&fit=crop'),
+  
   ('Hazard Huzzle – Safety Quiz',
    'Team-based quiz covering fire safety, industrial protocols, and emergency preparedness.',
    E'1. Teams of two\n2. Multiple rounds: written, buzzer, rapid fire\n3. Topics: fire safety, hazard control, compliance\n4. No electronic devices\n5. Negative marking for wrong answers\n6. Tie breaker via buzzer round',
@@ -507,6 +500,7 @@ CREATE POLICY "Anyone can view certificates" ON storage.objects FOR SELECT USING
 CREATE POLICY "Admins can upload certificates" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'certificates' AND public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "Admins can update certificates" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'certificates' AND public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "Admins can delete certificates" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'certificates' AND public.has_role(auth.uid(), 'admin'));
+
 
 
 

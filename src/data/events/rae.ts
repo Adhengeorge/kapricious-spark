@@ -11,7 +11,7 @@ export const raEvents: DepartmentEvent[] = [
       "Teams deliver autonomous robots that play soccer on a mini pitch. Strategy, agility, and teamwork decide the score.",
     prizes: ["🥇 ₹1,000"],
     type: "team",
-    department: "RAE",
+    department: "RA",
     departmentName: "Robotics & Automation Engineering",
     image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
@@ -40,7 +40,7 @@ export const raEvents: DepartmentEvent[] = [
       "Build and program a robot that follows a complex line track with speed and accuracy.",
     prizes: ["🥇 ₹1,000"],
     type: "team",
-    department: "RAE",
+    department: "RA",
     departmentName: "Robotics & Automation Engineering",
     image: "https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
@@ -69,7 +69,7 @@ export const raEvents: DepartmentEvent[] = [
       "A speaker series featuring robotics innovators who share insights on automation, AI, and real-world implementations.",
     prizes: ["Knowledge & networking"],
     type: "individual",
-    department: "RAE",
+    department: "RA",
     departmentName: "Robotics & Automation Engineering",
     image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
@@ -100,7 +100,7 @@ export const raEvents: DepartmentEvent[] = [
       "A fireside session with an NPOL scientist covering robotics research, defense automation, and emerging technologies.",
     prizes: ["Thought leadership"],
     type: "individual",
-    department: "RAE",
+    department: "RA",
     departmentName: "Robotics & Automation Engineering",
     image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
@@ -119,37 +119,6 @@ export const raEvents: DepartmentEvent[] = [
       "Learn from an NPOL expert",
       "Future of robotics",
       "Close-up on defense automation"
-    ]
-  },
-  {
-    id: "path-to-pitch",
-    title: "Path to Pitch – Robotics Workshop",
-    teamSize: 1,
-    registrationFee: "Free",
-    prizePool: "None",
-    details:
-      "Hands-on workshop covering robotics prototyping, pitching to investors, and preparing demo scripts for automations.",
-    prizes: ["Workshop kit"],
-    type: "individual",
-    department: "RAE",
-    departmentName: "Robotics & Automation Engineering",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "2:00 PM - 4:00 PM",
-    venue: "Robotics Studio, KMEA Engineering College",
-    rules: [
-      "Prior registration required",
-      "Bring your own notebook or laptop",
-      "Materials will be shared in small batches",
-      "Participate in quick pitch rounds",
-      "Collaboration encouraged",
-      "Completion certificate provided"
-    ],
-    highlights: [
-      "Pitch readiness",
-      "Prototyping fundamentals",
-      "Mentorship on demos",
-      "Interactive learning"
     ]
   }
 ];

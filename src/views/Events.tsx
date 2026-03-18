@@ -39,7 +39,7 @@ const departmentEvents = [
   { code: "ME", name: "Mechanical Engineering", events: sortDepartmentEventsByPrizePool(meEvents) },
   { code: "EEE", name: "Electrical & Electronics Engineering", events: sortDepartmentEventsByPrizePool(eeeEvents) },
   { code: "ECE", name: "Electronics & Communication Engineering", events: sortDepartmentEventsByPrizePool(eceEvents) },
-  { code: "RAE", name: "Robotics & Automation Engineering", events: sortDepartmentEventsByPrizePool(raEvents) },
+  { code: "RA", name: "Robotics & Automation Engineering", events: sortDepartmentEventsByPrizePool(raEvents) },
   { code: "SFE", name: "Safety & Fire Engineering", events: sortDepartmentEventsByPrizePool(sfEvents) },
 ];
 

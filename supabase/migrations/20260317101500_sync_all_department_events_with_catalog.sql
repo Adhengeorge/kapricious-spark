@@ -39,9 +39,9 @@ WITH renames(old_title, new_title, dept_code) AS (
     ('Solder Master', 'Solder-Master', 'ECE'),
     ('E Solder', 'Solder-Master', 'ECE'),
     ('Laser Heist', 'Lazer Heist', 'ECE'),
-    ('Robo Soccer', 'Robosoccer', 'RAE'),
-    ('Vibe Coding Ideathon', 'InnovateX – Robotics & Tech Talks', 'RAE'),
-    ('Circuit Rush', 'Tech Insights – Expert Talk (NPOL Scientist)', 'RAE'),
+    ('Robo Soccer', 'Robosoccer', 'RA'),
+    ('Vibe Coding Ideathon', 'InnovateX – Robotics & Tech Talks', 'RA'),
+    ('Circuit Rush', 'Tech Insights – Expert Talk (NPOL Scientist)', 'RA'),
     ('Safety Quiz', 'Hazard Huzzle – Safety Quiz', 'SF'),
     ('Technical Debate', 'The Safety Verdict – Technical Debate', 'SF'),
     ('Poster/Paper Presentation Competition', 'Insight – Poster/Paper Presentation', 'SF'),
@@ -103,11 +103,10 @@ WITH canonical(title, dept_code, event_date, venue, image_url) AS (
     ('Technical Quiz', 'ME', '2026-03-27 11:00:00+05:30'::timestamptz, 'Seminar Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&h=600&fit=crop'),
     ('Sustainable Innovation Pitching', 'ME', '2026-03-27 14:00:00+05:30'::timestamptz, 'Conference Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1200&h=600&fit=crop'),
 
-    ('Robosoccer', 'RAE', '2026-03-27 10:00:00+05:30'::timestamptz, 'Badminton Court', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop'),
-    ('Line Tracer', 'RAE', '2026-03-27 13:00:00+05:30'::timestamptz, 'Badminton Court', 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop'),
-    ('InnovateX – Robotics & Tech Talks', 'RAE', '2026-03-27 16:00:00+05:30'::timestamptz, 'Robotics Innovation Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop'),
-    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RAE', '2026-03-28 10:00:00+05:30'::timestamptz, 'Conference Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop'),
-    ('Path to Pitch – Robotics Workshop', 'RAE', '2026-03-28 14:00:00+05:30'::timestamptz, 'Robotics Studio, KMEA Engineering College', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop'),
+    ('Robosoccer', 'RA', '2026-03-27 10:00:00+05:30'::timestamptz, 'Badminton Court', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop'),
+    ('Line Tracer', 'RA', '2026-03-27 13:00:00+05:30'::timestamptz, 'Badminton Court', 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop'),
+    ('InnovateX – Robotics & Tech Talks', 'RA', '2026-03-27 16:00:00+05:30'::timestamptz, 'Robotics Innovation Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop'),
+    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RA', '2026-03-28 10:00:00+05:30'::timestamptz, 'Conference Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop'),
 
     ('Hazard Huzzle – Safety Quiz', 'SF', '2026-03-27 12:00:00+05:30'::timestamptz, 'D301', 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop'),
     ('The Safety Verdict – Technical Debate', 'SF', '2026-03-27 13:30:00+05:30'::timestamptz, 'D302', 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=600&fit=crop'),
@@ -171,11 +170,10 @@ WITH canonical(title, dept_code, event_date, venue, image_url) AS (
     ('Technical Quiz', 'ME', '2026-03-27 11:00:00+05:30'::timestamptz, 'Seminar Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&h=600&fit=crop'),
     ('Sustainable Innovation Pitching', 'ME', '2026-03-27 14:00:00+05:30'::timestamptz, 'Conference Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1200&h=600&fit=crop'),
 
-    ('Robosoccer', 'RAE', '2026-03-27 10:00:00+05:30'::timestamptz, 'Badminton Court', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop'),
-    ('Line Tracer', 'RAE', '2026-03-27 13:00:00+05:30'::timestamptz, 'Badminton Court', 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop'),
-    ('InnovateX – Robotics & Tech Talks', 'RAE', '2026-03-27 16:00:00+05:30'::timestamptz, 'Robotics Innovation Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop'),
-    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RAE', '2026-03-28 10:00:00+05:30'::timestamptz, 'Conference Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop'),
-    ('Path to Pitch – Robotics Workshop', 'RAE', '2026-03-28 14:00:00+05:30'::timestamptz, 'Robotics Studio, KMEA Engineering College', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop'),
+    ('Robosoccer', 'RA', '2026-03-27 10:00:00+05:30'::timestamptz, 'Badminton Court', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop'),
+    ('Line Tracer', 'RA', '2026-03-27 13:00:00+05:30'::timestamptz, 'Badminton Court', 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop'),
+    ('InnovateX – Robotics & Tech Talks', 'RA', '2026-03-27 16:00:00+05:30'::timestamptz, 'Robotics Innovation Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop'),
+    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RA', '2026-03-28 10:00:00+05:30'::timestamptz, 'Conference Hall, KMEA Engineering College', 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop'),
 
     ('Hazard Huzzle – Safety Quiz', 'SF', '2026-03-27 12:00:00+05:30'::timestamptz, 'D301', 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop'),
     ('The Safety Verdict – Technical Debate', 'SF', '2026-03-27 13:30:00+05:30'::timestamptz, 'D302', 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=600&fit=crop'),
@@ -231,11 +229,10 @@ WITH canonical(title, dept_code) AS (
     ('CAD Combat', 'ME'),
     ('Technical Quiz', 'ME'),
     ('Sustainable Innovation Pitching', 'ME'),
-    ('Robosoccer', 'RAE'),
-    ('Line Tracer', 'RAE'),
-    ('InnovateX – Robotics & Tech Talks', 'RAE'),
-    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RAE'),
-    ('Path to Pitch – Robotics Workshop', 'RAE'),
+    ('Robosoccer', 'RA'),
+    ('Line Tracer', 'RA'),
+    ('InnovateX – Robotics & Tech Talks', 'RA'),
+    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RA'),
     ('Hazard Huzzle – Safety Quiz', 'SF'),
     ('The Safety Verdict – Technical Debate', 'SF'),
     ('Insight – Poster/Paper Presentation', 'SF'),
@@ -246,7 +243,7 @@ WITH canonical(title, dept_code) AS (
 DELETE FROM public.events e
 USING public.departments d
 WHERE e.department_id = d.id
-  AND d.code IN ('CULTURAL', 'MANAGERIAL', 'SPORTS', 'CSE', 'CE', 'ECE', 'EEE', 'ME', 'RAE', 'SF')
+  AND d.code IN ('CULTURAL', 'MANAGERIAL', 'SPORTS', 'CSE', 'CE', 'ECE', 'EEE', 'ME', 'RA', 'SF')
   AND NOT EXISTS (
     SELECT 1
     FROM canonical c
@@ -258,3 +255,4 @@ WHERE e.department_id = d.id
     FROM public.registrations r
     WHERE r.event_id = e.id
   );
+

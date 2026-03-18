@@ -1,5 +1,5 @@
 -- Sync live DB events with the current website event catalog for
--- CSE, ECE, EEE, RAE, and SF departments.
+-- CSE, ECE, EEE, RA, and SF departments.
 -- This migration is non-destructive for existing registrations:
 -- - it first renames legacy titles
 -- - inserts missing canonical events
@@ -12,9 +12,9 @@ WITH renames(old_title, new_title, dept_code) AS (
     ('TECH ESCAPE ROOM', 'Tech Escape Room', 'CSE'),
     ('Laser Heist', 'Lazer Heist', 'ECE'),
     ('Solder Master', 'E Solder', 'ECE'),
-    ('Robo Soccer', 'Robosoccer', 'RAE'),
-    ('Vibe Coding Ideathon', 'InnovateX – Robotics & Tech Talks', 'RAE'),
-    ('Circuit Rush', 'Tech Insights – Expert Talk (NPOL Scientist)', 'RAE'),
+    ('Robo Soccer', 'Robosoccer', 'RA'),
+    ('Vibe Coding Ideathon', 'InnovateX – Robotics & Tech Talks', 'RA'),
+    ('Circuit Rush', 'Tech Insights – Expert Talk (NPOL Scientist)', 'RA'),
     ('Emergency Drill', 'Rescue Raid – Emergency Drill', 'SF'),
     ('Hazard Hunt', 'Hazard Hunt – Hazard Identification', 'SF'),
     ('PPE Race', 'Gear Up Challenge – PPE Race', 'SF'),
@@ -52,11 +52,10 @@ WITH canonical(title, dept_code, image_url) AS (
     ('Stacker Blocks', 'EEE', 'https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=1200&h=600&fit=crop'),
     ('Power Play Arena', 'EEE', 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&h=600&fit=crop'),
 
-    ('Robosoccer', 'RAE', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop'),
-    ('Line Tracer', 'RAE', 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop'),
-    ('InnovateX – Robotics & Tech Talks', 'RAE', 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop'),
-    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RAE', 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop'),
-    ('Path to Pitch – Robotics Workshop', 'RAE', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop'),
+    ('Robosoccer', 'RA', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop'),
+    ('Line Tracer', 'RA', 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop'),
+    ('InnovateX – Robotics & Tech Talks', 'RA', 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop'),
+    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RA', 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop'),
 
     ('Hazard Huzzle – Safety Quiz', 'SF', 'https://images.unsplash.com/photo-1581092921461-eab10380b1fb?w=1200&h=600&fit=crop'),
     ('The Safety Verdict – Technical Debate', 'SF', 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=600&fit=crop'),
@@ -96,11 +95,10 @@ WITH canonical(title, dept_code, image_url) AS (
     ('Defuse-X', 'EEE', 'https://images.unsplash.com/photo-1489389944381-3471b5b30f04?w=1200&h=600&fit=crop'),
     ('Stacker Blocks', 'EEE', 'https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=1200&h=600&fit=crop'),
     ('Power Play Arena', 'EEE', 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&h=600&fit=crop'),
-    ('Robosoccer', 'RAE', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop'),
-    ('Line Tracer', 'RAE', 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop'),
-    ('InnovateX – Robotics & Tech Talks', 'RAE', 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop'),
-    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RAE', 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop'),
-    ('Path to Pitch – Robotics Workshop', 'RAE', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop'),
+    ('Robosoccer', 'RA', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop'),
+    ('Line Tracer', 'RA', 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop'),
+    ('InnovateX – Robotics & Tech Talks', 'RA', 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop'),
+    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RA', 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&h=600&fit=crop'),
     ('Hazard Huzzle – Safety Quiz', 'SF', 'https://images.unsplash.com/photo-1581092921461-eab10380b1fb?w=1200&h=600&fit=crop'),
     ('The Safety Verdict – Technical Debate', 'SF', 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=600&fit=crop'),
     ('Insight – Poster/Paper Presentation', 'SF', 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1200&h=600&fit=crop'),
@@ -135,11 +133,10 @@ WITH canonical(title, dept_code) AS (
     ('Defuse-X', 'EEE'),
     ('Stacker Blocks', 'EEE'),
     ('Power Play Arena', 'EEE'),
-    ('Robosoccer', 'RAE'),
-    ('Line Tracer', 'RAE'),
-    ('InnovateX – Robotics & Tech Talks', 'RAE'),
-    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RAE'),
-    ('Path to Pitch – Robotics Workshop', 'RAE'),
+    ('Robosoccer', 'RA'),
+    ('Line Tracer', 'RA'),
+    ('InnovateX – Robotics & Tech Talks', 'RA'),
+    ('Tech Insights – Expert Talk (NPOL Scientist)', 'RA'),
     ('Hazard Huzzle – Safety Quiz', 'SF'),
     ('The Safety Verdict – Technical Debate', 'SF'),
     ('Insight – Poster/Paper Presentation', 'SF'),
@@ -150,7 +147,7 @@ WITH canonical(title, dept_code) AS (
 DELETE FROM public.events e
 USING public.departments d
 WHERE e.department_id = d.id
-  AND d.code IN ('CSE', 'ECE', 'EEE', 'RAE', 'SF')
+  AND d.code IN ('CSE', 'ECE', 'EEE', 'RA', 'SF')
   AND NOT EXISTS (
     SELECT 1
     FROM canonical c
@@ -162,3 +159,4 @@ WHERE e.department_id = d.id
     FROM public.registrations r
     WHERE r.event_id = e.id
   );
+

@@ -1,30 +1,63 @@
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Download } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
+import { ceEvents } from "@/data/events/ce";
+import { cseEvents } from "@/data/events/cse";
+import { eceEvents } from "@/data/events/ece";
+import { eeeEvents } from "@/data/events/eee";
 import { mainEvents } from "@/data/events/main";
 import { managerialEvents } from "@/data/events/managerial";
+import { meEvents } from "@/data/events/me";
+import { raEvents } from "@/data/events/rae";
+import { sfEvents } from "@/data/events/sf";
+import { sportsEvents } from "@/data/events/sports";
+import type { DepartmentEvent } from "@/data/events/types";
 
 const TECHFEST_BROCHURE_PATH = "/kapricious-2026-brochure.pdf";
+const CATEGORY_AUTOPLAY_MS = 3500;
 
-const departments = [
-  "Sports Fiesta",
-  "Managerial Events",
-  "CSE",
-  "Civil",
-  "ECE",
-  "EEE",
-  "Safety & Fire",
-  "Mechanical",
-  "Robotics & Automation",
-  "Cultural Events",
+const departmentSections: Array<{
+  code: string;
+  label: string;
+  events: DepartmentEvent[];
+}> = [
+  { code: "SPORTS", label: "Sports Fiesta", events: sportsEvents },
+  { code: "MANAGERIAL", label: "Managerial Events", events: managerialEvents },
+  { code: "CSE", label: "Computer Science", events: cseEvents },
+  { code: "CE", label: "Civil", events: ceEvents },
+  { code: "ECE", label: "Electronics & Communication", events: eceEvents },
+  { code: "EEE", label: "Electrical & Electronics", events: eeeEvents },
+  { code: "SAFETY & FIRE", label: "Safety & Fire", events: sfEvents },
+  { code: "ME", label: "Mechanical", events: meEvents },
+  { code: "ROBOTICS & AUTOMATION", label: "Robotics & Automation", events: raEvents },
+  { code: "CULTURAL", label: "Cultural Events", events: mainEvents },
 ];
+
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.4 } }),
 };
 
 const ScrollCards = () => {
+  const [selectedDepartmentCode, setSelectedDepartmentCode] = useState("CULTURAL");
+  const selectedDepartment =
+    useMemo(
+      () => departmentSections.find((section) => section.code === selectedDepartmentCode) ?? departmentSections[departmentSections.length - 1],
+      [selectedDepartmentCode],
+    );
+
+  useEffect(() => {
+    const currentIndex = departmentSections.findIndex((section) => section.code === selectedDepartmentCode);
+    const timer = window.setTimeout(() => {
+      const nextIndex = currentIndex >= 0 ? (currentIndex + 1) % departmentSections.length : 0;
+      setSelectedDepartmentCode(departmentSections[nextIndex].code);
+    }, CATEGORY_AUTOPLAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [selectedDepartmentCode]);
+
   return (
     <div className="grid-bg">
       {/* Departments & Events */}
@@ -36,43 +69,35 @@ const ScrollCards = () => {
             className="bg-card rounded-[20px] border border-border p-5 md:p-8"
           >
             <div className="flex justify-between items-center mb-4 md:mb-6">
-              <h3 className="font-display text-xs md:text-sm tracking-tight">DEPARTMENTS</h3>
-              <span className="text-muted-foreground text-[10px] md:text-xs">10 groups</span>
+              <h3 className="font-display text-xs md:text-sm tracking-tight">EVENT CATEGORIES</h3>
+              <span className="text-muted-foreground text-[10px] md:text-xs">{departmentSections.length} categories</span>
             </div>
             <div className="flex flex-wrap gap-1.5 md:gap-2">
-              {departments.map((dept) => (
-                <span key={dept} className="px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-border text-[10px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground hover:bg-foreground hover:text-background active:bg-foreground active:text-background transition-colors cursor-pointer">
-                  {dept}
-                </span>
+              {departmentSections.map((section) => (
+                <button
+                  key={section.code}
+                  type="button"
+                  onClick={() => setSelectedDepartmentCode(section.code)}
+                  className={`px-3 md:px-4 py-1.5 md:py-2 rounded-full border text-[10px] md:text-xs font-medium uppercase tracking-wider transition-colors cursor-pointer ${
+                    selectedDepartment.code === section.code
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border text-muted-foreground hover:bg-foreground hover:text-background active:bg-foreground active:text-background"
+                  }`}
+                >
+                  {section.label}
+                </button>
               ))}
             </div>
             <div className="mt-6 md:mt-8">
               <div className="flex justify-between items-center mb-3 md:mb-4">
-                <h3 className="font-display text-xs md:text-sm tracking-tight">CULTURAL EVENTS</h3>
-                <span className="text-muted-foreground text-[10px] md:text-xs">{mainEvents.length} events</span>
+                <h3 className="font-display text-xs md:text-sm tracking-tight">{selectedDepartment.label.toUpperCase()}</h3>
+                <span className="text-muted-foreground text-[10px] md:text-xs">{selectedDepartment.events.length} events</span>
               </div>
               <div className="flex flex-wrap gap-1.5 md:gap-2">
-                {mainEvents.map((ev) => (
+                {selectedDepartment.events.map((ev) => (
                   <Link
                     key={ev.id}
-                    href={`/events?department=CULTURAL#${ev.id}`}
-                    className="px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-border text-[10px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground hover:bg-accent hover:text-background active:bg-accent active:text-background transition-colors cursor-pointer"
-                  >
-                    {ev.title}
-                  </Link>
-                ))}
-              </div>
-            </div>
-            <div className="mt-6 md:mt-8">
-              <div className="flex justify-between items-center mb-3 md:mb-4">
-                <h3 className="font-display text-xs md:text-sm tracking-tight">MANAGERIAL EVENTS</h3>
-                <span className="text-muted-foreground text-[10px] md:text-xs">{managerialEvents.length} event</span>
-              </div>
-              <div className="flex flex-wrap gap-1.5 md:gap-2">
-                {managerialEvents.map((ev) => (
-                  <Link
-                    key={ev.id}
-                    href={`/events?department=MANAGERIAL#${ev.id}`}
+                    href={`/events?department=${encodeURIComponent(selectedDepartment.code)}#${ev.id}`}
                     className="px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-border text-[10px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground hover:bg-accent hover:text-background active:bg-accent active:text-background transition-colors cursor-pointer"
                   >
                     {ev.title}

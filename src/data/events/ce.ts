@@ -79,8 +79,8 @@ export const ceEvents: DepartmentEvent[] = [
     department: "CE",
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop",
-    date: "March 28, 2026",
-    time: "9:30 AM - 11:30 AM",
+    date: "March 27, 2026",
+    time: "11:30 AM - 12:30 PM",
     venue: "Smart Class, Civil Block",
     rules: [
       "Team size: 4 members (ID card is mandatory)",

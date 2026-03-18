@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Download } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 import { mainEvents } from "@/data/events/main";
 import { managerialEvents } from "@/data/events/managerial";
+
+const TECHFEST_BROCHURE_PATH = "/kapricious-2026-brochure.pdf";
 
 const departments = [
   "Sports Fiesta",
@@ -123,6 +126,30 @@ const ScrollCards = () => {
           <motion.p variants={fadeUp} custom={1} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} className="text-muted-foreground leading-relaxed text-sm md:text-base lg:text-lg max-w-2xl mx-auto">
             Kapricious 2026 is the flagship annual tech fest of KMEA Engineering College, bringing together the brightest minds in technology for a celebration of innovation, creativity, and competition.
           </motion.p>
+          <motion.div
+            variants={fadeUp}
+            custom={2}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="mt-8 mx-auto max-w-xl rounded-[24px] border border-accent/25 bg-gradient-to-br from-accent/10 via-card to-card p-5 md:p-6"
+          >
+            <p className="text-[10px] font-bold tracking-[0.28em] uppercase text-muted-foreground">Festival Guide</p>
+            <h3 className="mt-3 font-display text-lg md:text-xl font-bold text-foreground">Get the full Kapricious brochure</h3>
+            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+              Download the complete techfest brochure for schedule, events, highlights, and key festival information.
+            </p>
+            <a
+              href={TECHFEST_BROCHURE_PATH}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-background hover:opacity-90 transition-opacity"
+            >
+              Download Brochure
+              <Download className="w-3.5 h-3.5" />
+            </a>
+          </motion.div>
         </div>
       </section>
 

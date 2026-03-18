@@ -9,13 +9,13 @@ export const ceEvents: DepartmentEvent[] = [
     prizePool: "₹4,500",
     details:
       "Design and construct a bridge using limited materials. The structure will be tested for load bearing capacity and efficiency.",
-    prizes: ["🥇 ₹2,500", "🥈 ₹1,000"],
+    prizes: ["🥇 ₹3,500", "🥈 ₹1,000"],
     type: "team",
     department: "CE",
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "9:00 AM - 1:00 PM",
+    time: "2:00 PM - 4:00 PM",
     venue: "D304",
     rules: [
       "Team size: maximum four members",
@@ -79,8 +79,8 @@ export const ceEvents: DepartmentEvent[] = [
     department: "CE",
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop",
-    date: "March 27, 2026",
-    time: "2:00 PM - 4:00 PM",
+    date: "March 28, 2026",
+    time: "9:30 AM - 11:30 AM",
     venue: "Smart Class, Civil Block",
     rules: [
       "Team size: 4 members (ID card is mandatory)",
@@ -182,7 +182,7 @@ export const ceEvents: DepartmentEvent[] = [
     departmentName: "Civil Engineering",
     image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
-    time: "9:00 AM - 11:00 AM",
+    time: "2:00 PM - 4:00 PM",
     venue: "Seminar Hall, Civil Block",
     rules: [
       "Team size: 2-4 members; no participant can be in more than one team",

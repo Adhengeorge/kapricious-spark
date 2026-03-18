@@ -496,6 +496,7 @@ const Register = () => {
 
   const isTeamEvent = selectedEventDetails && 'teamSize' in selectedEventDetails && (selectedEventDetails as any).teamSize > 1;
   const maxTeamSize = isTeamEvent ? (selectedEventDetails as any).teamSize : 1;
+  const minTeamSize = selectedEvent === "tech-escape-room" ? 2 : 1;
   const registrationFeeText = selectedEventDetails && "registrationFee" in selectedEventDetails ? (selectedEventDetails as any).registrationFee || "" : "";
   const payableRupees = isFashionShow
     ? (fashionShowTeamType === "college" ? 250 : 350) * Math.max(selectedTeamSize, 1)
@@ -515,7 +516,7 @@ const Register = () => {
   }, [selectedTeamSize]);
 
   useEffect(() => {
-    setSelectedTeamSize(1);
+    setSelectedTeamSize(minTeamSize);
     setFashionShowTeamType("college");
     setTeamMembers([]);
     // Reset to details step when event changes
@@ -523,7 +524,7 @@ const Register = () => {
     setSlotsAvailable(null);
     setMaxSlots(null);
     setPaymentProof(null);
-  }, [selectedEvent]);
+  }, [selectedEvent, minTeamSize]);
 
   const findDbEventId = (eventTitle: string): string | null => {
     if (!allDbEvents) return null;
@@ -1292,7 +1293,7 @@ const Register = () => {
                           onChange={(e) => setSelectedTeamSize(Number(e.target.value))}
                           className={selectClass}
                         >
-                          {Array.from({ length: maxTeamSize }, (_, i) => i + 1).map((size) => (
+                          {Array.from({ length: maxTeamSize - minTeamSize + 1 }, (_, i) => i + minTeamSize).map((size) => (
                             <option key={size} value={size}>
                               {size} {size === 1 ? "Member (Individual)" : "Members"}
                             </option>
@@ -1300,7 +1301,9 @@ const Register = () => {
                         </select>
                       </div>
                       <p className="text-[10px] text-muted-foreground mt-1">
-                        Maximum team size: {maxTeamSize} members
+                        {minTeamSize > 1
+                          ? `Minimum ${minTeamSize} members required; maximum team size: ${maxTeamSize} members`
+                          : `Maximum team size: ${maxTeamSize} members`}
                       </p>
                       {isFashionShow && (
                         <div className="mt-4">

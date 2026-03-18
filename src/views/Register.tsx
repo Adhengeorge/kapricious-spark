@@ -17,6 +17,8 @@ const MIN_TEAM_SIZE_BY_EVENT: Record<string, number> = {
   "fashion-show": 8,
   "group-dance": 8,
   hackathon: 2,
+  "kabaddi-tournament": 7,
+  "sevens-football-tournament": 7,
   "tech-escape-room": 2,
 };
 const RAZORPAY_CHECKOUT_SRC = "https://checkout.razorpay.com/v1/checkout.js";
@@ -130,6 +132,7 @@ const fetchAsDataUrl = async (url?: string, fallbackType = "image/png") => {
 };
 
 const buildCouponSvg = (coupon: CouponData, qrDataUrl: string, eventImageDataUrl: string | null) => {
+  const canonicalEntryCode = buildEntryCodeFromRegistrationId(coupon.registrationId);
   const safeName = escapeXml(coupon.participantName);
   const safeEventName = escapeXml(coupon.eventName);
   const safeVenue = escapeXml(coupon.venue || "TBA");
@@ -137,7 +140,7 @@ const buildCouponSvg = (coupon: CouponData, qrDataUrl: string, eventImageDataUrl
   const safeCategory = escapeXml(coupon.eventCategory || "Event");
   const teamLabel = escapeXml(coupon.teamCount > 1 ? `${coupon.teamCount} members` : "Individual");
   const regLabel = escapeXml(coupon.registrationId.substring(0, 8).toUpperCase());
-  const codeLabel = escapeXml(coupon.entryCode);
+  const codeLabel = escapeXml(canonicalEntryCode);
   const fallbackImage =
     "data:image/svg+xml;base64," +
     base64Encode(
@@ -266,7 +269,8 @@ const buildPdfFromJpegDataUrl = (jpegDataUrl: string, width = 1200, height = 675
 };
 
 const downloadDesignedCouponPdf = async (coupon: CouponData) => {
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(coupon.entryCode)}&bgcolor=ffffff&color=111827`;
+  const canonicalEntryCode = buildEntryCodeFromRegistrationId(coupon.registrationId);
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(canonicalEntryCode)}&bgcolor=ffffff&color=111827`;
   const [qrDataUrl, eventImageDataUrl] = await Promise.all([
     fetchAsDataUrl(qrUrl, "image/png"),
     fetchAsDataUrl(coupon.eventImage, "image/jpeg"),
@@ -287,8 +291,8 @@ const downloadDesignedCouponPdf = async (coupon: CouponData) => {
   URL.revokeObjectURL(url);
 };
 
-const buildCouponQrUrl = (entryCode: string) =>
-  `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(entryCode)}&bgcolor=ffffff&color=111827`;
+const buildCouponQrUrl = (registrationId: string) =>
+  `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(buildEntryCodeFromRegistrationId(registrationId))}&bgcolor=ffffff&color=111827`;
 
 // Floating particles component
 const FloatingParticles = () => {
@@ -891,7 +895,7 @@ const Register = () => {
   const labelClass = "block text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground mb-2";
 
   if (registered) {
-    const couponQrUrl = couponData ? buildCouponQrUrl(couponData.entryCode) : null;
+  const couponQrUrl = couponData ? buildCouponQrUrl(couponData.registrationId) : null;
     return (
       <div className="min-h-screen pt-24 pb-16 flex items-center justify-center grid-bg px-4">
         <FloatingParticles />
@@ -969,7 +973,7 @@ const Register = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-[10px] font-bold tracking-[0.28em] uppercase">Entry Code</p>
-                      <p className="font-mono text-lg font-bold mt-1">{couponData.entryCode}</p>
+                      <p className="font-mono text-lg font-bold mt-1">{buildEntryCodeFromRegistrationId(couponData.registrationId)}</p>
                     </div>
                   </div>
                 </div>

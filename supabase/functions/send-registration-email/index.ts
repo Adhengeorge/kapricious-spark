@@ -19,6 +19,10 @@ type EmailPayload = {
   eventCategory?: string;
 };
 
+function buildEntryCodeFromRegistrationId(registrationId: string): string {
+  return `KAP-${registrationId.replaceAll("-", "").substring(0, 8).toUpperCase()}`;
+}
+
 function escapeHtml(value: string): string {
   return value
     .replaceAll("&", "&amp;")
@@ -57,6 +61,7 @@ async function fetchAsDataUrl(url: string | undefined, fallbackContentType = "im
 }
 
 function buildCouponEmail(data: EmailPayload): string {
+  const canonicalEntryCode = buildEntryCodeFromRegistrationId(data.registrationId);
   const safeName = escapeHtml(data.participantName);
   const safeEventName = escapeHtml(data.eventName);
   const safeVenue = escapeHtml(data.venue || "TBA");
@@ -149,6 +154,7 @@ function buildCouponEmail(data: EmailPayload): string {
 }
 
 function buildCouponSvg(data: EmailPayload, qrDataUrl: string, eventImageDataUrl: string | null): string {
+  const canonicalEntryCode = buildEntryCodeFromRegistrationId(data.registrationId);
   const safeName = escapeHtml(data.participantName);
   const safeEventName = escapeHtml(data.eventName);
   const safeVenue = escapeHtml(data.venue || "TBA");
@@ -156,7 +162,7 @@ function buildCouponSvg(data: EmailPayload, qrDataUrl: string, eventImageDataUrl
   const safeCategory = escapeHtml(data.eventCategory || "Event");
   const teamLabel = escapeHtml(data.teamCount > 1 ? `${data.teamCount} members` : "Individual");
   const regLabel = escapeHtml(data.registrationId.substring(0, 8).toUpperCase());
-  const codeLabel = escapeHtml(data.entryCode);
+  const codeLabel = escapeHtml(canonicalEntryCode);
   const eventImage = eventImageDataUrl ||
     "data:image/svg+xml;base64," +
       base64Encode(
@@ -275,8 +281,9 @@ Deno.serve(async (req) => {
       eventCategory,
     };
 
+    const canonicalEntryCode = buildEntryCodeFromRegistrationId(registrationId);
     const qrUrl =
-      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(entryCode)}&bgcolor=ffffff&color=111827`;
+      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(canonicalEntryCode)}&bgcolor=ffffff&color=111827`;
     const [qrDataUrl, eventImageDataUrl] = await Promise.all([
       fetchAsDataUrl(qrUrl, "image/png"),
       fetchAsDataUrl(eventImage, "image/jpeg"),
@@ -296,7 +303,7 @@ Deno.serve(async (req) => {
       `Venue: ${venue || "TBA"}\n` +
       `Team Size: ${emailPayload.teamCount > 1 ? `${emailPayload.teamCount} members` : "Individual"}\n` +
       `Registration ID: ${registrationId.substring(0, 8).toUpperCase()}\n` +
-      `Entry Code: ${entryCode}\n\n` +
+      `Entry Code: ${canonicalEntryCode}\n\n` +
       `Your Kapricious coupon is attached to this email. Please keep it ready at the venue.`;
 
     const couponSvg = buildCouponSvg(emailPayload, qrDataUrl, eventImageDataUrl);
@@ -335,7 +342,7 @@ Deno.serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ success: true, entryCode, emailId: result.id }),
+      JSON.stringify({ success: true, entryCode: canonicalEntryCode, emailId: result.id }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (err: unknown) {

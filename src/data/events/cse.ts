@@ -227,9 +227,10 @@ export const cseEvents: DepartmentEvent[] = [
       "Judges' decision is final"
     ],
     highlights: [
-      "Immersive puzzle room",
+      "Immersive treasure hunt experience",
+      "Cryptic clues and hidden secrets",
       "Technical and logical challenges",
-      "Team collaboration vital",
+      "Team collaboration is key",
       "Thrilling timed format"
     ]
   },

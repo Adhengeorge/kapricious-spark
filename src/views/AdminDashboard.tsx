@@ -12,7 +12,6 @@ import {
   ChevronUp,
   Clock,
   Download,
-  Eye,
   LogOut,
   Upload,
   XCircle,
@@ -26,7 +25,7 @@ const statusConfig = {
   rejected: { icon: XCircle, color: "text-destructive", label: "Rejected" },
 };
 
-type SortKey = "name" | "email" | "college" | "created_at" | "payment_status";
+type SortKey = "name" | "email" | "created_at" | "payment_status";
 type SortDir = "asc" | "desc";
 
 const formatTeamMembers = (value: unknown) => {
@@ -186,52 +185,34 @@ const AdminDashboard = () => {
 
   const downloadCSV = (eventTitle: string, rows: any[]) => {
     const headers = [
-      "Registration ID",
-      "Entry Code",
       "Name",
+      "Event",
       "Email",
       "Phone",
       "College",
-      "Department Code",
-      "Department",
-      "Event",
-      "Event ID",
-      "Amount Paid",
-      "Transaction ID",
-      "Razorpay Order ID",
-      "Payment Currency",
-      "Gateway Status",
-      "Payment Status",
-      "Screenshot Link",
       "Team Size",
       "Team Members",
+      "Coupon Code",
+      "Amount Paid",
+      "Transaction ID",
+      "Payment Status",
       "Checked In",
-      "Checked In At",
       "Registration Time",
     ];
 
     const csvRows = rows.map((r) => [
-      r.id,
-      r.entry_code || "",
       r.name,
+      (r.events as any)?.title || eventTitle,
       r.email,
       r.phone,
       r.college,
-      (r.departments as any)?.code || "",
-      (r.departments as any)?.name || "",
-      (r.events as any)?.title || "",
-      r.event_id || "",
-      r.amount_paid ?? "",
-      r.transaction_id || "",
-      r.razorpay_order_id || "",
-      r.payment_currency || "",
-      r.payment_gateway_status || "",
-      r.payment_status || "pending",
-      r.screenshot_url || "",
       r.team_size ?? 1,
       formatTeamMembers(r.team_members),
+      r.entry_code || "",
+      r.amount_paid ?? "",
+      r.transaction_id || "",
+      r.payment_status || "pending",
       r.checked_in ? "Yes" : "No",
-      r.checked_in_at ? new Date(r.checked_in_at).toLocaleString() : "",
       new Date(r.created_at).toLocaleString(),
     ]);
 
@@ -359,20 +340,15 @@ const AdminDashboard = () => {
                         <tr className="bg-muted/20">
                           <SortHeader eventId={event.id} sortKey="name">Name</SortHeader>
                           <SortHeader eventId={event.id} sortKey="email">Email</SortHeader>
-                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Entry Code</th>
+                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Coupon Code</th>
                           <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Phone</th>
-                          <SortHeader eventId={event.id} sortKey="college">College</SortHeader>
-                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Dept</th>
-                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Team</th>
-                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Members</th>
+                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">College</th>
+                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Team Size</th>
+                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Team Members</th>
                           <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Amount</th>
                           <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Txn ID</th>
-                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Order ID</th>
-                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Currency</th>
-                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Gateway</th>
-                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Screenshot</th>
-                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Check-In</th>
                           <SortHeader eventId={event.id} sortKey="created_at">Registered</SortHeader>
+                          <th className="text-left px-4 py-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">Check-In</th>
                           <SortHeader eventId={event.id} sortKey="payment_status">Payment</SortHeader>
                         </tr>
                       </thead>
@@ -383,45 +359,17 @@ const AdminDashboard = () => {
                             <tr key={r.id} className="border-t border-border/30 hover:bg-muted/10">
                               <td className="px-4 py-3 text-foreground whitespace-nowrap">{r.name}</td>
                               <td className="px-4 py-3 text-muted-foreground text-xs">{r.email}</td>
-                              <td className="px-4 py-3 text-foreground text-xs font-mono whitespace-nowrap">{r.entry_code || "—"}</td>
+                              <td className="px-4 py-3 text-foreground text-xs font-mono whitespace-nowrap">{r.entry_code || "-"}</td>
                               <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">{r.phone}</td>
                               <td className="px-4 py-3 text-muted-foreground text-xs">{r.college}</td>
-                              <td className="px-4 py-3 text-muted-foreground text-xs">{(r.departments as any)?.code || "—"}</td>
                               <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">{r.team_size ?? 1}</td>
-                              <td className="px-4 py-3 text-muted-foreground text-xs min-w-[220px]">{formatTeamMembers(r.team_members) || "—"}</td>
-                              <td className="px-4 py-3">
-                                <input
-                                  type="number"
-                                  min="0"
-                                  step="0.01"
-                                  defaultValue={r.amount_paid ?? ""}
-                                  onBlur={(e) => {
-                                    const raw = e.target.value.trim();
-                                    const nextValue = raw === "" ? null : Number(raw);
-                                    if ((r.amount_paid ?? null) === nextValue) return;
-                                    updateRegistrationMeta.mutate({
-                                      id: r.id,
-                                      patch: { amount_paid: nextValue },
-                                    });
-                                  }}
-                                  className="w-24 rounded bg-input border border-border px-2 py-1 text-xs text-foreground"
-                                  placeholder="INR"
-                                />
+                              <td className="px-4 py-3 text-muted-foreground text-xs min-w-[220px]">{formatTeamMembers(r.team_members) || "-"}</td>
+                              <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">
+                                {r.amount_paid != null ? `INR ${Number(r.amount_paid).toLocaleString("en-IN")}` : "-"}
                               </td>
-                              <td className="px-4 py-3 text-foreground text-xs font-mono">{r.transaction_id || "—"}</td>
-                              <td className="px-4 py-3">
-                                {r.screenshot_url ? (
-                                  <a
-                                    href={r.screenshot_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-primary hover:underline flex items-center gap-1 text-xs"
-                                  >
-                                    <Eye className="w-3 h-3" /> View
-                                  </a>
-                                ) : (
-                                  "—"
-                                )}
+                              <td className="px-4 py-3 text-foreground text-xs font-mono">{r.transaction_id || "-"}</td>
+                              <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">
+                                {new Date(r.created_at).toLocaleString()}
                               </td>
                               <td className="px-4 py-3 text-xs whitespace-nowrap">
                                 <label className="inline-flex items-center gap-2 text-foreground">
@@ -441,9 +389,6 @@ const AdminDashboard = () => {
                                   {r.checked_in ? "Done" : "Pending"}
                                 </label>
                               </td>
-                              <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">
-                                {new Date(r.created_at).toLocaleString()}
-                              </td>
                               <td className="px-4 py-3">
                                 <select
                                   value={status}
@@ -462,7 +407,7 @@ const AdminDashboard = () => {
                         })}
                         {eventRegs.length === 0 && (
                           <tr>
-                            <td colSpan={17} className="px-4 py-8 text-center text-muted-foreground">
+                            <td colSpan={12} className="px-4 py-8 text-center text-muted-foreground">
                               No registrations
                             </td>
                           </tr>

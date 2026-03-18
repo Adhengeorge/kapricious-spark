@@ -58,4 +58,18 @@ BEGIN
     WHERE event_id = duplicate_star_event_id
        OR (event_id IS NULL AND department_id = cultural_dept_id);
   END IF;
+
+  INSERT INTO public.events (title, department_id, event_date, venue, image_url)
+  SELECT
+    'Star of Kapricious',
+    managerial_dept_id,
+    '2026-03-28 17:00:00+05:30'::timestamptz,
+    'Main Auditorium, KMEA Engineering College',
+    'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&h=600&fit=crop'
+  WHERE NOT EXISTS (
+    SELECT 1
+    FROM public.events e
+    WHERE e.title = 'Star of Kapricious'
+      AND e.department_id = managerial_dept_id
+  );
 END $$;

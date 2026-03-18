@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import CountdownTimer from "@/components/CountdownTimer";
+import { mainEvents } from "@/data/events/main";
 
 const departments = [
   "Sports Fiesta",
@@ -13,14 +14,6 @@ const departments = [
   "Robotics & Automation",
   "Cultural Events",
 ];
-const culturalEvents = [
-  { id: "fashion-show", title: "Fashion Show" },
-  { id: "group-dance", title: "Group Dance" },
-  { id: "step-in-synchro", title: "Step in Synchro" },
-  { id: "spot-photography", title: "Spot Photography" },
-  { id: "star-of-kapricious", title: "Star of Kapricious" },
-];
-
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.4 } }),
@@ -51,13 +44,13 @@ const ScrollCards = () => {
             <div className="mt-6 md:mt-8">
               <div className="flex justify-between items-center mb-3 md:mb-4">
                 <h3 className="font-display text-xs md:text-sm tracking-tight">CULTURAL EVENTS</h3>
-                <span className="text-muted-foreground text-[10px] md:text-xs">{culturalEvents.length} events</span>
+                <span className="text-muted-foreground text-[10px] md:text-xs">{mainEvents.length} events</span>
               </div>
               <div className="flex flex-wrap gap-1.5 md:gap-2">
-                {culturalEvents.map((ev) => (
+                {mainEvents.map((ev) => (
                   <Link
                     key={ev.id}
-                    href={`/events#${ev.id}`}
+                    href={`/events?department=CULTURAL#${ev.id}`}
                     className="px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-border text-[10px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground hover:bg-accent hover:text-background active:bg-accent active:text-background transition-colors cursor-pointer"
                   >
                     {ev.title}

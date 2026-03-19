@@ -55,7 +55,7 @@ export const cseEvents: DepartmentEvent[] = [
     departmentName: "Computer Science & Engineering",
     image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "2:00 PM - 5:30 PM",
+    time: "2:00 PM - 3:30 PM",
     venue: "CCF-1",
     rules: [
       "Individual participation only",
@@ -125,7 +125,7 @@ export const cseEvents: DepartmentEvent[] = [
     id: "build-a-pc",
     title: "Build a PC",
     teamSize: 2,
-    registrationFee: "₹100 per participant",
+    registrationFee: "₹100 per team",
     prizePool: "₹3,000",
     details:
       "Assemble a complete working PC from provided components. Points for speed, cable management, and performance tuning.",
@@ -135,8 +135,8 @@ export const cseEvents: DepartmentEvent[] = [
     departmentName: "Computer Science & Engineering",
     image: "https://images.unsplash.com/photo-1591799265444-d66432b91588?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
-    time: "12:00 PM - 1:30 PM",
-    venue: "CCF-2",
+    time: "10:00 AM - 12:30 PM",
+    venue: "Project Lab",
     rules: [
       "Participation can be individual or a team of 2 members",
       "Each team will receive the same set of components",
@@ -165,7 +165,7 @@ export const cseEvents: DepartmentEvent[] = [
     id: "code-catastrophe",
     title: "Code Catastrophe",
     teamSize: 2,
-    registrationFee: "₹50 per participant",
+    registrationFee: "₹50 per team",
     prizePool: "₹1,500",
     details:
       "Write chaotic yet functional code. Balance creativity and correctness while embracing unconventional solutions.",
@@ -175,7 +175,7 @@ export const cseEvents: DepartmentEvent[] = [
     departmentName: "Computer Science & Engineering",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=600&fit=crop",
     date: "March 28, 2026",
-    time: "12:00 PM - 12:30 PM",
+    time: "10:00 AM - 11:30 AM",
     venue: "CCF-1",
     rules: [
       "Program must compile and run successfully",
@@ -210,8 +210,8 @@ export const cseEvents: DepartmentEvent[] = [
     departmentName: "Computer Science & Engineering",
     image: "https://images.unsplash.com/photo-1489389944381-3471b5b30f04?w=1200&h=600&fit=crop",
     date: "March 27, 2026",
-    time: "12:00 PM - 4:00 PM",
-    venue: "B309, Whole Campus",
+    time: "1:30 PM - 4:30 PM",
+    venue: "Whole Campus",
     contact: {
       name: "Kadheeja Afnaan / Muhammed Jabir",
       phone: "8714494129 / 7902520118",
@@ -250,16 +250,19 @@ export const cseEvents: DepartmentEvent[] = [
     date: "March 26-27, 2026",
     time: "7:00 PM (Mar 26) - 7:00 AM (Mar 27)",
     venue: "Hack Lab, KMEA Engineering College",
+    contact: {
+      name: "Adhen Sara / Adhil Salam / Akif Anvar",
+      phone: "9188398779 / 9496672970 / 9744832367",
+    },
     rules: [
-      "Participants can register only in teams of 2 to 4 members",
-      "All participants must register before the event begins",
-      "Problem statement will be given at the start of the hackathon",
-      "Participants must complete the project within the given time limit",
-      "Use of online resources and open-source tools is allowed; copying existing projects is not permitted",
-      "All code and work must be created during the hackathon",
-      "Teams must present or demonstrate their project at the end of the event",
-      "Decision of the judges will be final",
-      "Participants must follow event rules and maintain proper discipline"
+      "Teams must have 2 to 4 members, and only registered participants can compete",
+      "All participants must report by 5:00 PM and remain present throughout the 12-hour hackathon",
+      "Problem statements will be released at the start, and each team may choose only one",
+      "Any programming language, framework, platform, open-source library, API, or public tool may be used",
+      "Plagiarism, copying existing solutions, misconduct, or unfair practices will lead to disqualification",
+      "Final presentation and demo time is limited to 10 minutes per team",
+      "All team members must participate in the final presentation",
+      "Judges will evaluate only during the final stage, and their decision will be final"
     ],
     highlights: [
       "Overnight coding marathon",

@@ -28,6 +28,12 @@ const FlagshipEventDetail = () => {
   const router = useRouter();
   const eventId = Array.isArray(params?.eventId) ? params.eventId[0] : params?.eventId;
   const event = eventId ? getEventById(eventId) : null;
+  const coordinatorNames = event?.contact?.name?.split("/").map((value) => value.trim()).filter(Boolean) ?? [];
+  const coordinatorPhones = event?.contact?.phone?.split("/").map((value) => value.trim()).filter(Boolean) ?? [];
+  const coordinatorPairs =
+    coordinatorNames.length > 1 && coordinatorNames.length === coordinatorPhones.length
+      ? coordinatorNames.map((name, index) => `${name} - ${coordinatorPhones[index]}`)
+      : [];
 
   if (!event) {
     return (
@@ -221,8 +227,18 @@ const FlagshipEventDetail = () => {
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="font-medium text-sm">{event.contact.name}</p>
-                    <p className="text-xs opacity-70">{event.contact.phone}</p>
+                    {coordinatorPairs.length > 0 ? (
+                      coordinatorPairs.map((entry) => (
+                        <p key={entry} className="text-xs opacity-70">
+                          {entry}
+                        </p>
+                      ))
+                    ) : (
+                      <>
+                        <p className="font-medium text-sm">{event.contact.name}</p>
+                        <p className="text-xs opacity-70">{event.contact.phone}</p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

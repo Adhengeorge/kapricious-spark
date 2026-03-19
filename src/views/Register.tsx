@@ -12,7 +12,11 @@ import { flagshipEvents, getEventById, mainEvents, managerialEvents, sportsEvent
 
 const FLAGSHIP_DEPT_ID = "flagship";
 const SPORTS_DEPT_ID = "sports";
-const LIMITED_EVENT_IDS = new Set(["hackathon"]);
+const LIMITED_EVENT_IDS = new Set(["hackathon", "tech-escape-room"]);
+const DEFAULT_SLOT_LIMIT_BY_EVENT: Record<string, number> = {
+  hackathon: 10,
+  "tech-escape-room": 15,
+};
 const MIN_TEAM_SIZE_BY_EVENT: Record<string, number> = {
   "fashion-show": 8,
   "group-dance": 8,
@@ -94,6 +98,8 @@ const parseFeeToRupees = (fee: string, teamSize: number) => {
   const perHead = /per\s*(head|participant|member)/i.test(fee);
   return perHead ? baseAmount * Math.max(teamSize, 1) : baseAmount;
 };
+
+const getDefaultSlotLimit = (eventId: string) => DEFAULT_SLOT_LIMIT_BY_EVENT[eventId] ?? 10;
 
 const buildEntryCodeFromRegistrationId = (registrationId: string) =>
   `KAP-${registrationId.replace(/-/g, "").substring(0, 8).toUpperCase()}`;
@@ -559,7 +565,7 @@ const Register = () => {
     return allHardcoded.find(ev => ev.id === selectedEvent)?.title || "";
   };
 
-  // Step 1: Validate details and proceed to payment. Only hackathon is capacity-limited.
+  // Step 1: Validate details and proceed to payment for events with registration caps.
   const handleProceedToPayment = async () => {
     setErrors({});
     const result = schema.safeParse(form);
@@ -605,7 +611,7 @@ const Register = () => {
 
         if (countResult.error) throw countResult.error;
 
-        const max = eventResult.data?.max_participants ?? 10;
+        const max = eventResult.data?.max_participants ?? getDefaultSlotLimit(selectedEvent);
         const current = countResult.count ?? 0;
         const remaining = max - current;
 
@@ -659,7 +665,7 @@ const Register = () => {
           .eq("id", dbEventId)
           .single();
 
-        const maxParticipants = eventInfo?.max_participants ?? 10;
+        const maxParticipants = eventInfo?.max_participants ?? getDefaultSlotLimit(selectedEvent);
 
         if (regCount !== null && regCount >= maxParticipants) {
           throw new Error(`Registrations for this event are full (${maxParticipants}/${maxParticipants}). Please try another event.`);

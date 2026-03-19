@@ -52,6 +52,13 @@ const EventDetail = () => {
     );
   }
 
+  const coordinatorNames = event.contact?.name?.split("/").map((value) => value.trim()).filter(Boolean) ?? [];
+  const coordinatorPhones = event.contact?.phone?.split("/").map((value) => value.trim()).filter(Boolean) ?? [];
+  const coordinatorPairs =
+    coordinatorNames.length > 1 && coordinatorNames.length === coordinatorPhones.length
+      ? coordinatorNames.map((name, index) => `${name} - ${coordinatorPhones[index]}`)
+      : [];
+
   return (
     <div className="min-h-screen pt-24 pb-16 grid-bg px-4 md:px-8">
       <div className="max-w-5xl mx-auto">
@@ -244,8 +251,18 @@ const EventDetail = () => {
                       <span className="text-sm opacity-80">Coordinator</span>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-medium">{event.contact.name}</p>
-                      <p className="text-xs opacity-80">{event.contact.phone}</p>
+                      {coordinatorPairs.length > 0 ? (
+                        coordinatorPairs.map((entry) => (
+                          <p key={entry} className="text-xs opacity-80">
+                            {entry}
+                          </p>
+                        ))
+                      ) : (
+                        <>
+                          <p className="text-sm font-medium">{event.contact.name}</p>
+                          <p className="text-xs opacity-80">{event.contact.phone}</p>
+                        </>
+                      )}
                     </div>
                   </div>
                 ) : null}

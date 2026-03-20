@@ -19,10 +19,39 @@ import {
   Phone,
 } from "lucide-react";
 import { getDepartmentEventById } from "@/data/events/index";
+import type { CoordinatorContact, DepartmentEvent } from "@/data/events";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
+};
+
+const getCoordinatorContacts = (event: DepartmentEvent): CoordinatorContact[] => {
+  if (event.coordinators?.length) {
+    return event.coordinators;
+  }
+
+  if (!event.contact) {
+    return [];
+  }
+
+  const coordinatorNames = event.contact.name
+    .split("/")
+    .map((value) => value.trim())
+    .filter(Boolean);
+  const coordinatorPhones = event.contact.phone
+    .split("/")
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  if (coordinatorNames.length > 1 && coordinatorNames.length === coordinatorPhones.length) {
+    return coordinatorNames.map((name, index) => ({
+      name,
+      phone: coordinatorPhones[index],
+    }));
+  }
+
+  return [event.contact];
 };
 
 const EventDetail = () => {
@@ -52,12 +81,7 @@ const EventDetail = () => {
     );
   }
 
-  const coordinatorNames = event.contact?.name?.split("/").map((value) => value.trim()).filter(Boolean) ?? [];
-  const coordinatorPhones = event.contact?.phone?.split("/").map((value) => value.trim()).filter(Boolean) ?? [];
-  const coordinatorPairs =
-    coordinatorNames.length > 1 && coordinatorNames.length === coordinatorPhones.length
-      ? coordinatorNames.map((name, index) => `${name} - ${coordinatorPhones[index]}`)
-      : [];
+  const coordinators = getCoordinatorContacts(event);
 
   return (
     <div className="min-h-screen pt-24 pb-16 grid-bg px-4 md:px-8">
@@ -191,9 +215,38 @@ const EventDetail = () => {
               </ol>
             </motion.div>
 
+            {coordinators.length > 0 ? (
+              <motion.div
+                variants={fadeUp}
+                custom={3}
+                initial="hidden"
+                animate="visible"
+                className="bg-card rounded-large border border-border p-8"
+              >
+                <h2 className="font-display text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                  <Phone className="w-5 h-5 text-accent" />
+                  {coordinators.length > 1 ? "Coordinators" : "Coordinator"}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {coordinators.map((coordinator) => (
+                    <div
+                      key={`${coordinator.name}-${coordinator.phone}`}
+                      className="flex items-start gap-3 bg-secondary/30 rounded-xl p-4"
+                    >
+                      <Phone className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-bold text-foreground">{coordinator.name}</p>
+                        <p className="text-sm text-muted-foreground">{coordinator.phone}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ) : null}
+
             <motion.div
               variants={fadeUp}
-              custom={3}
+              custom={4}
               initial="hidden"
               animate="visible"
               className="bg-card rounded-large border border-border p-8"
@@ -244,28 +297,6 @@ const EventDetail = () => {
                   </div>
                   <span className="font-medium capitalize">{event.type}</span>
                 </div>
-                {event.contact ? (
-                  <div className="flex items-center justify-between pb-4 border-b border-background/20">
-                    <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 opacity-60" />
-                      <span className="text-sm opacity-80">Coordinator</span>
-                    </div>
-                    <div className="text-right">
-                      {coordinatorPairs.length > 0 ? (
-                        coordinatorPairs.map((entry) => (
-                          <p key={entry} className="text-xs opacity-80">
-                            {entry}
-                          </p>
-                        ))
-                      ) : (
-                        <>
-                          <p className="text-sm font-medium">{event.contact.name}</p>
-                          <p className="text-xs opacity-80">{event.contact.phone}</p>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                ) : null}
               </div>
 
               <Link

@@ -1,5 +1,10 @@
 import { LucideIcon } from "lucide-react";
 
+export interface CoordinatorContact {
+  name: string;
+  phone: string;
+}
+
 export interface DepartmentEvent {
   id: string;
   title: string;
@@ -17,10 +22,8 @@ export interface DepartmentEvent {
   venue: string;
   rules: string[];
   highlights: string[];
-  contact?: {
-    name: string;
-    phone: string;
-  };
+  contact?: CoordinatorContact;
+  coordinators?: CoordinatorContact[];
 }
 
 export interface FlagshipEvent {
@@ -39,10 +42,8 @@ export interface FlagshipEvent {
   registrationFee: string;
   highlights: string[];
   rules: string[];
-  contact: {
-    name: string;
-    phone: string;
-  };
+  contact: CoordinatorContact;
+  coordinators?: CoordinatorContact[];
 }
 
 export interface CulturalEvent {

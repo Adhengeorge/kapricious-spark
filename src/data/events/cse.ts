@@ -17,6 +17,16 @@ export const cseEvents: DepartmentEvent[] = [
     date: "March 27, 2026",
     time: "11:30 AM - 12:30 PM",
     venue: "CCF-1",
+    coordinators: [
+      {
+        name: "Jalwa",
+        phone: "+91 6282 029 545",
+      },
+      {
+        name: "Sumayya M A",
+        phone: "+91 73064 77547",
+      },
+    ],
     rules: [
       "Event is open to all registered tech fest participants",
       "Participants must participate individually",
@@ -57,6 +67,16 @@ export const cseEvents: DepartmentEvent[] = [
     date: "March 27, 2026",
     time: "2:00 PM - 3:30 PM",
     venue: "CCF-1",
+    coordinators: [
+      {
+        name: "Fathima A A",
+        phone: "+91 6282 139 252",
+      },
+      {
+        name: "Fidha Nowrin E M",
+        phone: "+91 94971 97808",
+      },
+    ],
     rules: [
       "Individual participation only",
       "College ID is mandatory",
@@ -100,6 +120,16 @@ export const cseEvents: DepartmentEvent[] = [
     date: "March 27, 2026",
     time: "11:30 AM - 12:30 PM",
     venue: "CCF-3",
+    coordinators: [
+      {
+        name: "Shamon",
+        phone: "+91 85904 21852",
+      },
+      {
+        name: "Hiba",
+        phone: "+91 81388 61398",
+      },
+    ],
     rules: [
       "Only HTML and CSS are allowed",
       "JavaScript is strictly prohibited",
@@ -137,6 +167,16 @@ export const cseEvents: DepartmentEvent[] = [
     date: "March 28, 2026",
     time: "10:00 AM - 12:30 PM",
     venue: "Project Lab",
+    coordinators: [
+      {
+        name: "Nebhan",
+        phone: "+91 80893 70247",
+      },
+      {
+        name: "Yaseen",
+        phone: "+91 95622 76865",
+      },
+    ],
     rules: [
       "Participation can be individual or a team of 2 members",
       "Each team will receive the same set of components",
@@ -177,6 +217,16 @@ export const cseEvents: DepartmentEvent[] = [
     date: "March 28, 2026",
     time: "10:00 AM - 11:30 AM",
     venue: "CCF-1",
+    coordinators: [
+      {
+        name: "Althaf",
+        phone: "+91 94973 13095",
+      },
+      {
+        name: "Amaan",
+        phone: "+91 62384 63869",
+      },
+    ],
     rules: [
       "Program must compile and run successfully",
       "Output should be correct according to the problem statement",
@@ -216,6 +266,16 @@ export const cseEvents: DepartmentEvent[] = [
       name: "Kadheeja Afnaan / Muhammed Jabir",
       phone: "8714494129 / 7902520118",
     },
+    coordinators: [
+      {
+        name: "Jabir",
+        phone: "+91 79025 20118",
+      },
+      {
+        name: "Afnan",
+        phone: "+91 87144 94129",
+      },
+    ],
     rules: [
       "Minimum 2 members required to register; up to 4 members per team",
       "Carry valid college ID and report 15 minutes early",

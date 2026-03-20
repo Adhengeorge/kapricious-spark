@@ -17,10 +17,35 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { getEventById } from "@/data/events/index";
+import type { CoordinatorContact, FlagshipEvent } from "@/data/events";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
+};
+
+const getCoordinatorContacts = (event: FlagshipEvent): CoordinatorContact[] => {
+  if (event.coordinators?.length) {
+    return event.coordinators;
+  }
+
+  const coordinatorNames = event.contact.name
+    .split("/")
+    .map((value) => value.trim())
+    .filter(Boolean);
+  const coordinatorPhones = event.contact.phone
+    .split("/")
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  if (coordinatorNames.length > 1 && coordinatorNames.length === coordinatorPhones.length) {
+    return coordinatorNames.map((name, index) => ({
+      name,
+      phone: coordinatorPhones[index],
+    }));
+  }
+
+  return [event.contact];
 };
 
 const FlagshipEventDetail = () => {
@@ -28,12 +53,6 @@ const FlagshipEventDetail = () => {
   const router = useRouter();
   const eventId = Array.isArray(params?.eventId) ? params.eventId[0] : params?.eventId;
   const event = eventId ? getEventById(eventId) : null;
-  const coordinatorNames = event?.contact?.name?.split("/").map((value) => value.trim()).filter(Boolean) ?? [];
-  const coordinatorPhones = event?.contact?.phone?.split("/").map((value) => value.trim()).filter(Boolean) ?? [];
-  const coordinatorPairs =
-    coordinatorNames.length > 1 && coordinatorNames.length === coordinatorPhones.length
-      ? coordinatorNames.map((name, index) => `${name} - ${coordinatorPhones[index]}`)
-      : [];
 
   if (!event) {
     return (
@@ -50,6 +69,7 @@ const FlagshipEventDetail = () => {
   }
 
   const EventIcon = event.icon;
+  const coordinators = getCoordinatorContacts(event);
 
   return (
     <div className="min-h-screen pt-24 pb-16 grid-bg px-4 md:px-8">
@@ -221,24 +241,20 @@ const FlagshipEventDetail = () => {
               </Link>
 
               <div className="mt-6 pt-6 border-t border-background/20">
-                <p className="text-[10px] uppercase tracking-wider opacity-60 mb-2">Event Coordinator</p>
+                <p className="text-[10px] uppercase tracking-wider opacity-60 mb-2">
+                  {coordinators.length > 1 ? "Event Coordinators" : "Event Coordinator"}
+                </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-background/20 flex items-center justify-center">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    {coordinatorPairs.length > 0 ? (
-                      coordinatorPairs.map((entry) => (
-                        <p key={entry} className="text-xs opacity-70">
-                          {entry}
-                        </p>
-                      ))
-                    ) : (
-                      <>
-                        <p className="font-medium text-sm">{event.contact.name}</p>
-                        <p className="text-xs opacity-70">{event.contact.phone}</p>
-                      </>
-                    )}
+                    {coordinators.map((coordinator) => (
+                      <div key={`${coordinator.name}-${coordinator.phone}`} className="mb-2 last:mb-0">
+                        <p className="font-medium text-sm">{coordinator.name}</p>
+                        <p className="text-xs opacity-70">{coordinator.phone}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 // Types
-export type { DepartmentEvent, FlagshipEvent, CulturalEvent } from "./types";
+export type { CoordinatorContact, DepartmentEvent, FlagshipEvent, CulturalEvent } from "./types";
 
 // Department Events
 export { mainEvents } from "./main";

@@ -17,7 +17,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { getEventById } from "@/data/events/index";
-import type { CoordinatorContact, FlagshipEvent } from "@/data/events";
+import type { CoordinatorContact, FlagshipEvent } from "@/data/events/types";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },

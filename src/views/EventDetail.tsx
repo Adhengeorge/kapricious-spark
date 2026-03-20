@@ -19,7 +19,7 @@ import {
   Phone,
 } from "lucide-react";
 import { getDepartmentEventById } from "@/data/events/index";
-import type { CoordinatorContact, DepartmentEvent } from "@/data/events";
+import type { CoordinatorContact, DepartmentEvent } from "@/data/events/types";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },

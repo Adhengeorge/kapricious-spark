@@ -12,6 +12,19 @@ import { flagshipEvents, getEventById, mainEvents, managerialEvents, sportsEvent
 
 const FLAGSHIP_DEPT_ID = "flagship";
 const SPORTS_DEPT_ID = "sports";
+const DB_EVENT_TITLE_ALIASES: Record<string, string[]> = {
+  "fashion-show": ["Fashion Show"],
+  "group-dance": ["Group Dance"],
+  "step-in-synchro": ["Spot Choreo"],
+  "spot-photography": ["Spot Photography"],
+  "tech-escape-room": ["Realm Of Secrets", "Tech Escape Room"],
+  hackathon: ["BuildX'26 - Hackathon", "Hackathon"],
+  "e-solder": ["SolderMaster", "Solder-Master", "E Solder"],
+  "lazer-heist": ["Laser Heist", "Lazer Heist"],
+  electrodex: ["ElectroDex Challenge", "ElectroDex"],
+  "electro-hunt": ["ElectroHunt: Decode & Discover", "Electro Hunt"],
+  "code-red": ["Code Red: Bomb Defusal Challenge", "Code Red"],
+};
 const LIMITED_EVENT_IDS = new Set(["hackathon", "tech-escape-room"]);
 const DEFAULT_SLOT_LIMIT_BY_EVENT: Record<string, number> = {
   hackathon: 10,
@@ -26,6 +39,14 @@ const MIN_TEAM_SIZE_BY_EVENT: Record<string, number> = {
   "tech-escape-room": 2,
 };
 const RAZORPAY_CHECKOUT_SRC = "https://checkout.razorpay.com/v1/checkout.js";
+
+const normalizeEventLookupKey = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[\u2019']/g, "")
+    .replace(/[\u2013\u2014]/g, "-")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 
 type RazorpayPaymentProof = {
   orderId: string;
@@ -100,6 +121,14 @@ const parseFeeToRupees = (fee: string, teamSize: number) => {
 };
 
 const getDefaultSlotLimit = (eventId: string) => DEFAULT_SLOT_LIMIT_BY_EVENT[eventId] ?? 10;
+
+const normalizeEventLookupValue = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[’']/g, "")
+    .replace(/[–—]/g, "-")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 
 const buildEntryCodeFromRegistrationId = (registrationId: string) =>
   `KAP-${registrationId.replace(/-/g, "").substring(0, 8).toUpperCase()}`;
@@ -546,16 +575,21 @@ const Register = () => {
     setPaymentProof(null);
   }, [selectedEvent, minTeamSize]);
 
-  const findDbEventId = (eventTitle: string): string | null => {
+  const findDbEventRecord = (eventId: string, eventTitle: string) => {
     if (!allDbEvents) return null;
-    const match = allDbEvents.find(e => e.title === eventTitle);
-    return match?.id || null;
-  };
+    const candidateTitles = Array.from(
+      new Set([eventTitle, ...(DB_EVENT_TITLE_ALIASES[eventId] ?? [])].filter(Boolean)),
+    );
 
-  const findDbDeptId = (eventTitle: string): string | null => {
-    if (!allDbEvents) return null;
-    const match = allDbEvents.find(e => e.title === eventTitle);
-    return match?.department_id || null;
+    const exactMatch = allDbEvents.find((dbEvent) => candidateTitles.includes(dbEvent.title));
+    if (exactMatch) return exactMatch;
+
+    const normalizedCandidates = candidateTitles.map(normalizeEventLookupKey);
+    return (
+      allDbEvents.find((dbEvent) =>
+        normalizedCandidates.includes(normalizeEventLookupKey(dbEvent.title)),
+      ) ?? null
+    );
   };
 
   // Get event title from selected event
@@ -584,11 +618,12 @@ const Register = () => {
     setSlotCheckLoading(true);
     try {
       const eventTitle = getEventTitle();
-      const dbEventId = findDbEventId(eventTitle);
-      if (!dbEventId) {
+      const dbEvent = findDbEventRecord(selectedEvent, eventTitle);
+      if (!dbEvent) {
         toast.error("Event not found in database. Please try again later.");
         return;
       }
+      const dbEventId = dbEvent.id;
 
       const normalizedEmail = result.data.email.trim().toLowerCase();
       const { count: duplicateCount, error: duplicateError } = await supabase
@@ -643,8 +678,9 @@ const Register = () => {
       const validated = schema.parse(form);
       const isFlagship = selectedDept === FLAGSHIP_DEPT_ID;
       const eventTitle = getEventTitle();
-      const dbEventId = findDbEventId(eventTitle);
-      const dbDeptId = findDbDeptId(eventTitle);
+      const dbEvent = findDbEventRecord(selectedEvent, eventTitle);
+      const dbEventId = dbEvent?.id ?? null;
+      const dbDeptId = dbEvent?.department_id ?? null;
       const resolvedPaymentProof = paymentProofOverride ?? paymentProof;
 
       if (!dbEventId || !dbDeptId) {

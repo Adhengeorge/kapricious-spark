@@ -61,12 +61,14 @@ async function fetchAsDataUrl(url: string | undefined, fallbackContentType = "im
 }
 
 function buildCouponEmail(data: EmailPayload): string {
-  const canonicalEntryCode = buildEntryCodeFromRegistrationId(data.registrationId);
+  const entryCode = data.entryCode?.trim() || buildEntryCodeFromRegistrationId(data.registrationId);
   const safeName = escapeHtml(data.participantName);
   const safeEventName = escapeHtml(data.eventName);
   const safeVenue = escapeHtml(data.venue || "TBA");
   const safeCategory = escapeHtml(data.eventCategory || "Event");
   const teamLabel = data.teamCount > 1 ? `${data.teamCount} members` : "Individual";
+  const safeRegistrationId = escapeHtml(data.registrationId);
+  const safeEntryCode = escapeHtml(entryCode);
 
   return `<!DOCTYPE html>
 <html>
@@ -109,17 +111,26 @@ function buildCouponEmail(data: EmailPayload): string {
                   <td width="50%" style="padding:0 8px 16px 0;">
                     <div style="border:1px solid #eadfcd;border-radius:18px;padding:18px;background:#ffffff;">
                       <p style="margin:0;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#9ca3af;">Registration ID</p>
-                      <p style="margin:10px 0 0;font-size:16px;font-weight:700;color:#111827;font-family:monospace;">${escapeHtml(data.registrationId.substring(0, 8).toUpperCase())}</p>
+                      <p style="margin:10px 0 0;font-size:16px;font-weight:700;color:#111827;font-family:monospace;">${safeRegistrationId}</p>
                     </div>
                   </td>
                   <td width="50%" style="padding:0 0 16px 8px;">
                     <div style="border:1px solid #eadfcd;border-radius:18px;padding:18px;background:#ffffff;">
-                      <p style="margin:0;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#9ca3af;">Team Size</p>
-                      <p style="margin:10px 0 0;font-size:16px;font-weight:700;color:#111827;">${escapeHtml(teamLabel)}</p>
+                      <p style="margin:0;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#9ca3af;">Entry Code</p>
+                      <p style="margin:10px 0 0;font-size:16px;font-weight:700;color:#111827;font-family:monospace;">${safeEntryCode}</p>
                     </div>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:0 36px 8px;">
+              <div style="border:1px solid #eadfcd;border-radius:18px;padding:18px;background:#ffffff;">
+                <p style="margin:0;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#9ca3af;">Team Size</p>
+                <p style="margin:10px 0 0;font-size:16px;font-weight:700;color:#111827;">${escapeHtml(teamLabel)}</p>
+              </div>
             </td>
           </tr>
 
@@ -154,15 +165,15 @@ function buildCouponEmail(data: EmailPayload): string {
 }
 
 function buildCouponSvg(data: EmailPayload, qrDataUrl: string, eventImageDataUrl: string | null): string {
-  const canonicalEntryCode = buildEntryCodeFromRegistrationId(data.registrationId);
+  const entryCode = data.entryCode?.trim() || buildEntryCodeFromRegistrationId(data.registrationId);
   const safeName = escapeHtml(data.participantName);
   const safeEventName = escapeHtml(data.eventName);
   const safeVenue = escapeHtml(data.venue || "TBA");
   const safeDate = escapeHtml(data.eventDate || "TBA");
   const safeCategory = escapeHtml(data.eventCategory || "Event");
   const teamLabel = escapeHtml(data.teamCount > 1 ? `${data.teamCount} members` : "Individual");
-  const regLabel = escapeHtml(data.registrationId.substring(0, 8).toUpperCase());
-  const codeLabel = escapeHtml(canonicalEntryCode);
+  const regLabel = escapeHtml(data.registrationId);
+  const codeLabel = escapeHtml(entryCode);
   const eventImage = eventImageDataUrl ||
     "data:image/svg+xml;base64," +
       base64Encode(
@@ -218,7 +229,7 @@ function buildCouponSvg(data: EmailPayload, qrDataUrl: string, eventImageDataUrl
 
   <rect x="368" y="530" width="300" height="52" rx="18" fill="#111827" stroke="#334155"/>
   <text x="392" y="562" fill="#94A3B8" font-family="Arial" font-size="13" font-weight="700" letter-spacing="2">REG ID</text>
-  <text x="480" y="562" fill="#F8FAFC" font-family="monospace" font-size="18" font-weight="700">${regLabel}</text>
+  <text x="480" y="562" fill="#F8FAFC" font-family="monospace" font-size="14" font-weight="700">${regLabel}</text>
 
   <rect x="720" y="122" width="390" height="220" rx="28" fill="#0B1220" stroke="#334155"/>
   <image href="${eventImage}" x="720" y="122" width="390" height="220" preserveAspectRatio="xMidYMid slice" clip-path="url(#posterClip)"/>
@@ -281,7 +292,7 @@ Deno.serve(async (req) => {
       eventCategory,
     };
 
-    const canonicalEntryCode = buildEntryCodeFromRegistrationId(registrationId);
+    const canonicalEntryCode = entryCode?.trim() || buildEntryCodeFromRegistrationId(registrationId);
     const qrUrl =
       `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(canonicalEntryCode)}&bgcolor=ffffff&color=111827`;
     const [qrDataUrl, eventImageDataUrl] = await Promise.all([
@@ -302,7 +313,7 @@ Deno.serve(async (req) => {
       `Date: ${formattedDate}\n` +
       `Venue: ${venue || "TBA"}\n` +
       `Team Size: ${emailPayload.teamCount > 1 ? `${emailPayload.teamCount} members` : "Individual"}\n` +
-      `Registration ID: ${registrationId.substring(0, 8).toUpperCase()}\n` +
+      `Registration ID: ${registrationId}\n` +
       `Entry Code: ${canonicalEntryCode}\n\n` +
       `Your Kapricious coupon is attached to this email. Please keep it ready at the venue.`;
 

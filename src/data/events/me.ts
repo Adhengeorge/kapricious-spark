@@ -5,7 +5,7 @@ export const meEvents: DepartmentEvent[] = [
     id: "assemble-x",
     title: "Assemble-X (EV Edition)",
     teamSize: 1,
-    registrationFee: "₹200 per head",
+    registrationFee: "₹100 per head",
     prizePool: "₹4,500",
     details:
       "A VR-based Electric Vehicle assembly challenge where participants assemble EV components in a simulated factory. The event tests speed, precision, technical knowledge, and innovation.",

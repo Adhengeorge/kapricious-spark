@@ -14,7 +14,7 @@ export const raEvents: DepartmentEvent[] = [
     department: "RA",
     departmentName: "Robotics & Automation Engineering",
     image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop",
-    date: "March 27, 2026",
+    date: "March 28, 2026",
     time: "10:00 AM - 12:00 PM",
     venue: "Badminton Court",
     rules: [
@@ -43,7 +43,7 @@ export const raEvents: DepartmentEvent[] = [
     department: "RA",
     departmentName: "Robotics & Automation Engineering",
     image: "https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=1200&h=600&fit=crop",
-    date: "March 27, 2026",
+    date: "March 28, 2026",
     time: "1:00 PM - 4:00 PM",
     venue: "Badminton Court",
     rules: [

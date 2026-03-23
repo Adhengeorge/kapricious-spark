@@ -240,6 +240,46 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_or_refresh_pending_registration: {
+        Args: {
+          p_amount_paid: number
+          p_college: string
+          p_department_id: string
+          p_email: string
+          p_entry_code: string
+          p_event_id: string
+          p_name: string
+          p_phone: string
+          p_team_members: Json | null
+          p_team_size: number
+        }
+        Returns: {
+          entry_code: string
+          id: string
+          payment_status: string
+        }[]
+      }
+      finalize_registration_payment: {
+        Args: {
+          p_amount_paid: number
+          p_payment_currency: string
+          p_payment_gateway_status: string
+          p_razorpay_order_id: string
+          p_registration_id: string
+          p_transaction_id: string
+        }
+        Returns: {
+          department_id: string
+          email: string
+          entry_code: string
+          event_id: string
+          id: string
+          name: string
+          payment_status: string
+          status_was_pending: boolean
+          team_size: number | null
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

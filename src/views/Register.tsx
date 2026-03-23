@@ -33,9 +33,10 @@ const DB_EVENT_TITLE_ALIASES: Record<string, string[]> = {
   "hazard-hunt": ["Hazard Hunt"],
   "gear-up-challenge": ["PPE Race"],
 };
-const LIMITED_EVENT_IDS = new Set(["bug-bounty", "hackathon", "tech-escape-room"]);
+const LIMITED_EVENT_IDS = new Set(["bug-bounty", "build-a-pc", "hackathon", "tech-escape-room"]);
 const DEFAULT_SLOT_LIMIT_BY_EVENT: Record<string, number> = {
   "bug-bounty": 15,
+  "build-a-pc": 10,
   hackathon: 10,
   "tech-escape-room": 15,
 };
@@ -57,23 +58,21 @@ const normalizeEventLookupKey = (value: string) =>
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
 
-type RazorpayPaymentProof = {
-  orderId: string;
-  paymentId: string;
-  signature: string;
-  amountRupees: number;
-  currency: string;
-  gatewayStatus: string;
-};
-
 type RazorpayCheckoutResult = {
   orderId: string;
   paymentId: string;
   signature: string;
 };
 
-type RegistrationMutationInput = {
-  paymentProofOverride?: RazorpayPaymentProof | null;
+type PendingRegistrationRecord = {
+  id: string;
+  entryCode: string;
+  paymentStatus: string;
+};
+
+type PaidRegistrationResult = {
+  coupon: CouponData;
+  emailRateLimited: boolean;
 };
 
 type CouponData = {
@@ -436,7 +435,7 @@ const Register = () => {
   const [slotCheckLoading, setSlotCheckLoading] = useState(false);
   const [slotsAvailable, setSlotsAvailable] = useState<number | null>(null);
   const [maxSlots, setMaxSlots] = useState<number | null>(null);
-  const [paymentProof, setPaymentProof] = useState<RazorpayPaymentProof | null>(null);
+  const [pendingRegistration, setPendingRegistration] = useState<PendingRegistrationRecord | null>(null);
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [couponData, setCouponData] = useState<CouponData | null>(null);
   const [couponDownloading, setCouponDownloading] = useState(false);
@@ -597,7 +596,7 @@ const Register = () => {
     setCurrentStep("details");
     setSlotsAvailable(null);
     setMaxSlots(null);
-    setPaymentProof(null);
+    setPendingRegistration(null);
   }, [selectedEvent, isTeamEvent]);
 
   const findDbEventRecord = (eventId: string, eventTitle: string) => {
@@ -644,6 +643,74 @@ const Register = () => {
     return fieldErrors;
   };
 
+  const getSelectedDbEvent = () => {
+    const eventTitle = getEventTitle();
+    const dbEvent = findDbEventRecord(selectedEvent, eventTitle);
+    return { eventTitle, dbEvent, dbEventId: dbEvent?.id ?? null, dbDeptId: dbEvent?.department_id ?? null };
+  };
+
+  const buildCouponPayload = async (registrationId: string, entryCode: string, participantName: string, participantEmail: string) => {
+    const eventTitle = getEventTitle();
+    const { dbEventId } = getSelectedDbEvent();
+    let eventName = eventTitle;
+    let eventDate = "";
+    let venue = "";
+
+    if (selectedDept === FLAGSHIP_DEPT_ID) {
+      const fe = getEventById(selectedEvent);
+      if (fe) {
+        eventDate = fe.date;
+        venue = fe.venue;
+      }
+    } else if (
+      selectedEventDetails &&
+      "department" in selectedEventDetails &&
+      (selectedEventDetails.department === "SPORTS" ||
+        ["CULTURAL", "MANAGERIAL"].includes(selectedEventDetails.department))
+    ) {
+      eventDate = selectedEventDetails.date || "";
+      venue = selectedEventDetails.venue || "";
+    } else if (dbEventId) {
+      const { data: eventData } = await supabase
+        .from("events")
+        .select("title, event_date, venue")
+        .eq("id", dbEventId)
+        .single();
+
+      eventName = eventData?.title || eventTitle;
+      eventDate = eventData?.event_date || "";
+      venue = eventData?.venue || "";
+    }
+
+    return {
+      registrationId,
+      participantName,
+      participantEmail,
+      eventName,
+      eventDate,
+      venue,
+      issuedAt: new Date().toLocaleString(),
+      entryCode,
+      teamCount: isTeamEvent ? (selectedTeamSize ?? 1) : 1,
+      eventCategory: selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : selectedDept === SPORTS_DEPT_ID ? "Sports Event" : "Department Event",
+      eventImage: selectedEventDetails && "image" in selectedEventDetails ? (selectedEventDetails as any).image ?? "" : "",
+    } satisfies CouponData;
+  };
+
+  const applySuccessfulRegistration = ({ coupon, emailRateLimited }: PaidRegistrationResult) => {
+    setRegistered(true);
+    setCouponData(coupon);
+    if (emailRateLimited) {
+      toast.info("Registration successful! However, we couldn't send your event pass right now due to high demand. Please check your email tomorrow or contact the admin for your pass.");
+    } else {
+      toast.success("Registration successful! Check your email for the event pass.");
+    }
+    setForm({ name: "", email: "", phone: "", college: "" });
+    setSelectedEvent("");
+    setCurrentStep("details");
+    setPendingRegistration(null);
+  };
+
   // Step 1: Validate details and proceed to payment for events with registration caps.
   const handleProceedToPayment = async () => {
     setErrors({});
@@ -667,30 +734,44 @@ const Register = () => {
     }
     setSlotCheckLoading(true);
     try {
-      const eventTitle = getEventTitle();
-      const dbEvent = findDbEventRecord(selectedEvent, eventTitle);
+      const { dbEvent, dbEventId } = getSelectedDbEvent();
       if (!dbEvent) {
         toast.error("Event not found in database. Please try again later.");
         return;
       }
-      const dbEventId = dbEvent.id;
 
       const normalizedEmail = result.data.email.trim().toLowerCase();
-      const { count: duplicateCount, error: duplicateError } = await supabase
+      const { data: existingRegistration, error: duplicateError } = await supabase
         .from("registrations")
-        .select("id", { head: true, count: "exact" })
+        .select("id, entry_code, payment_status")
         .eq("event_id", dbEventId)
         .eq("email", normalizedEmail);
 
       if (duplicateError) throw duplicateError;
-      if (duplicateCount && duplicateCount > 0) {
+
+      const matchingRegistration = existingRegistration?.[0] ?? null;
+      if (matchingRegistration?.payment_status === "verified") {
         toast.error("You've already registered for this event with that email.");
         return;
       }
 
+      setPendingRegistration(
+        matchingRegistration
+          ? {
+              id: matchingRegistration.id,
+              entryCode: matchingRegistration.entry_code,
+              paymentStatus: matchingRegistration.payment_status || "pending",
+            }
+          : null,
+      );
+
       if (isCapacityLimitedEvent) {
         const [countResult, eventResult] = await Promise.all([
-          supabase.from("registrations").select("*", { count: "exact", head: true }).eq("event_id", dbEventId),
+          supabase
+            .from("registrations")
+            .select("*", { count: "exact", head: true })
+            .eq("event_id", dbEventId)
+            .eq("payment_status", "verified"),
           supabase.from("events").select("max_participants").eq("id", dbEventId).single(),
         ]);
 
@@ -724,19 +805,14 @@ const Register = () => {
   };
 
   const mutation = useMutation({
-    mutationFn: async ({ paymentProofOverride }: RegistrationMutationInput = {}) => {
+    mutationFn: async () => {
       const teamErrors = getTeamValidationErrors();
       if (Object.keys(teamErrors).length > 0) {
         throw new Error(teamErrors.teamMembers ?? teamErrors.teamSize ?? "Please complete the team details.");
       }
 
       const validated = schema.parse(form);
-      const isFlagship = selectedDept === FLAGSHIP_DEPT_ID;
-      const eventTitle = getEventTitle();
-      const dbEvent = findDbEventRecord(selectedEvent, eventTitle);
-      const dbEventId = dbEvent?.id ?? null;
-      const dbDeptId = dbEvent?.department_id ?? null;
-      const resolvedPaymentProof = paymentProofOverride ?? paymentProof;
+      const { dbEventId, dbDeptId } = getSelectedDbEvent();
 
       if (!dbEventId || !dbDeptId) {
         throw new Error("Event not found in database. Please try again later.");
@@ -746,7 +822,8 @@ const Register = () => {
         const { count: regCount, error: countError } = await supabase
           .from("registrations")
           .select("*", { count: "exact", head: true })
-          .eq("event_id", dbEventId);
+          .eq("event_id", dbEventId)
+          .eq("payment_status", "verified");
 
         if (countError) throw countError;
 
@@ -775,14 +852,14 @@ const Register = () => {
         event_id: dbEventId,
         department_id: dbDeptId,
         entry_code: entryCode,
-        amount_paid: resolvedPaymentProof ? resolvedPaymentProof.amountRupees : payableAmountInPaise <= 0 ? 0 : null,
+        amount_paid: 0,
         team_size: isTeamEvent ? (selectedTeamSize ?? 1) : 1,
         team_members: (selectedTeamSize ?? 0) > 1 ? teamMembers.filter(m => m.trim()) : null,
-        razorpay_order_id: resolvedPaymentProof?.orderId ?? null,
-        payment_currency: resolvedPaymentProof?.currency ?? (payableAmountInPaise <= 0 ? "INR" : null),
-        payment_gateway_status: resolvedPaymentProof?.gatewayStatus ?? (payableAmountInPaise <= 0 ? "free" : null),
-        transaction_id: resolvedPaymentProof?.paymentId ?? null,
-        payment_status: resolvedPaymentProof ? "verified" : "pending",
+        razorpay_order_id: null,
+        payment_currency: "INR",
+        payment_gateway_status: "free",
+        transaction_id: null,
+        payment_status: "verified",
       }]).select("id").single();
       
       if (error) {
@@ -790,80 +867,85 @@ const Register = () => {
         throw error;
       }
 
-      let eventName = eventTitle;
-      let eventDate = "";
-      let venue = "";
-
-      if (isFlagship) {
-        const fe = getEventById(selectedEvent);
-        if (fe) { eventDate = fe.date; venue = fe.venue; }
-      } else if (selectedEventDetails && "department" in selectedEventDetails && selectedEventDetails.department === "SPORTS") {
-        eventDate = selectedEventDetails.date || "";
-        venue = selectedEventDetails.venue || "";
-      } else if (selectedEventDetails && "department" in selectedEventDetails && ["CULTURAL", "MANAGERIAL"].includes(selectedEventDetails.department)) {
-        eventDate = selectedEventDetails.date || "";
-        venue = selectedEventDetails.venue || "";
-      } else {
-        const { data: eventData } = await supabase
-          .from("events")
-          .select("title, event_date, venue")
-          .eq("id", dbEventId)
-          .single();
-        eventName = eventData?.title || eventTitle;
-        eventDate = eventData?.event_date || "";
-        venue = eventData?.venue || "";
-      }
+      const coupon = await buildCouponPayload(regData.id, entryCode, validated.name, validated.email);
 
       const emailRes = await supabase.functions.invoke("send-registration-email", {
         body: {
           participantName: validated.name,
           participantEmail: validated.email,
-          eventName,
+          eventName: coupon.eventName,
           registrationId: regData.id,
           entryCode,
-          eventDate,
-          venue,
-          teamCount: isTeamEvent ? (selectedTeamSize ?? 1) : 1,
-          eventImage: selectedEventDetails && "image" in selectedEventDetails ? (selectedEventDetails as any).image ?? "" : "",
-          eventCategory: selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : selectedDept === SPORTS_DEPT_ID ? "Sports Event" : "Department Event",
+          eventDate: coupon.eventDate,
+          venue: coupon.venue,
+          teamCount: coupon.teamCount,
+          eventImage: coupon.eventImage,
+          eventCategory: coupon.eventCategory,
         },
       }).catch((err) => { console.error("Email send failed:", err); return null; });
 
       const emailRateLimited = emailRes?.data?.rateLimited === true;
-      const coupon: CouponData = {
-        registrationId: regData.id,
-        participantName: validated.name,
-        participantEmail: validated.email,
-        eventName,
-        eventDate,
-        venue,
-        issuedAt: new Date().toLocaleString(),
-        entryCode,
-        teamCount: isTeamEvent ? (selectedTeamSize ?? 1) : 1,
-        eventCategory: selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : selectedDept === SPORTS_DEPT_ID ? "Sports Event" : "Department Event",
-        eventImage: selectedEventDetails && "image" in selectedEventDetails ? (selectedEventDetails as any).image ?? "" : "",
-      };
       return { regData, emailRateLimited, coupon };
     },
     onSuccess: ({ emailRateLimited, coupon }) => {
-      setRegistered(true);
-      setCouponData(coupon);
-      if (emailRateLimited) {
-        toast.info("Registration successful! However, we couldn't send your event pass right now due to high demand. Please check your email tomorrow or contact the admin for your pass.");
-      } else {
-        toast.success("Registration successful! Check your email for the event pass.");
-      }
-      setForm({ name: "", email: "", phone: "", college: "" });
-      setSelectedEvent("");
-      setCurrentStep("details");
-      setPaymentProof(null);
+      applySuccessfulRegistration({ coupon, emailRateLimited });
     },
     onError: (err: Error) => {
       toast.error(err.message);
     },
   });
 
-  const startRazorpayPayment = async (): Promise<RazorpayPaymentProof | null> => {
+  const createOrRefreshPendingRegistration = async () => {
+    const teamErrors = getTeamValidationErrors();
+    if (Object.keys(teamErrors).length > 0) {
+      throw new Error(teamErrors.teamMembers ?? teamErrors.teamSize ?? "Please complete the team details.");
+    }
+
+    const validated = schema.parse(form);
+    const { dbEventId, dbDeptId } = getSelectedDbEvent();
+
+    if (!dbEventId || !dbDeptId) {
+      throw new Error("Event not found in database. Please try again later.");
+    }
+
+    const registrationId = pendingRegistration?.id ?? crypto.randomUUID();
+    const entryCode = pendingRegistration?.entryCode ?? buildEntryCodeFromRegistrationId(registrationId);
+
+    const { data, error } = await supabase.rpc("create_or_refresh_pending_registration", {
+      p_name: validated.name,
+      p_email: validated.email,
+      p_phone: validated.phone,
+      p_college: validated.college,
+      p_event_id: dbEventId,
+      p_department_id: dbDeptId,
+      p_entry_code: entryCode,
+      p_amount_paid: payableRupees,
+      p_team_size: isTeamEvent ? (selectedTeamSize ?? 1) : 1,
+      p_team_members: (selectedTeamSize ?? 0) > 1 ? teamMembers.filter((member) => member.trim()) : null,
+    });
+
+    if (error) {
+      if (error.message?.includes("already registered")) {
+        throw new Error("You have already registered for this event.");
+      }
+      throw error;
+    }
+
+    const pending = data?.[0];
+    if (!pending?.id || !pending?.entry_code) {
+      throw new Error("Unable to save your pending registration.");
+    }
+
+    const nextPending = {
+      id: pending.id,
+      entryCode: pending.entry_code,
+      paymentStatus: pending.payment_status || "pending",
+    };
+    setPendingRegistration(nextPending);
+    return nextPending;
+  };
+
+  const startRazorpayPayment = async (registration: PendingRegistrationRecord): Promise<PaidRegistrationResult | null> => {
     if (!selectedEventDetails) return null;
     if (payableAmountInPaise <= 0) return null;
 
@@ -939,9 +1021,12 @@ const Register = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          registration_id: registration.id,
           razorpay_order_id: paymentResult.orderId,
           razorpay_payment_id: paymentResult.paymentId,
           razorpay_signature: paymentResult.signature,
+          event_image: selectedEventDetails && "image" in selectedEventDetails ? (selectedEventDetails as any).image ?? "" : "",
+          event_category: selectedDept === FLAGSHIP_DEPT_ID ? "Flagship Event" : selectedDept === SPORTS_DEPT_ID ? "Sports Event" : "Department Event",
         }),
       });
       const verifyPayload = await verifyRes.json();
@@ -949,20 +1034,15 @@ const Register = () => {
         throw new Error(verifyPayload?.error || "Payment signature verification failed.");
       }
 
-      const verifiedPayment = verifyPayload?.payment;
-      if (!verifiedPayment || !Number.isFinite(Number(verifiedPayment.amount))) {
-        throw new Error("Verified payment details are incomplete.");
+      const coupon = verifyPayload?.coupon as CouponData | undefined;
+      if (!coupon?.registrationId) {
+        throw new Error("Payment was verified, but the registration confirmation payload is incomplete.");
       }
 
-      const nextPaymentProof = {
-        ...paymentResult,
-        amountRupees: Number(verifiedPayment.amount) / 100,
-        currency: verifiedPayment.currency || "INR",
-        gatewayStatus: verifiedPayment.status || "unknown",
+      return {
+        coupon,
+        emailRateLimited: verifyPayload?.email?.rateLimited === true || verifyPayload?.email?.success === false,
       };
-      setPaymentProof(nextPaymentProof);
-      toast.success("Payment verified. Finalizing registration...");
-      return nextPaymentProof;
     } catch (error: any) {
       toast.error(error?.message || "Payment could not be completed.");
       return null;
@@ -981,14 +1061,19 @@ const Register = () => {
       return;
     }
 
-    let paymentProofForInsert = paymentProof;
-
-    if (payableAmountInPaise > 0 && !paymentProof) {
-      paymentProofForInsert = await startRazorpayPayment();
-      if (!paymentProofForInsert) return;
+    if (payableAmountInPaise > 0) {
+      try {
+        const pending = await createOrRefreshPendingRegistration();
+        const paymentResult = await startRazorpayPayment(pending);
+        if (!paymentResult) return;
+        applySuccessfulRegistration(paymentResult);
+      } catch (error: any) {
+        toast.error(error?.message || "Unable to start payment.");
+      }
+      return;
     }
 
-    mutation.mutate({ paymentProofOverride: paymentProofForInsert });
+    mutation.mutate();
   };
 
   const inputClass =
